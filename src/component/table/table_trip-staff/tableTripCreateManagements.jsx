@@ -4,6 +4,7 @@ import {
   Grid,
   Rating,
   Skeleton,
+  TableSortLabel,
   TablePagination,
   TextField,
 } from "@mui/material";
@@ -92,6 +93,32 @@ const TripCreatedByStaff = () => {
   //format money
   const [formatMoney] = useMoneyFormatter();
 
+
+  // SORT STATUS
+  const [orderBy, setOrderBy] = useState("");
+  const [order, setOrder] = useState("asc");
+
+  const handleSort = () => {
+    const isAsc = orderBy === "adminCheck" && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy("adminCheck");
+  };
+
+  const sortedData = dataTrip.slice().sort((a, b) => {
+    const orderMultiplier = order === "asc" ? 1 : -1;
+    const statusOrder = ["ACCEPT", "CANCEL"]; // Định nghĩa thứ tự sắp xếp
+
+    if (statusOrder.indexOf(a.adminCheck) < statusOrder.indexOf(b.adminCheck)) {
+      return -1 * orderMultiplier;
+    }
+    if (statusOrder.indexOf(a.adminCheck) > statusOrder.indexOf(b.adminCheck)) {
+      return 1 * orderMultiplier;
+    }
+    return 0;
+  });
+
+
+
   // FILTER BY DATE AND departurePoint & destination
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -115,7 +142,7 @@ const TripCreatedByStaff = () => {
     setEndPoint(event.target.value);
   };
 
-  const filteredRows = dataTrip.filter((row) => {
+  const filteredRows = sortedData.filter((row) => {
     const isStartPointMatch =
       !startPoint ||
       row?.routeDTO?.departurePoint
@@ -278,9 +305,19 @@ const TripCreatedByStaff = () => {
                 {/* <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
                   Tuyến Đường
                 </TableCell> */}
-                <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
+                {/* <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
                   Trạng Thái
+                </TableCell> */}
+                <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
+                  <TableSortLabel
+                    active={orderBy === "adminCheck"}
+                    direction={orderBy === "adminCheck" ? order : "asc"}
+                    onClick={handleSort}
+                  >
+                    Trạng Thái
+                  </TableSortLabel>
                 </TableCell>
+
                 <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
                   Đánh Giá
                 </TableCell>

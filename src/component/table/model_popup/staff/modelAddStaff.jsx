@@ -300,7 +300,7 @@ const AddUserModal = ({ open, handleClose, fetchUserData }) => {
                           fullWidth
                           error={meta.touched && !!meta.error}
                         >
-                          <MenuItem value="Hỗn hợp">Hỗn hợp</MenuItem>
+                          <MenuItem value="Hỗn hợp">Liên Vùng</MenuItem>
                           <MenuItem value="Bắc">Bắc</MenuItem>
                           <MenuItem value="Trung">Trung</MenuItem>
                           <MenuItem value="Nam">Nam</MenuItem>
