@@ -1,0 +1,125 @@
+.table {
+  .cellWrapper {
+    display: flex;
+    align-items: center;
+
+    .image {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      margin-right: 10px;
+      object-fit: cover;
+    }
+  }
+
+  .status {
+    padding: 5px;
+    border-radius: 5px;
+
+    &.Approved {
+      color: green;
+      background-color: rgba(0, 128, 0, 0.151);
+    }
+    &.Pending {
+      color: goldenrod;
+      background-color: rgba(189, 189, 3, 0.103);
+    }
+  }
+
+  // STAFF TABLE CSS
+
+  .staffStatus {
+    padding: 5px;
+    border-radius: 5px;
+
+    &.ACTIVE {
+      color: green;
+      background-color: rgba(0, 128, 0, 0.151);
+    }
+    &.DEACTIVE {
+      color: goldenrod;
+      background-color: rgba(189, 189, 3, 0.103);
+    }
+  }
+  .Button__ban:hover {
+    background-color: red;
+  }
+  .Button__unban:hover {
+    background-color: green;
+  }
+  .tableTitle {
+    font-weight: bold;
+  }
+
+  //TRIP TBL CSS
+  .tripStatus {
+    padding: 5px;
+    border-radius: 5px;
+
+    &.RUN {
+      color: #6499e9;
+      background-color: rgb(166, 246, 255);
+    }
+    &.READY {
+      color: goldenrod;
+      background-color: rgba(189, 189, 3, 0.103);
+    }
+    &.FINISH {
+      color: green;
+      background-color: rgba(0, 128, 0, 0.151);
+    }
+    &.CANCEL {
+      color: red;
+      background-color: rgb(253, 183, 183);
+    }
+  }
+  .tripRqStatus {
+    padding: 5px;
+    border-radius: 5px;
+
+    &.PENDING {
+      color: goldenrod;
+      background-color: rgba(189, 189, 3, 0.103);
+    }
+    &.ACCEPT {
+      color: green;
+      background-color: rgba(0, 128, 0, 0.151);
+    }
+    &.CANCEL {
+      color: red;
+      background-color: rgb(253, 183, 183);
+    }
+  }
+
+  // BUS TBL CSS
+
+  .busStatus {
+    padding: 5px;
+    border-radius: 5px;
+
+    &.ACTIVE {
+      color: green;
+      background-color: rgba(0, 128, 0, 0.151);
+    }
+    &.DEACTIVE {
+      color: red;
+      background-color: rgb(253, 183, 183);
+    }
+  }
+
+  //STATION CSS
+
+  .stationStatus {
+    padding: 5px;
+    border-radius: 5px;
+
+    &.ACTIVE {
+      color: green;
+      background-color: rgba(0, 128, 0, 0.151);
+    }
+    &.DEACTIVE {
+      color: red;
+      background-color: rgb(253, 183, 183);
+    }
+  }
+}
