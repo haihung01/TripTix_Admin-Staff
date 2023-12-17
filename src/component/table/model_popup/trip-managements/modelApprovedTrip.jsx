@@ -91,7 +91,7 @@ const ModalTripApprovedPopup = ({
           textTransform: "uppercase",
           color: "#575656",
           backgroundImage:
-            "linear-gradient(to bottom, #fd4887, #ff77a2, #ff9ebb, #fdc2d3, #f8e4ea)",
+            "linear-gradient(to bottom, #f37106, #f8903b, #fac074, #f8aa85, #fcedc5)",
         }}
       >
         Thông tin chi tiết chuyến đi
@@ -109,7 +109,7 @@ const ModalTripApprovedPopup = ({
               }}
             />
           </Grid>
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={6}>
             <TextField
               margin="dense"
               fullWidth
@@ -120,7 +120,7 @@ const ModalTripApprovedPopup = ({
               }}
             />
           </Grid>
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={6}>
             <TextField
               margin="dense"
               fullWidth
@@ -137,6 +137,28 @@ const ModalTripApprovedPopup = ({
               fullWidth
               label="Tên Xe"
               value={tripData?.busDTO?.name}
+              InputProps={{
+                readOnly: true,
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <TextField
+              margin="dense"
+              fullWidth
+              label="Loại Xe"
+              value={tripData?.busDTO?.type}
+              InputProps={{
+                readOnly: true,
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <TextField
+              margin="dense"
+              fullWidth
+              label="Số Chỗ Ngồi"
+              value={tripData?.busDTO?.capacity}
               InputProps={{
                 readOnly: true,
               }}
@@ -216,7 +238,7 @@ const ModalTripApprovedPopup = ({
                       sx={{ color: "text.secondary" }}
                       textAlign="center"
                     >
-                      {/* {dataTrip?.type} */}
+                      {dataTrip?.type}
                     </Typography>
                   </AccordionSummary>
                   <Divider />
@@ -268,11 +290,11 @@ const ModalTripApprovedPopup = ({
         </Button>
         <Button
           onClick={handleApprove} // Set adminCheck to "ACCEPT"
-          variant="contained"
           sx={{
-            backgroundColor: "#2196F3 ",
+            backgroundColor: "#FF5B94",
             color: "white",
             width: "160px",
+            ":hover": { bgcolor: "#F84180" },
           }}
         >
           Chấp Nhận

@@ -1,40 +1,227 @@
-import React from "react";
-import { Grid, Button } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Grid, Button, Box } from "@mui/material";
+import { toast } from "react-toastify";
+import { useNavigate, useParams } from "react-router-dom";
+import bookingApi from "../../utils/bookingAPI";
 
-const SeatingChart = () => {
-  // Giả sử rằng chúng ta có 10 hàng, mỗi hàng có 4 ghế
-  const rows = 6;
-  const seatsPerRow = 2;
+const SeatingChart = ({ data, floor, listTickets }) => {
+  const [listSeatSelected, setListSeatSelected] = useState([]);
+  const [listSeatSelectedAPI, setListSeatSelectedAPI] = useState([]);
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-  // Tạo một mảng 2D để biểu diễn sơ đồ ghế
-  const seats = Array(rows)
-    .fill()
-    .map(() => Array(seatsPerRow).fill(false));
+  useEffect(() => {
+    const listTicketSelected = listTickets?.map((t) => t?.seatName);
+    setListSeatSelected(listTicketSelected || []);
+    setListSeatSelectedAPI(listTicketSelected || []);
+  }, [listTickets]);
 
-  const handleSeatClick = (row, seat) => {
-    // Cập nhật trạng thái của ghế khi nó được nhấn
-    seats[row][seat] = !seats[row][seat];
+  const handleSubmitChage = async () => {
+    const confirm = window.confirm(
+      "Bạn có chắc muốn thay đổi chỗ ngồi hiện tại ?"
+    );
+    if (confirm) {
+      try {
+        const dataUpdate = {
+          idBooking: parseInt(id),
+          seatName: listSeatSelected,
+        };
+        await bookingApi.changeTicketForCustomer(dataUpdate);
+        toast.success("Change Ticket(s) Success !");
+        navigate("/change-ticket");
+      } catch (error) {
+        console.log("errr", error.response.data.message);
+        toast.error(error.response.data.message);
+      }
+    }
+  };
+  const maxTickets = listTickets?.length || 0;
+  const handleSeatClick = (seatName) => {
+    const check = listSeatSelected.find((t) => t === seatName);
+
+    if (listSeatSelected?.length === maxTickets && check === undefined) {
+      toast.error("Không được chọn quá số chỗ khách đã đặt trước đó !");
+      console.log("list selected: ", listSeatSelected);
+      return;
+    }
+    if (check) {
+      const newList = listSeatSelected.filter((t) => t !== seatName);
+      setListSeatSelected(newList || []);
+      console.log("list selected: ", listSeatSelected);
+
+      return;
+    } else {
+      const newList = [...listSeatSelected, seatName];
+      setListSeatSelected(newList);
+      console.log("list selected: ", listSeatSelected, newList);
+
+      return;
+    }
   };
 
-  return (
-    <Grid container spacing={4}>
-      {seats.map((row, rowIndex) => (
-        <Grid container item key={rowIndex} justifyContent="center" spacing={6}>
-          {row.map((seat, seatIndex) => (
-            <Grid item key={seatIndex}>
-              <Button
-                variant="contained"
-                color={seat ? "secondary" : "primary"}
-                onClick={() => handleSeatClick(rowIndex, seatIndex)}
-              >
-                {rowIndex}-{seatIndex}
-              </Button>
+  if (floor === 1) {
+    return (
+      <Box>
+        <Box>
+          <Grid container spacing={4}>
+            <Grid container item justifyContent="center" spacing={6}>
+              {data.map((seat, seatIndex) => (
+                <Grid item key={seatIndex} xs={6}>
+                  {seat.status === "AVAILABLE" && (
+                    <Button
+                      variant="contained"
+                      color={
+                        listSeatSelected?.find((t) => t === seat.seatName)
+                          ? "success"
+                          : "primary"
+                      }
+                      onClick={() => handleSeatClick()}
+                    >
+                      {seat.seatName}
+                    </Button>
+                  )}
+                  {seat.status === "UNAVAILABLE" && (
+                    <Button
+                      variant="contained"
+                      color={
+                        listSeatSelected?.find((t) => t === seat.seatName) &&
+                        "success"
+                      }
+                      onClick={() => handleSeatClick(seat.seatName)}
+                      disabled={
+                        listSeatSelected?.find((t) => t === seat.seatName) ||
+                          listSeatSelectedAPI?.find((t) => t === seat.seatName)
+                          ? false
+                          : true
+                      }
+                    >
+                      {seat.seatName}
+                    </Button>
+                  )}
+                </Grid>
+              ))}
             </Grid>
-          ))}
-        </Grid>
-      ))}
-    </Grid>
-  );
+          </Grid>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            m: "20px",
+          }}
+        >
+          <Button onClick={handleSubmitChage}>Xác nhận</Button>
+        </Box>
+      </Box>
+    );
+  } else {
+    return (
+      <Box>
+        <Box>
+          <Grid container spacing={4}>
+            <Grid container item justifyContent="center" spacing={6} xs={6}>
+              {data
+                .slice(0, Math.round(data?.length / 2))
+                .map((seat, seatIndex) => (
+                  <Grid item key={seatIndex} xs={6}>
+                    {seat.status === "AVAILABLE" && (
+                      <Button
+                        variant="contained"
+                        color={
+                          listSeatSelected?.find((t) => t === seat.seatName)
+                            ? "success"
+                            : "primary"
+                        }
+                        onClick={() => handleSeatClick()}
+                      >
+                        {seat.seatName}
+                      </Button>
+                    )}
+                    {seat.status === "UNAVAILABLE" && (
+                      <Button
+                        variant="contained"
+                        color={
+                          listSeatSelected?.find((t) => t === seat.seatName) &&
+                          "success"
+                        }
+                        onClick={() => handleSeatClick(seat.seatName)}
+                        disabled={
+                          listSeatSelected?.find((t) => t === seat.seatName) ||
+                            listSeatSelectedAPI?.find((t) => t === seat.seatName)
+                            ? false
+                            : true
+                        }
+                      >
+                        {seat.seatName}
+                      </Button>
+                    )}
+                  </Grid>
+                ))}
+            </Grid>
+            <Grid container item justifyContent="center" spacing={6} xs={6}>
+              {data
+                .slice(Math.round(data?.length / 2), data?.length)
+                .map((seat, seatIndex) => (
+                  <Grid item key={seatIndex} xs={6}>
+                    {seat.status === "AVAILABLE" && (
+                      <Button
+                        variant="contained"
+                        color={
+                          listSeatSelected?.find((t) => t === seat.seatName)
+                            ? "success"
+                            : "primary"
+                        }
+                        onClick={() => handleSeatClick(seat.seatName)}
+                      >
+                        {seat.seatName}
+                      </Button>
+                    )}
+                    {seat.status === "UNAVAILABLE" && (
+                      <Button
+                        variant="contained"
+                        color={
+                          listSeatSelected?.find((t) => t === seat.seatName) &&
+                          "success"
+                        }
+                        onClick={() => handleSeatClick(seat.seatName)}
+                        disabled={
+                          listSeatSelected?.find((t) => t === seat.seatName) ||
+                            listSeatSelectedAPI?.find((t) => t === seat.seatName)
+                            ? false
+                            : true
+                        }
+                      >
+                        {seat.seatName}
+                      </Button>
+                    )}
+                  </Grid>
+                ))}
+            </Grid>
+          </Grid>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            m: "100px",
+            pb: "100px",
+          }}
+        >
+          <Button
+            sx={{
+              backgroundColor: "#ef5350",
+              color: "white",
+              width: "160px",
+              ":hover": { bgcolor: "#f44336" },
+            }}
+            onClick={handleSubmitChage}
+          >
+            Xác nhận
+          </Button>
+        </Box>
+      </Box>
+    );
+  }
 };
 
 export default SeatingChart;

@@ -9,7 +9,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-
 import moment from "moment/moment";
 import listUserApi from "../../utils/listUsersAPI";
 import MenuActionCustomerTable from "../menuAction/menuActionUserTable/menuActionForCustomerTable";
@@ -99,6 +98,7 @@ const ChangeTicket = () => {
         <TextField
           sx={{ pb: "15px" }}
           label="Search by Full Name"
+          size="small"
           variant="outlined"
           value={searchText}
           onChange={handleSearch}
@@ -113,6 +113,7 @@ const ChangeTicket = () => {
         <TextField
           sx={{ pb: "15px", ml: "20px" }}
           label="Search by Phone Number"
+          size="small"
           variant="outlined"
           value={searchPhone}
           onChange={handleSearchPhone}
@@ -127,31 +128,39 @@ const ChangeTicket = () => {
 
         <TableContainer component={Paper} className="table">
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
+            <TableHead
+              textAlign="center"
+              variant="h5"
+              sx={{
+                textTransform: "uppercase",
+                color: "#575656",
+                backgroundImage:
+                  "linear-gradient(to bottom, #f37106, #f8903b, #fac074, #f8aa85, #fcedc5)",
+              }}>
               <TableRow>
                 <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
-                  Customer ID
+                  ID khách hàng
                 </TableCell>
                 <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
-                  Full Name
+                  Họ Tên
                 </TableCell>
                 <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
                   Email
                 </TableCell>
                 <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
-                  Address
+                  Địa Chỉ
                 </TableCell>
                 <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
-                  Phone Number
+                  Số Điện Thoại
                 </TableCell>
                 <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
-                  Status
+                  trạng Thái
                 </TableCell>
                 <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
-                  Gender
+                  Giới Tính
                 </TableCell>
                 <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
-                  Last Update
+                  Ngày Cuối Cập Nhật
                 </TableCell>
                 <TableCell
                   className="tableTitle"
@@ -167,31 +176,17 @@ const ChangeTicket = () => {
                     <TableCell className="tableCell">
                       {row.idUserSystem}
                     </TableCell>
-                    <TableCell
-                      className="tableCell"
-                      onClick={() => handleOpen(row)}
-                    >
-                      <div className="cellWrapper">
-                        <img src={row.img} alt="" className="image" />
-                        {row.fullName}
-                      </div>
-                    </TableCell>
-                    <TableCell className="tableCell" sx={{ width: "100px" }}>
-                      {row.email}
-                    </TableCell>
-                    <TableCell className="tableCell" sx={{ width: "220px" }}>
-                      {row.address}
-                    </TableCell>
-                    <TableCell className="tableCell" sx={{ width: "220px" }}>
-                      {row.phone}
-                    </TableCell>
+                    <TableCell className="tableCell">{row.fullName}</TableCell>
+                    <TableCell className="tableCell">{row.email}</TableCell>
+                    <TableCell className="tableCell">{row.address}</TableCell>
+                    <TableCell className="tableCell">{row.phone}</TableCell>
                     <TableCell className="tableCell">
                       <span className={`staffStatus ${row.status}`}>
-                        {row.status}
+                        {row.status === "ACTIVE" ? "ĐANG HOẠT ĐỘNG" : row.status === "DEACTIVE" ? "KHÔNG HOẠT ĐỘNG" : row.status}
                       </span>
                     </TableCell>
-                    <TableCell className="tableCell">{row.gender}</TableCell>
-                    <TableCell className="tableCell" sx={{ width: "220px" }}>
+                    <TableCell className="tableCell">{row.gender === "MALE" ? "NAM" : row.gender === "FEMALE" ? "NỮ" : row.status}</TableCell>
+                    <TableCell className="tableCell">
                       {moment(row.updatedDate).format("DD/MM/YYYY")}
                     </TableCell>
                     <TableCell>

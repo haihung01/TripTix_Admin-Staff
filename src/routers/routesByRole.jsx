@@ -13,6 +13,9 @@ import HistoryTripByIdDriver from "../pages/admin/viewHistoryTripByIdDriver";
 import Dashboard from "../pages/dashboard/dashboard";
 import ChangeTicketPage from "../pages/staff/change_ticket";
 import RouteManagement from "../pages/admin/route_management"
+import TableHistoryBookingOfCustomer from "../component/table/table_booking/tableHistoryBookingOfCustomer";
+import ChangeSeatingForCustomerPage from "../pages/staff/change_seating_for_customer";
+
 
 export const publicRoutes = [
   {
@@ -79,5 +82,13 @@ export const staffRoutes = [
   {
     path: "/seating-chart",
     element: <SeatingChart />,
+  },
+  {
+    path: "/history-booking-by-id/:id",
+    element: <TableHistoryBookingOfCustomer />,
+  },
+  {
+    path: "/change-seating/:id",
+    element: <ChangeSeatingForCustomerPage />,
   },
 ];

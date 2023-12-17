@@ -283,7 +283,7 @@ export default function TripDetail() {
         </Grid>
       </div>
       <div className="box box4">
-        {dataTrip?.listBooking != "" ? (
+        {dataTrip?.listBooking !== "" ? (
           <TableContainer component={Paper} className="table">
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead

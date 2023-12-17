@@ -4,27 +4,19 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import * as React from "react";
-import { useNavigate } from "react-router-dom";
-import useAuth from "../../../hook/useAuth";
 
-export default function MenuActionCustomerTable({ userData, onOpenDetail }) {
+export default function MenuActionChangeTicket({ bookingData, onOpen }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const { auth } = useAuth();
-  const navigate = useNavigate();
-
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   const handleDetail = () => {
-    onOpenDetail(userData);
-    setAnchorEl(null);
-  };
-  const handleViewHistoryBookingOfCustomer = () => {
-    navigate(`/history-booking-by-id/${userData.idUserSystem}`);
+    onOpen(bookingData);
     setAnchorEl(null);
   };
 
@@ -61,14 +53,13 @@ export default function MenuActionCustomerTable({ userData, onOpenDetail }) {
       >
         <MenuItem onClick={() => handleDetail()}>
           <InfoIcon sx={{ mr: "4px" }} color="info" />
-          <span>Chi Tiết</span>
+          <span>Nhập Mã Xác Nhận</span>
         </MenuItem>
-        {auth?.user?.role === "ROLE_STAFF" && (
-          <MenuItem onClick={() => handleViewHistoryBookingOfCustomer()}>
-            <InfoIcon sx={{ mr: "4px" }} color="info" />
-            <span>Đổi Vé</span>
-          </MenuItem>
-        )}
+
+        {/* <MenuItem onClick={() => handleStartFeedBack(id)}>
+          <FeedbackOutlinedIcon sx={{ mr: "4px" }} color="success" />
+          <span>Mở phản hồi</span>
+        </MenuItem> */}
       </Menu>
     </div>
   );
