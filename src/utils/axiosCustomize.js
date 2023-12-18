@@ -2,8 +2,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const axiosClient = axios.create({
-  baseURL: "http://btbs.ap-southeast-1.elasticbeanstalk.com",
-  // baseURL: "https://triptix2.azurewebsites.net",
+  // baseURL: "http://btbs.ap-southeast-1.elasticbeanstalk.com",
+  baseURL: "https://triptix2.azurewebsites.net",
   headers: {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
