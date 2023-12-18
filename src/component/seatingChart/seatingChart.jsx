@@ -132,7 +132,7 @@ const SeatingChart = ({ data, floor, listTickets }) => {
                             ? "success"
                             : "primary"
                         }
-                        onClick={() => handleSeatClick()}
+                        onClick={() => handleSeatClick(seat.seatName)}
                       >
                         {seat.seatName}
                       </Button>

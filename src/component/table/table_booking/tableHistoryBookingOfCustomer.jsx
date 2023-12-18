@@ -257,7 +257,7 @@ export default function TableHistoryBookingOfCustomer() {
                     <TableCell className="tableCell">
                       {formatMoney(row?.totalPrice)}
                     </TableCell>
-                    <TableCell className="tableCell"> {row?.listTicket[0]?.seatName}</TableCell>
+                    <TableCell className="tableCell"> {row?.listTicket.slice(0, 30).map(ticket => ticket.seatName).join(', ')}</TableCell>
                     <TableCell className="tableCell">
                       <span className={`tripStatus ${row?.bookingStatus}`}>
                         {row?.bookingStatus === "PAID" ? "ĐÃ THANH TOÁN" : row?.bookingStatus === "NO_CHECKIN" ? "CHỜ CHECKIN" : row?.bookingStatus === "NO_SHOW" ? "LỠ CHUYẾN" : row?.bookingStatus === "CHECKIN" ? "ĐÃ CHECKIN" : row?.bookingStatus === "FINISH" ? "ĐÃ HOÀN THÀNH" : row?.bookingStatus === "CANCEL" ? "HỦY" : row?.bookingStatus}

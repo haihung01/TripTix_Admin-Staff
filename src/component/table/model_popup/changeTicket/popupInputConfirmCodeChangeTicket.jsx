@@ -31,7 +31,7 @@ const ModelEnterConfirmChangeTicketCode = ({
       toast.error("Mã vé không trùng khớp !");
       return;
     }
-    navigate(`/change-seating/${confirmCode}`);
+    navigate(`/change-seating/${bookingData?.idBooking}`);
   };
 
   return (

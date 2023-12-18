@@ -72,7 +72,7 @@ export const adminRoutes = [
 
 export const staffRoutes = [
   {
-    path: "/change-tiket",
+    path: "/change-ticket",
     element: <ChangeTicketPage />,
   },
   {

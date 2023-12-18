@@ -30,17 +30,26 @@ import useMoneyFormatter from "../../../hook/useMoneyFormatter";
 const TripCreatedByStaff = () => {
   const { auth } = useAuth();
   // PAGINATION
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  // const [page, setPage] = useState(0);
+  // const [rowsPerPage, setRowsPerPage] = useState(10);
   const rowsPerPageOptions = [5, 10, 25, 50]; // Đặt giá trị mặc định là 5 hoặc số hàng tùy ý
 
   const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+    // setPage(newPage);
+    setPangination({ ...pangination, pageIndex: newPage + 1 });
+    setIsLoadAPI(true);
+    console.log("new page: ", newPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    // setRowsPerPage(parseInt(event.target.value, 10));
+    // setPage(0);
+    setPangination({
+      ...pangination,
+      pageSize: parseInt(event.target.value, 10),
+    });
+    console.log("row perpage: ", parseInt(event.target.value, 10));
+    setIsLoadAPI(true);
   };
 
   const [selectedTripData, setSelectedTripData] = useState(null);
@@ -70,26 +79,46 @@ const TripCreatedByStaff = () => {
   };
 
   const [dataTrip, setDataTrip] = useState([]);
+  const [isLoadAPI, setIsLoadAPI] = useState(true);
   const [loadingTrip, setLoadingTrip] = useState(false);
+  const [pangination, setPangination] = useState({
+    pageIndex: 1,
+    pageSize: 10,
+    totalPage: 1,
+  });
 
+  const fetchTripData = async () => {
+    try {
+      setLoadingTrip(true);
+      const params = {
+        staffId: auth.user.idUserSystem,
+        pageIndex: pangination?.pageIndex || 1,
+        pageSize: pangination?.pageSize || 10,
+        totalPage: pangination?.totalPage || 1,
+      };
+      console.log("hjahahaha", params)
+      const response = await listTripApi.getTripByStaffId(params);
+      const trips = response.data;
+      setDataTrip(trips);
+      setPangination({
+        pageIndex: response?.pageIndex || 1,
+        pageSize: response?.pageSize || 10,
+        totalPage: response?.totalPage || 1,
+      });
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      toast.error("fetching trip data fail !");
+    } finally {
+      setLoadingTrip(false);
+      setIsLoadAPI(false);
+    }
+  };
+  // }, [isLoadAPI]);
   useEffect(() => {
-    const fetchTripData = async () => {
-      try {
-        setLoadingTrip(true);
-        const params = { staffId: auth.user.idUserSystem };
-        const response = await listTripApi.getTripByStaffId(params);
-        const trips = response.data;
-        setDataTrip(trips);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-        toast.error("fetching trip data fail !");
-      } finally {
-        setLoadingTrip(false);
-      }
-    };
-
-    fetchTripData();
-  }, [auth.user.idUserSystem]);
+    if (isLoadAPI) {
+      fetchTripData();
+    }
+  }, [isLoadAPI]);
   //format money
   const [formatMoney] = useMoneyFormatter();
 
@@ -326,57 +355,55 @@ const TripCreatedByStaff = () => {
             </TableHead>
             <TableBody>
               {!loadingTrip && filteredRows.length > 0 ? (
-                filteredRows
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => (
-                    <TableRow key={row.idTrip}>
-                      <TableCell className="tableCell">
-                        {row.idTrip}
-                      </TableCell>
-                      <TableCell className="tableCell">
-                        {moment(row.startTimee * 1000)
-                          .subtract(7, "hours")
-                          .format("DD/MM/YYYY hh:mm A")}
-                      </TableCell>
-                      <TableCell className="tableCell">
-                        {moment(row.endTimee * 1000)
-                          .subtract(7, "hours")
-                          .format("DD/MM/YYYY hh:mm A")}
-                      </TableCell>
-                      <TableCell className="tableCell">
-                        {row.routeDTO.departurePoint}
-                      </TableCell>
-                      <TableCell className="tableCell">
-                        {row.routeDTO.destination}
-                      </TableCell>
-                      <TableCell className="tableCell">
-                        {formatMoney(row?.fare)}
-                      </TableCell>
-                      {/* <TableCell className="tableCell">
+                filteredRows.map((row) => (
+                  <TableRow key={row.idTrip}>
+                    <TableCell className="tableCell">
+                      {row.idTrip}
+                    </TableCell>
+                    <TableCell className="tableCell">
+                      {moment(row.startTimee * 1000)
+                        .subtract(7, "hours")
+                        .format("DD/MM/YYYY hh:mm A")}
+                    </TableCell>
+                    <TableCell className="tableCell">
+                      {moment(row.endTimee * 1000)
+                        .subtract(7, "hours")
+                        .format("DD/MM/YYYY hh:mm A")}
+                    </TableCell>
+                    <TableCell className="tableCell">
+                      {row.routeDTO.departurePoint}
+                    </TableCell>
+                    <TableCell className="tableCell">
+                      {row.routeDTO.destination}
+                    </TableCell>
+                    <TableCell className="tableCell">
+                      {formatMoney(row?.fare)}
+                    </TableCell>
+                    {/* <TableCell className="tableCell">
                           {row.routeDTO.region}
                         </TableCell> */}
-                      <TableCell className="tableCell">
-                        <span className={`tripRqStatus ${row.adminCheck}`}>
-                          {row.adminCheck === "ACCEPT" ? "CHẤP THUẬN" : row.adminCheck === "PENDING" ? "CHỜ DUYỆT" : row.adminCheck === "CANCEL" ? "HỦY BỎ" : row.adminCheck}
-                        </span>
-                      </TableCell>
-                      <TableCell className="tableCell">
-                        <Rating
-                          name={`rating-${row.tripID}`}
-                          value={row.averageStar}
-                          precision={0.2}
-                          readOnly
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <MenuActionMyTripCreatedTable
-                          tripData={row}
-                          onOpenUpdate={handleUpdateModalOpen}
-                          onOpenCancel={handleCancelModelOpen}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  ))
+                    <TableCell className="tableCell">
+                      <span className={`tripRqStatus ${row.adminCheck}`}>
+                        {row.adminCheck === "ACCEPT" ? "CHẤP THUẬN" : row.adminCheck === "PENDING" ? "CHỜ DUYỆT" : row.adminCheck === "CANCEL" ? "HỦY BỎ" : row.adminCheck}
+                      </span>
+                    </TableCell>
+                    <TableCell className="tableCell">
+                      <Rating
+                        name={`rating-${row.tripID}`}
+                        value={row.averageStar}
+                        precision={0.2}
+                        readOnly
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <MenuActionMyTripCreatedTable
+                        tripData={row}
+                        onOpenUpdate={handleUpdateModalOpen}
+                        onOpenCancel={handleCancelModelOpen}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))
               ) : !loadingTrip ? (
                 <TableRow>
                   <TableCell colSpan={9} align="center">
@@ -445,10 +472,13 @@ const TripCreatedByStaff = () => {
           </Table>
           <TablePagination
             component="div"
-            count={dataTrip.length}
-            page={page}
+            // count={dataTrip.length}
+            // page={page}
+            count={pangination.totalPage * pangination.pageSize}
+            page={pangination.pageIndex - 1}
             onPageChange={handleChangePage}
-            rowsPerPage={rowsPerPage}
+            // rowsPerPage={rowsPerPage}
+            rowsPerPage={pangination.pageSize}
             onRowsPerPageChange={handleChangeRowsPerPage}
             rowsPerPageOptions={rowsPerPageOptions}
           />
@@ -458,6 +488,5 @@ const TripCreatedByStaff = () => {
   } else if (loadingTrip) {
     return <div>Loading...</div>;
   }
-
-};
+}
 export default TripCreatedByStaff;

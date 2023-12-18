@@ -23,30 +23,50 @@ import useMoneyFormatter from "../../../hook/useMoneyFormatter";
 
 const TripFinishList = () => {
   // PAGINATION
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  // const [page, setPage] = useState(0);
+  // const [rowsPerPage, setRowsPerPage] = useState(10);
   const rowsPerPageOptions = [5, 10, 25, 50]; // Đặt giá trị mặc định là 5 hoặc số hàng tùy ý
 
   const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+    // setPage(newPage);
+    setPangination({ ...pangination, pageIndex: newPage + 1 });
+    setIsLoadAPI(true);
+    console.log("new page: ", newPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    // setRowsPerPage(parseInt(event.target.value, 10));
+    // setPage(0);
+    // setRowsPerPage(parseInt(event.target.value, 10));
+    // setPage(0);
+    setPangination({
+      ...pangination,
+      pageSize: parseInt(event.target.value, 10),
+    });
+    console.log("row perpage: ", parseInt(event.target.value, 10));
+    setIsLoadAPI(true)
   };
 
   const [dataTrip, setDataTrip] = useState([]);
+  const [isLoadAPI, setIsLoadAPI] = useState(true);
   const [loadingTrip, setLoadingTrip] = useState(false);
+  const [pangination, setPangination] = useState({
+    pageIndex: 1,
+    pageSize: 10,
+    totalPage: 1,
+  });
 
   const fetchListTrip = async () => {
     try {
       setLoadingTrip(true);
-      const response = await listTripApi.getTripFinish({
-
-      });
+      const response = await listTripApi.getTripFinish(pangination)
       console.log("dataTBL", response);
       setDataTrip(response.data);
+      setPangination({
+        pageIndex: response?.pageIndex || 1,
+        pageSize: response?.pageSize || 10,
+        totalPage: response?.totalPage || 1,
+      });
     } catch (error) {
       console.log("err", error);
       setDataTrip([]);
@@ -57,12 +77,15 @@ const TripFinishList = () => {
       }
     } finally {
       setLoadingTrip(false);
+      setIsLoadAPI(false);
     }
   };
 
   useEffect(() => {
-    fetchListTrip();
-  }, []);
+    if (isLoadAPI) {
+      fetchListTrip();
+    }
+  }, [isLoadAPI]);
 
   //format money
   const [formatMoney] = useMoneyFormatter();
@@ -239,51 +262,50 @@ const TripFinishList = () => {
           </TableHead>
           <TableBody>
             {!loadingTrip
-              ? filteredRows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => (
-                  <TableRow key={row.idTrip}>
-                    <TableCell className="tableCell">{row?.idTrip}</TableCell>
-                    <TableCell className="tableCell">
-                      {moment(row?.startTimee * 1000)
-                        .subtract(7, "hours")
-                        .format("DD/MM/YYYY - hh:mm A")}
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      {moment(row?.endTimee * 1000)
-                        .subtract(7, "hours")
-                        .format("DD/MM/YYYY - hh:mm A")}
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      {row?.routeDTO?.departurePoint}
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      {row?.routeDTO?.destination}
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      {formatMoney(row?.fare)}
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      <span className={`tripStatus ${row?.status}`}>
-                        ĐÃ HOÀN THÀNH
-                      </span>
-                    </TableCell>
-                    <TableCell sx={{ textAlign: "center" }} className="tableCell">
-                      {row?.bookedSeat} / {row ? row.bookedSeat + row.availableSeat : 0}
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      <Rating
-                        name={`rating-${row?.tripID}`}
-                        value={row?.averageStar}
-                        precision={0.2}
-                        readOnly
-                      />
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      <MenuActionTripFinishTable tripData={row} />
-                    </TableCell>
-                  </TableRow>
-                ))
+              ? filteredRows &&
+              filteredRows.map((row) => (
+                <TableRow key={row.idTrip}>
+                  <TableCell className="tableCell">{row?.idTrip}</TableCell>
+                  <TableCell className="tableCell">
+                    {moment(row?.startTimee * 1000)
+                      .subtract(7, "hours")
+                      .format("DD/MM/YYYY - hh:mm A")}
+                  </TableCell>
+                  <TableCell className="tableCell">
+                    {moment(row?.endTimee * 1000)
+                      .subtract(7, "hours")
+                      .format("DD/MM/YYYY - hh:mm A")}
+                  </TableCell>
+                  <TableCell className="tableCell">
+                    {row?.routeDTO?.departurePoint}
+                  </TableCell>
+                  <TableCell className="tableCell">
+                    {row?.routeDTO?.destination}
+                  </TableCell>
+                  <TableCell className="tableCell">
+                    {formatMoney(row?.fare)}
+                  </TableCell>
+                  <TableCell className="tableCell">
+                    <span className={`tripStatus ${row?.status}`}>
+                      ĐÃ HOÀN THÀNH
+                    </span>
+                  </TableCell>
+                  <TableCell sx={{ textAlign: "center" }} className="tableCell">
+                    {row?.bookedSeat} / {row ? row.bookedSeat + row.availableSeat : 0}
+                  </TableCell>
+                  <TableCell className="tableCell">
+                    <Rating
+                      name={`rating-${row?.tripID}`}
+                      value={row?.averageStar}
+                      precision={0.2}
+                      readOnly
+                    />
+                  </TableCell>
+                  <TableCell className="tableCell">
+                    <MenuActionTripFinishTable tripData={row} />
+                  </TableCell>
+                </TableRow>
+              ))
               : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
                 <TableRow hover={true} key={index}>
                   <TableCell align="left">
@@ -319,10 +341,10 @@ const TripFinishList = () => {
         </Table>
         <TablePagination
           component="div"
-          count={dataTrip.length}
-          page={page}
+          count={pangination.totalPage * pangination.pageSize}
+          page={pangination.pageIndex - 1}
           onPageChange={handleChangePage}
-          rowsPerPage={rowsPerPage}
+          rowsPerPage={pangination.pageSize}
           onRowsPerPageChange={handleChangeRowsPerPage}
           rowsPerPageOptions={rowsPerPageOptions}
         />

@@ -309,7 +309,7 @@ const Sidebar = () => {
           )}
 
           {auth?.user?.role === "ROLE_STAFF" && (
-            <Link to="/change-tiket" style={{ textDecoration: "none" }}>
+            <Link to="/change-ticket" style={{ textDecoration: "none" }}>
               <ListItemButton
                 sx={{
                   fontSize: "11px",
@@ -317,18 +317,18 @@ const Sidebar = () => {
                   clipPath:
                     "polygon(0 0,0 0,100% 0,100% 0,100% calc(100% - 15px),calc(100% - 15px) 100%,15px 100%,0 100%)",
 
-                  backgroundImage: isActive("/change-tiket")
+                  backgroundImage: isActive("/change-ticket")
                     ? "linear-gradient(to right, #f37106, #f8903b, #fac074, #f8aa85, #fcedc5)"
                     : "transparent",
-                  color: isActive("/change-tiket") ? "white" : "#888",
-                  width: isActive("/change-tiket") ? "245px" : "transparent",
+                  color: isActive("/change-ticket") ? "white" : "#888",
+                  width: isActive("/change-ticket") ? "245px" : "transparent",
                   ":hover": { width: "245px" },
                 }}
               >
                 <ListItemIcon>
                   <ChangeCircleIcon
                     sx={{
-                      color: isActive("/change-tiket") ? "white" : "#f37106",
+                      color: isActive("/change-ticket") ? "white" : "#f37106",
                     }}
                   />
                 </ListItemIcon>

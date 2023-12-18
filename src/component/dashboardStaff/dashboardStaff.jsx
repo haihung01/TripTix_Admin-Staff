@@ -21,29 +21,51 @@ import "../table/table.scss";
 
 const DashboardStaff = () => {
   // PAGINATION
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10); // Đặt giá trị mặc định là 10 hoặc số hàng tùy ý
+  // const [page, setPage] = useState(0);
+  // const [rowsPerPage, setRowsPerPage] = useState(10); // Đặt giá trị mặc định là 10 hoặc số hàng tùy ý
   const rowsPerPageOptions = [5, 10, 20, 30, 50];
 
   const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+    // setPage(newPage);
+    // setPage(newPage);
+    setPangination({ ...pangination, pageIndex: newPage + 1 });
+    setIsLoadAPI(true);
+    console.log("new page: ", newPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    // setRowsPerPage(parseInt(event.target.value, 10));
+    // setPage(0);
+    // setRowsPerPage(parseInt(event.target.value, 10));
+    // setPage(0);  
+    setPangination({
+      ...pangination,
+      pageSize: parseInt(event.target.value, 10),
+    });
+    console.log("row perpage: ", parseInt(event.target.value, 10));
+    setIsLoadAPI(true);
   };
 
   const [dataTrip, setDataTrip] = useState([]);
   const [loadingTrip, setLoadingTrip] = useState(false);
+  const [isLoadAPI, setIsLoadAPI] = useState(true);
+  const [pangination, setPangination] = useState({
+    pageIndex: 1,
+    pageSize: 10,
+    totalPage: 1,
+  });
 
   const fetchListTrip = async () => {
     try {
       setLoadingTrip(true);
-      const response = await listTripApi.getTripByAdminCheckAccept({
-      });
+      const response = await listTripApi.getTripByAdminCheckAccept(pangination);
       console.log("dataTBL", response);
       setDataTrip(response.data);
+      setPangination({
+        pageIndex: response?.pageIndex || 1,
+        pageSize: response?.pageSize || 10,
+        totalPage: response?.totalPage || 1,
+      });
     } catch (error) {
       console.log("err", error);
       setDataTrip([]);
@@ -54,12 +76,15 @@ const DashboardStaff = () => {
       }
     } finally {
       setLoadingTrip(false);
+      setIsLoadAPI(false);
     }
   };
 
   useEffect(() => {
-    fetchListTrip();
-  }, []);
+    if (isLoadAPI) {
+      fetchListTrip();
+    }
+  }, [isLoadAPI]);
 
   // SORT STATUS
   const [orderBy, setOrderBy] = useState("");
@@ -227,7 +252,7 @@ const DashboardStaff = () => {
           >
             <TableRow>
               <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
-                ID Chuyến Đi
+                ID Chuyến Điiiiiiiiii
               </TableCell>
               <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
                 Thời Gian Bắt Đầu
@@ -257,37 +282,36 @@ const DashboardStaff = () => {
           </TableHead>
           <TableBody>
             {!loadingTrip
-              ? filteredRows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => (
-                  <TableRow key={row.idTrip}>
-                    <TableCell className="tableCell">{row.idTrip}</TableCell>
-                    <TableCell className="tableCell">
-                      {moment(row.startTimee * 1000).format(
-                        "DD/MM/YYYY - hh:mm A"
-                      )}
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      {moment(row.endTimee * 1000).format(
-                        "DD/MM/YYYY - hh:mm A"
-                      )}
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      {row.routeDTO.departurePoint}
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      {row.routeDTO.destination}
-                    </TableCell>
-                    {/* <TableCell className="tableCell">
+              ? filteredRows &&
+              filteredRows.map((row) => (
+                <TableRow key={row.idTrip}>
+                  <TableCell className="tableCell">{row.idTrip}</TableCell>
+                  <TableCell className="tableCell">
+                    {moment(row.startTimee * 1000).format(
+                      "DD/MM/YYYY - hh:mm A"
+                    )}
+                  </TableCell>
+                  <TableCell className="tableCell">
+                    {moment(row.endTimee * 1000).format(
+                      "DD/MM/YYYY - hh:mm A"
+                    )}
+                  </TableCell>
+                  <TableCell className="tableCell">
+                    {row.routeDTO.departurePoint}
+                  </TableCell>
+                  <TableCell className="tableCell">
+                    {row.routeDTO.destination}
+                  </TableCell>
+                  {/* <TableCell className="tableCell">
                       {row.routeDTO.region}
                     </TableCell> */}
-                    <TableCell className="tableCell">
-                      <span className={`tripStatus ${row.status}`}>
-                        {row.status === "RUN" ? "ĐANG ĐI" : row.status === "READY" ? "CHUẨN BỊ" : row.status === "CANCEL" ? "HỦY BỎ" : row.status === "FINISH" ? "ĐÃ HOÀN THÀNH" : row.status}
-                      </span>
-                    </TableCell>
-                  </TableRow>
-                ))
+                  <TableCell className="tableCell">
+                    <span className={`tripStatus ${row.status}`}>
+                      {row.status === "RUN" ? "ĐANG ĐI" : row.status === "READY" ? "CHUẨN BỊ" : row.status === "CANCEL" ? "HỦY BỎ" : row.status === "FINISH" ? "ĐÃ HOÀN THÀNH" : row.status}
+                    </span>
+                  </TableCell>
+                </TableRow>
+              ))
               : [0, 1, 2, 3, 4, 5, 6, 7, 8].map((index) => (
                 <TableRow hover={true} key={index}>
                   <TableCell align="left">
@@ -315,10 +339,13 @@ const DashboardStaff = () => {
         </Table>
         <TablePagination
           component="div"
-          count={dataTrip.length}
-          page={page}
+          // count={dataTrip.length}
+          // page={page}
+          count={pangination.totalPage * pangination.pageSize}
+          page={pangination.pageIndex - 1}
           onPageChange={handleChangePage}
-          rowsPerPage={rowsPerPage}
+          // rowsPerPage={rowsPerPage}
+          rowsPerPage={pangination.pageSize}
           onRowsPerPageChange={handleChangeRowsPerPage}
           rowsPerPageOptions={rowsPerPageOptions}
         />
