@@ -212,7 +212,7 @@ export default function CreateTrip() {
         });
         console.log("dataAS: ", listTripStopFormat);
         try {
-          await handleSaveTemplate(values);
+          // await handleSaveTemplate(values);
           const tripPost = {
             ...values,
             listTripStop: listTripStopFormat,
