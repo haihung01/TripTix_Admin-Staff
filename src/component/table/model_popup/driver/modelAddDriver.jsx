@@ -17,10 +17,12 @@ import {
 } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import moment from "moment-timezone";
-import React from "react";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import listUserApi from "../../../../utils/listUsersAPI";
+import listStationApi from "../../../../utils/listStationAPI";
+import { useEffect } from "react";
 
 // Validation schema using Yup
 const validationSchema = Yup.object().shape({
@@ -49,7 +51,28 @@ const validationSchema = Yup.object().shape({
   gender: Yup.string().required("Giới tính là bắt buộc"),
 });
 
+
 const AddDriverModel = ({ open, handleClose, fetchUserData }) => {
+  const [dataStation,setDataStation] = useState();
+
+  useEffect(() => {
+    const fetchListProvinceCity = async () => {
+        try {
+            const stationResponse = await listStationApi.getAll({});
+            console.log("dataTBL123", stationResponse.data);
+            setDataStation(stationResponse.data);
+
+        } catch (error) {
+            console.log("err", error);
+            if (error.response) {
+                toast.error(error.response.data.message);
+            } else {
+                toast.error("Load Data failed !");
+            }
+        }
+    };
+    fetchListProvinceCity();
+}, []);
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle
@@ -73,10 +96,12 @@ const AddDriverModel = ({ open, handleClose, fetchUserData }) => {
             address: "",
             phone: "",
             email: "",
+            userName: "",
             password: "",
             birthday: "",
             gender: "",
             role: "DRIVER",
+            belongTo: "",
           }}
           validationSchema={validationSchema}
           onSubmit={async (values) => {
@@ -137,7 +162,53 @@ const AddDriverModel = ({ open, handleClose, fetchUserData }) => {
                     )}
                   </Field>
                 </Grid>
+                {/* <Grid item xs={6} md={12}>
+                  <Field name="belongTo">
+                    {({ field, meta }) => (
+                      <TextField
+                        {...field}
+                        margin="dense"
+                        label="Thuộc Trạm"
+                        type="text"
+                        fullWidth
+                        error={meta.touched && !!meta.error}
+                        helperText={
+                          meta.touched && meta.error ? meta.error : ""
+                        }
+                      />
+                    )}
+                  </Field>
+                </Grid> */}
 
+                <Grid item xs={6} md={6}>
+                  <Field name="belongTo">
+                    {({ field, form, meta }) => (
+                      <FormControl fullWidth>
+                        <InputLabel htmlFor="area-select">Thuộc trạm</InputLabel>
+                        <Select
+                          {...field}
+                          label="Thuộc trạm"
+                          fullWidth
+                          error={meta.touched && !!meta.error}
+                        >
+                          {dataStation.map(station => (
+                              <MenuItem key={station.idStation} value={station.idStation}>
+                                  {station.name}  -  ( {station.address} )
+                              </MenuItem>
+                              ))}
+                        </Select>
+                        <Typography
+                          color="#D80032"
+                          sx={{ fontSize: "12px", p: 0.5 }}
+                        >
+                          {meta.touched && meta.error ? meta.error : ""}
+                        </Typography>
+                      </FormControl>
+                      
+                    )}
+                  </Field>
+                  
+                </Grid>
                 <Grid item xs={6} md={6}>
                   <Field name="address">
                     {({ field, meta }) => (
@@ -145,6 +216,24 @@ const AddDriverModel = ({ open, handleClose, fetchUserData }) => {
                         {...field}
                         margin="dense"
                         label="Địa chỉ"
+                        type="text"
+                        fullWidth
+                        error={meta.touched && !!meta.error}
+                        helperText={
+                          meta.touched && meta.error ? meta.error : ""
+                        }
+                      />
+                    )}
+                  </Field>
+                </Grid>
+
+                <Grid item xs={6} md={6}>
+                  <Field name="userName">
+                    {({ field, meta }) => (
+                      <TextField
+                        {...field}
+                        margin="dense"
+                        label="User Name"
                         type="text"
                         fullWidth
                         error={meta.touched && !!meta.error}

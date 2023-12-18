@@ -9,6 +9,15 @@ const listStationApi = {
       },
     });
   },
+  getDriverByStation: (params) => {
+    const url = `stations/getListDriverByIdStation?idStation=${params}`;
+    return axiosClient.get(url, {
+      params,
+      paramsSerializer: {
+        indexes: null, // by default: false
+      },
+    });
+  },
   createNewStation: (payload) => {
     const url = "/stations";
     return axiosClient.post(url, payload);

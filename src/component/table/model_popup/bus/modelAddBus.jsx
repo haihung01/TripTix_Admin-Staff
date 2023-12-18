@@ -17,13 +17,13 @@ import {
 } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import moment from "moment";
-import React from "react";
+import React, { useEffect,useState } from "react";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import listBusesApi from "../../../../utils/listBusAPI";
-
+import listStationApi from "../../../../utils/listStationAPI"
 const StationSchema = Yup.object().shape({
   name: Yup.string()
     .min(5, "Tên trạm phải có ít nhất 5 ký tự")
@@ -39,6 +39,26 @@ const StationSchema = Yup.object().shape({
 });
 
 const AddBusesPopup = ({ open, handleClose, fetchListbuses }) => {
+  const [dataStation,setDataStation] = useState();
+  useEffect(() => {
+    const fetchListProvinceCity = async () => {
+        try {
+            const stationResponse = await listStationApi.getAll({});
+            console.log("dataTBL123", stationResponse.data);
+            setDataStation(stationResponse.data);
+
+        } catch (error) {
+            console.log("err", error);
+            if (error.response) {
+                toast.error(error.response.data.message);
+            } else {
+                toast.error("Load Data failed !");
+            }
+        }
+    };
+    fetchListProvinceCity();
+}, []);
+
   return (
     <Dialog
       open={open}
@@ -66,6 +86,7 @@ const AddBusesPopup = ({ open, handleClose, fetchListbuses }) => {
             capacity: 0,
             floor: 0,
             inspectionDate: "",
+            belongTo: "",
             fileList: null,
           }}
           validationSchema={StationSchema}
@@ -78,6 +99,8 @@ const AddBusesPopup = ({ open, handleClose, fetchListbuses }) => {
             formData.append("description", values.description);
             formData.append("capacity", values.capacity);
             formData.append("floor", values.floor);
+            formData.append("belongTo", values.belongTo);
+
             formData.append(
               "inspectionDate",
               moment(values.inspectionDate).format("YYYY-MM-DD")
@@ -161,6 +184,37 @@ const AddBusesPopup = ({ open, handleClose, fetchListbuses }) => {
                       </FormControl>
                     )}
                   </Field>
+                </Grid>
+                <Grid item xs={6} md={6}>
+                  <Field name="belongTo">
+                    {({ field, meta }) => (
+                      <FormControl fullWidth>
+                        <InputLabel htmlFor="area-select">Thuộc trạm</InputLabel>
+                        <Select
+                          {...field}
+                          label="Thuộc trạm"
+                          fullWidth
+                          error={meta.touched && !!meta.error}
+                        >
+                          {/* <MenuItem value= {dataStation.idStation} >{dataStation.name}</MenuItem> */}
+                          {dataStation.map(station => (
+                              <MenuItem key={station.idStation} value={station.idStation}>
+                                  {station.name}  -  ( {station.address} )
+                              </MenuItem>
+                              ))}
+                          {/* <MenuItem value="FEMALE">Female</MenuItem> */}
+                        </Select>
+                        <Typography
+                          color="#D80032"
+                          sx={{ fontSize: "12px", p: 0.5 }}
+                        >
+                          {meta.touched && meta.error ? meta.error : ""}
+                        </Typography>
+                      </FormControl>
+                      
+                    )}
+                  </Field>
+                  
                 </Grid>
                 <Grid item xs={12} md={4}>
                   <Field name="capacity">

@@ -32,6 +32,7 @@ export default function CreateTrip() {
   const [busData, setBusData] = useState([]);
   const [isFetchData, setIsFetchData] = useState(true);
   const [dataStation, setDataStation] = useState([]);
+  const [dataDriver, setDataDriver] = useState([])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,6 +52,11 @@ export default function CreateTrip() {
         const stationResponse = await listStationApi.getAll({});
         console.log("dataTBL", stationResponse);
         setDataStation(stationResponse.data);
+
+        const driverRespone = await listStationApi.getDriverByStation({});
+        console.log("dataDriver2",);
+        setDataDriver(stationResponse.data);
+
       } catch (error) {
         console.log("err", error);
         if (error.response) {
