@@ -150,6 +150,40 @@ export default function CreateTrip() {
     ),
   });
 
+  const handleSaveTemplate = async (values) => {
+    try {
+      // Format dữ liệu cho listTripStop
+      const listTripStopFormat = values.listTripStop.map((p) => ({
+        idStation: p.idStation,
+        type: p.type,
+        costsIncurred: p.costsIncurred,
+        timeComes: moment(p.timeComes).format("DD-MM-yyyy HH:mm:ss"),
+      }));
+
+      // Tạo object để gửi lên API
+      const tripPost = {
+        ...values,
+        listTripStop: listTripStopFormat,
+        startTime: moment(values.startTime).format("DD-MM-yyyy HH:mm:ss"),
+        endTime: moment(values.endTime).format("DD-MM-yyyy HH:mm:ss"),
+      };
+
+      // Gọi API để lưu template chuyến đi
+      const response = await listTripApi.saveTemplateTrip(tripPost);
+
+      // Xử lý phản hồi
+      console.log("Phản hồi từ API:", response);
+      toast.success("Lưu mẫu chuyến đi thành công!");
+    } catch (error) {
+      console.error(
+        "Lỗi khi lưu mẫu chuyến đi:",
+        error.response?.data.message || error.message
+      );
+      toast.error("Lỗi khi lưu mẫu chuyến đi. Vui lòng thử lại.");
+    }
+  };
+
+
   return (
     <Formik
       innerRef={formikRef}
@@ -171,13 +205,14 @@ export default function CreateTrip() {
         const listTripStopFormat = values.listTripStop.map((p) => {
           return {
             idStation: p.idStation,
-            type: p.type,
+            type: "abc",
             costsIncurred: p.costsIncurred,
             timeComes: moment(p.timeComes).format("DD-MM-yyyy HH:mm:ss"),
           };
         });
         console.log("dataAS: ", listTripStopFormat);
         try {
+          await handleSaveTemplate(values);
           const tripPost = {
             ...values,
             listTripStop: listTripStopFormat,
@@ -615,21 +650,47 @@ export default function CreateTrip() {
                 </FieldArray>
               </Grid>
             </Grid>
-            <Button
-              sx={{
-                mt: "20px",
-                display: "flex",
-                alignItems: "center",
-                justifyItems: "center",
-                backgroundColor: "#FF5B94",
-                color: "white",
-                width: "160px",
-                ":hover": { bgcolor: "#F84180" },
-              }}
-              type="submit"
-            >
-              Tạo Chuyến
-            </Button>
+
+            <Box sx={{
+              display: 'flex',
+              mt: "20px",
+              gap: "100px",
+              // justifyContent: "space-evenly"
+
+            }}>
+              <Button
+                sx={{
+                  // mt: "20px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyItems: "center",
+                  backgroundColor: "#FF5B94",
+                  color: "white",
+                  width: "160px",
+                  ":hover": { bgcolor: "#F84180" },
+                }}
+                type="submit"
+              >
+                Tạo Chuyến
+              </Button>
+
+              <Button
+                sx={{
+                  // mt: "20px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyItems: "center",
+                  backgroundColor: "#FF5B94",
+                  color: "white",
+                  width: "160px",
+                  ":hover": { bgcolor: "#F84180" },
+                }}
+                type="submit"
+                onClick={() => handleSaveTemplate(values)}
+              >
+                Lưu chuyến đi
+              </Button>
+            </Box>
           </Box>
         </Form>
       )}

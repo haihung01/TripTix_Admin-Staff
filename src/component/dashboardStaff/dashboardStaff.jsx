@@ -252,7 +252,7 @@ const DashboardStaff = () => {
           >
             <TableRow>
               <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
-                ID Chuyến Điiiiiiiiii
+                ID Chuyến Đi
               </TableCell>
               <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
                 Thời Gian Bắt Đầu

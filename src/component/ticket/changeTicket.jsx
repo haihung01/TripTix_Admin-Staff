@@ -97,7 +97,7 @@ const ChangeTicket = () => {
       <div>
         <TextField
           sx={{ pb: "15px" }}
-          label="Search by Full Name"
+          label="Tìm kiếm theo tên"
           size="small"
           variant="outlined"
           value={searchText}
@@ -112,7 +112,7 @@ const ChangeTicket = () => {
         />
         <TextField
           sx={{ pb: "15px", ml: "20px" }}
-          label="Search by Phone Number"
+          label="Tìm kiếm theo số điện thoại"
           size="small"
           variant="outlined"
           value={searchPhone}

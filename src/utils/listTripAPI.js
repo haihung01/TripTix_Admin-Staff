@@ -124,5 +124,9 @@ const listTripApi = {
     const url = "/trips/detail";
     return axiosClient.get(url, { params });
   },
+  saveTemplateTrip: (payload) => {
+    const url = "/form-create";
+    return axiosClient.post(url, payload);
+  },
 };
 export default listTripApi;

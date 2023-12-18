@@ -1,14 +1,18 @@
-import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
+import SmsIcon from '@mui/icons-material/Sms';
 import "./navigate.scss";
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
+  const facebookMessagingLink = "https://www.facebook.com/messages/t";
 
   return (
     <div className="navbar">
       <div className="wrapper">
         <div className="items">
           <div className="item">
-            <NotificationsNoneOutlinedIcon className="icon" />
+            <Link to={facebookMessagingLink} target="_blank" rel="noopener noreferrer">
+              <SmsIcon className="icon" />
+            </Link>
             <div className="counter">1</div>
           </div>
           <div className="item">

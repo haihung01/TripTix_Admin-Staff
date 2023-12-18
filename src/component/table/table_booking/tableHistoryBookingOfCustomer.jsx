@@ -137,16 +137,16 @@ export default function TableHistoryBookingOfCustomer() {
     // Kiểm tra xem station được điền có khớp với dữ liệu hay không
     const isDestinationMatch =
       !searchDestination ||
-      (row.routeDTO.destination &&
-        row.routeDTO.destination
+      (row.tripDTO.routeDTO.destination &&
+        row.tripDTO.routeDTO.destination
           .toLowerCase()
           .includes(searchDestination.toLowerCase()));
 
     // Kiểm tra xem station được điền có khớp với dữ liệu hay không
     const isDeaprtureMatch =
       !searchDeparture ||
-      (row.routeDTO.departurePoint &&
-        row.routeDTO.departurePoint
+      (row.tripDTO.routeDTO.departurePoint &&
+        row.tripDTO.routeDTO.departurePoint
           .toLowerCase()
           .includes(searchDeparture.toLowerCase()));
 
