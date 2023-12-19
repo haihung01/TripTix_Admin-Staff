@@ -37,7 +37,7 @@ const ModelUpdateNews = ({ open, handleClose, newsData, fetchListNews }) => {
           textTransform: "uppercase",
           color: "#575656",
           backgroundImage:
-            "linear-gradient(to bottom, #fd4887, #ff77a2, #ff9ebb, #fdc2d3, #f8e4ea)",
+            "linear-gradient(to bottom, #9b9bff, #a1a1f7, #a7a7ee, #acace5, #b2b2dc)",
         }}
       >
         Cập Nhật Tin Tức
@@ -158,10 +158,10 @@ const ModelUpdateNews = ({ open, handleClose, newsData, fetchListNews }) => {
                 <Button
                   type="submit"
                   sx={{
-                    backgroundColor: "#FF5B94",
+                    backgroundColor: "#6D6DFF",
                     color: "white",
                     width: "160px",
-                    ":hover": { bgcolor: "#F84180" },
+                    ":hover": { bgcolor: "#6868AE" },
                   }}
                 >
                   Cập Nhật

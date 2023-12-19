@@ -218,7 +218,7 @@ const TripRequestPending = () => {
           <TableHead
             sx={{
               backgroundImage:
-                "linear-gradient(to bottom, #f37106, #f8903b, #fac074, #f8aa85, #fcedc5)",
+                "linear-gradient(to bottom, #9b9bff, #a1a1f7, #a7a7ee, #acace5, #b2b2dc)",
             }}
           >
             <TableRow>
@@ -257,87 +257,84 @@ const TripRequestPending = () => {
           <TableBody>
             {!loading
               ? filteredRows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => (
-                  <TableRow key={row.idTrip}>
-                    <TableCell className="tableCell">{row.idTrip}</TableCell>
-                    <TableCell className="tableCell">
-                      {moment(row.startTimee * 1000)
-                        .subtract(7, "hours")
-                        .format("DD/MM/YYYY hh:mm A")}
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      {moment(row.endTimee * 1000)
-                        .subtract(7, "hours")
-                        .format("DD/MM/YYYY hh:mm A")}
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      {row.routeDTO.departurePoint}
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      {row.routeDTO.destination}
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      {formatMoney(row?.fare)}
-                    </TableCell>
-                    {/* <TableCell className="tableCell">
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row) => (
+                    <TableRow key={row.idTrip}>
+                      <TableCell className="tableCell">{row.idTrip}</TableCell>
+                      <TableCell className="tableCell">
+                        {moment(row.startTimee * 1000)
+                          .subtract(7, "hours")
+                          .format("DD/MM/YYYY hh:mm A")}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {moment(row.endTimee * 1000)
+                          .subtract(7, "hours")
+                          .format("DD/MM/YYYY hh:mm A")}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {row.routeDTO.departurePoint}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {row.routeDTO.destination}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {formatMoney(row?.fare)}
+                      </TableCell>
+                      {/* <TableCell className="tableCell">
                       {row.routeDTO.region}
                     </TableCell> */}
-                    <TableCell className="tableCell">
-                      <span className={`tripRqStatus ${row.adminCheck}`}>
-                        CHỜ DUYỆT
-                      </span>
-                    </TableCell>
-                    {auth?.user?.role === "ROLE_ADMIN" && (
                       <TableCell className="tableCell">
-                        <Button
-                          onClick={() => handleOpen(row)}
-                          sx={{
-                            backgroundColor: "#FF5B94",
-                            color: "white",
-                            width: "160px",
-                            ":hover": { bgcolor: "#F84180" },
-                          }}
-                        >
-                          Duyệt Chuyến
-                        </Button>
+                        <span className={`tripRqStatus ${row.adminCheck}`}>
+                          CHỜ DUYỆT
+                        </span>
                       </TableCell>
-                    )}
-                  </TableRow>
-                ))
+                      {auth?.user?.role === "ROLE_ADMIN" && (
+                        <TableCell className="tableCell">
+                          <Button
+                            onClick={() => handleOpen(row)}
+                            sx={{
+                              zIndex: 1000,
+                              bgcolor: "#6D6DFF",
+                              ":hover": { bgcolor: "#6868AE" },
+                              color: "white",
+                            }}
+                          >
+                            Duyệt Chuyến
+                          </Button>
+                        </TableCell>
+                      )}
+                    </TableRow>
+                  ))
               : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
-                <TableRow hover={true} key={index}>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  {auth?.user?.role === "ROLE_ADMIN" && (
+                  <TableRow hover={true} key={index}>
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
                     <TableCell align="center">
                       <Skeleton variant="rectangular" />
                     </TableCell>
-                  )}
-                </TableRow>
-              ))}
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    {auth?.user?.role === "ROLE_ADMIN" && (
+                      <TableCell align="center">
+                        <Skeleton variant="rectangular" />
+                      </TableCell>
+                    )}
+                  </TableRow>
+                ))}
           </TableBody>
           {selectedTripData && (
             <ModalApprovedTrip

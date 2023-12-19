@@ -44,7 +44,7 @@ const TripFinishList = () => {
       pageSize: parseInt(event.target.value, 10),
     });
     console.log("row perpage: ", parseInt(event.target.value, 10));
-    setIsLoadAPI(true)
+    setIsLoadAPI(true);
   };
 
   const [dataTrip, setDataTrip] = useState([]);
@@ -59,7 +59,7 @@ const TripFinishList = () => {
   const fetchListTrip = async () => {
     try {
       setLoadingTrip(true);
-      const response = await listTripApi.getTripFinish(pangination)
+      const response = await listTripApi.getTripFinish(pangination);
       console.log("dataTBL", response);
       setDataTrip(response.data);
       setPangination({
@@ -226,7 +226,7 @@ const TripFinishList = () => {
           <TableHead
             sx={{
               backgroundImage:
-                "linear-gradient(to bottom, #f37106, #f8903b, #fac074, #f8aa85, #fcedc5)",
+                "linear-gradient(to bottom, #9b9bff, #a1a1f7, #a7a7ee, #acace5, #b2b2dc)",
             }}
           >
             <TableRow>
@@ -263,80 +263,87 @@ const TripFinishList = () => {
           <TableBody>
             {!loadingTrip
               ? filteredRows &&
-              filteredRows.map((row) => (
-                <TableRow key={row.idTrip}>
-                  <TableCell className="tableCell">{row?.idTrip}</TableCell>
-                  <TableCell className="tableCell">
-                    {moment(row?.startTimee * 1000)
-                      .subtract(7, "hours")
-                      .format("DD/MM/YYYY - hh:mm A")}
-                  </TableCell>
-                  <TableCell className="tableCell">
-                    {moment(row?.endTimee * 1000)
-                      .subtract(7, "hours")
-                      .format("DD/MM/YYYY - hh:mm A")}
-                  </TableCell>
-                  <TableCell className="tableCell">
-                    {row?.routeDTO?.departurePoint}
-                  </TableCell>
-                  <TableCell className="tableCell">
-                    {row?.routeDTO?.destination}
-                  </TableCell>
-                  <TableCell className="tableCell">
-                    {formatMoney(row?.fare)}
-                  </TableCell>
-                  <TableCell className="tableCell">
-                    <span className={`tripStatus ${row?.status}`}>
-                      ĐÃ HOÀN THÀNH
-                    </span>
-                  </TableCell>
-                  <TableCell sx={{ textAlign: "center" }} className="tableCell">
-                    {row?.bookedSeat} / {row ? row.bookedSeat + row.availableSeat : 0}
-                  </TableCell>
-                  <TableCell className="tableCell">
-                    <Rating
-                      name={`rating-${row?.tripID}`}
-                      value={row?.averageStar}
-                      precision={0.2}
-                      readOnly
-                    />
-                  </TableCell>
-                  <TableCell className="tableCell">
-                    <MenuActionTripFinishTable tripData={row} />
-                  </TableCell>
-                </TableRow>
-              ))
+                filteredRows.map((row) => (
+                  <TableRow key={row.idTrip}>
+                    <TableCell className="tableCell">{row?.idTrip}</TableCell>
+                    <TableCell className="tableCell">
+                      {moment(row?.startTimee * 1000)
+                        .subtract(7, "hours")
+                        .format("DD/MM/YYYY - hh:mm A")}
+                    </TableCell>
+                    <TableCell className="tableCell">
+                      {moment(row?.endTimee * 1000)
+                        .subtract(7, "hours")
+                        .format("DD/MM/YYYY - hh:mm A")}
+                    </TableCell>
+                    <TableCell className="tableCell">
+                      {row?.routeDTO?.departurePoint}
+                    </TableCell>
+                    <TableCell className="tableCell">
+                      {row?.routeDTO?.destination}
+                    </TableCell>
+                    <TableCell className="tableCell">
+                      {formatMoney(row?.fare)}
+                    </TableCell>
+                    <TableCell className="tableCell">
+                      <span className={`tripStatus ${row?.status}`}>
+                        ĐÃ HOÀN THÀNH
+                      </span>
+                    </TableCell>
+                    <TableCell
+                      sx={{ textAlign: "center" }}
+                      className="tableCell"
+                    >
+                      {row?.bookedSeat} /{" "}
+                      {row ? row.bookedSeat + row.availableSeat : 0}
+                    </TableCell>
+                    <TableCell className="tableCell">
+                      <Rating
+                        name={`rating-${row?.tripID}`}
+                        value={row?.averageStar}
+                        precision={0.2}
+                        readOnly
+                      />
+                    </TableCell>
+                    <TableCell className="tableCell">
+                      <MenuActionTripFinishTable tripData={row} />
+                    </TableCell>
+                  </TableRow>
+                ))
               : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
-                <TableRow hover={true} key={index}>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                </TableRow>
-              ))}
+                  <TableRow hover={true} key={index}>
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                  </TableRow>
+                ))}
           </TableBody>
         </Table>
         <TablePagination

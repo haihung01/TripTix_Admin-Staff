@@ -17,8 +17,8 @@ const Navbar = () => {
           </div>
           <div className="item">
             <img
-              src="https://images.unsplash.com/photo-1624561172888-ac93c696e10c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDJ8fGF2YXRhcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60"
-              alt=""
+              src="https://icon-library.com/images/admin-icon-png/admin-icon-png-16.jpg"
+              alt="hinh"
               className="avatar"
             />
           </div>

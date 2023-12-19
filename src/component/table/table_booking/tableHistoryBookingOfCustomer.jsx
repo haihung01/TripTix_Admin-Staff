@@ -190,12 +190,12 @@ export default function TableHistoryBookingOfCustomer() {
           <TableHead
             sx={{
               backgroundImage:
-                "linear-gradient(to bottom, #f37106, #f8903b, #fac074, #f8aa85, #fcedc5)",
+                "linear-gradient(to bottom, #9b9bff, #a1a1f7, #a7a7ee, #acace5, #b2b2dc)",
             }}
           >
             <TableRow>
               <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
-                ID Chuyến Đi
+                ID Đặt Vé
               </TableCell>
 
               <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
@@ -234,74 +234,94 @@ export default function TableHistoryBookingOfCustomer() {
           <TableBody>
             {!loading
               ? filteredRows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => (
-                  <TableRow key={index}>
-                    <TableCell className="tableCell">{row.idTrip}</TableCell>
-                    <TableCell className="tableCell">
-                      {moment(row?.tripDTO?.startTimee * 1000).format(
-                        "DD/MM/YYYY hh:mm A"
-                      )}
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row, index) => (
+                    <TableRow key={index}>
+                      <TableCell className="tableCell">
+                        {row.idBooking}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {moment(row?.tripDTO?.startTimee * 1000).format(
+                          "DD/MM/YYYY hh:mm A"
+                        )}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {moment(row?.tripDTO?.endTimee * 1000).format(
+                          "DD/MM/YYYY hh:mm A"
+                        )}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {row?.tripDTO?.routeDTO?.departurePoint}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {row?.tripDTO?.routeDTO?.destination}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {formatMoney(row?.totalPrice)}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {" "}
+                        {row?.listTicket
+                          .slice(0, 30)
+                          .map((ticket) => ticket.seatName)
+                          .join(", ")}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        <span className={`tripStatus ${row?.bookingStatus}`}>
+                          {row?.bookingStatus === "PAID"
+                            ? "ĐÃ THANH TOÁN"
+                            : row?.bookingStatus === "NO_CHECKIN"
+                            ? "CHỜ CHECKIN"
+                            : row?.bookingStatus === "NO_SHOW"
+                            ? "LỠ CHUYẾN"
+                            : row?.bookingStatus === "CHECKIN"
+                            ? "ĐÃ CHECKIN"
+                            : row?.bookingStatus === "FINISH"
+                            ? "ĐÃ HOÀN THÀNH"
+                            : row?.bookingStatus === "CANCEL"
+                            ? "HỦY"
+                            : row?.bookingStatus}
+                        </span>
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        <MenuActionChangeTicket
+                          bookingData={row}
+                          onOpen={handleOpen}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))
+              : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
+                  <TableRow hover={true} key={index}>
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
-                    <TableCell className="tableCell">
-                      {moment(row?.tripDTO?.endTimee * 1000).format(
-                        "DD/MM/YYYY hh:mm A"
-                      )}
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
-                    <TableCell className="tableCell">
-                      {row?.tripDTO?.routeDTO?.departurePoint}
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
-                    <TableCell className="tableCell">
-                      {row?.tripDTO?.routeDTO?.destination}
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
-                    <TableCell className="tableCell">
-                      {formatMoney(row?.totalPrice)}
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
-                    <TableCell className="tableCell"> {row?.listTicket.slice(0, 30).map(ticket => ticket.seatName).join(', ')}</TableCell>
-                    <TableCell className="tableCell">
-                      <span className={`tripStatus ${row?.bookingStatus}`}>
-                        {row?.bookingStatus === "PAID" ? "ĐÃ THANH TOÁN" : row?.bookingStatus === "NO_CHECKIN" ? "CHỜ CHECKIN" : row?.bookingStatus === "NO_SHOW" ? "LỠ CHUYẾN" : row?.bookingStatus === "CHECKIN" ? "ĐÃ CHECKIN" : row?.bookingStatus === "FINISH" ? "ĐÃ HOÀN THÀNH" : row?.bookingStatus === "CANCEL" ? "HỦY" : row?.bookingStatus}
-                      </span>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
-                    <TableCell className="tableCell">
-                      <MenuActionChangeTicket
-                        bookingData={row}
-                        onOpen={handleOpen}
-                      />
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
                   </TableRow>
-                ))
-              : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
-                <TableRow hover={true} key={index}>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                </TableRow>
-              ))}
+                ))}
           </TableBody>
           {selectedBookingData && (
             <ModelEnterConfirmChangeTicketCode

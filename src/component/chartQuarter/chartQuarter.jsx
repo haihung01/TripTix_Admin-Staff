@@ -4,13 +4,13 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
 import {
-    CartesianGrid,
-    Line,
-    LineChart,
-    ResponsiveContainer,
-    Tooltip,
-    XAxis,
-    YAxis
+  CartesianGrid,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
 } from "recharts";
 import bookingApi from "../../utils/bookingAPI";
 import "./chartQuarter.scss";
@@ -67,12 +67,12 @@ const ChartQuarter = ({ aspect, title }) => {
           width={730}
           height={250}
           data={dataRevenue}
-          margin={{ top: 10, right: 30, left: 20, bottom: 5 }}
+          margin={{ top: 10, right: 30, left: 30, bottom: 5 }}
         >
           <defs>
             <linearGradient id="total" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#FF8BCD" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="#FF8BCD" stopOpacity={0} />
+              <stop offset="5%" stopColor="#6D6DFF" stopOpacity={0.8} />
+              <stop offset="95%" stopColor="#6D6DFF" stopOpacity={0} />
             </linearGradient>
           </defs>
           <XAxis dataKey="name" stroke="gray" />
@@ -82,7 +82,7 @@ const ChartQuarter = ({ aspect, title }) => {
           <Line
             type="monotone"
             dataKey="totalPrice"
-            stroke="#FF8BCD"
+            stroke="#6D6DFF"
             fillOpacity={1}
             fill="url(#total)"
           />

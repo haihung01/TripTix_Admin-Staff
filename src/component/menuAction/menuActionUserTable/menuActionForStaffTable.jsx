@@ -52,7 +52,7 @@ export default function MenuActionStaffTable({
       >
         <MoreHorizIcon
           sx={{
-            color: "#ec407a",
+            color: "#6464CD",
           }}
         />
       </Button>

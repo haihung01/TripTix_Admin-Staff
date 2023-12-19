@@ -45,12 +45,14 @@ const AddBusesPopup = ({ open, handleClose, fetchListbuses }) => {
       onClose={handleClose}
       aria-labelledby="form-dialog-title"
     >
-      <DialogTitle id="form-dialog-title" textAlign="center"
+      <DialogTitle
+        id="form-dialog-title"
+        textAlign="center"
         sx={{
           textTransform: "uppercase",
           color: "#575656",
           backgroundImage:
-            "linear-gradient(to bottom, #f37106, #f8903b, #fac074, #f8aa85, #fcedc5)",
+            "linear-gradient(to bottom, #9b9bff, #a1a1f7, #a7a7ee, #acace5, #b2b2dc)",
         }}
       >
         Thêm xe khách mới
@@ -298,10 +300,10 @@ const AddBusesPopup = ({ open, handleClose, fetchListbuses }) => {
                 <Button
                   type="submit"
                   sx={{
-                    backgroundColor: "#FF5B94",
+                    backgroundColor: "#6D6DFF",
                     color: "white",
                     width: "160px",
-                    ":hover": { bgcolor: "#F84180" },
+                    ":hover": { bgcolor: "#6868AE" },
                   }}
                 >
                   Tạo Xe

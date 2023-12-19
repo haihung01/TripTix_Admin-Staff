@@ -109,7 +109,7 @@ const Listcustomer = () => {
           <TableHead
             sx={{
               backgroundImage:
-                "linear-gradient(to bottom, #f37106, #f8903b, #fac074, #f8aa85, #fcedc5)",
+                "linear-gradient(to bottom, #9b9bff, #a1a1f7, #a7a7ee, #acace5, #b2b2dc)",
             }}
           >
             <TableRow>
@@ -134,9 +134,7 @@ const Listcustomer = () => {
               <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
                 Giới Tính
               </TableCell>
-              <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
-                Ngày Cập Nhật Cuôi
-              </TableCell>
+
               <TableCell
                 className="tableTitle"
                 sx={{ color: "#443A3E" }}
@@ -146,69 +144,78 @@ const Listcustomer = () => {
           <TableBody>
             {!loading
               ? filteredRows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => (
-                  <TableRow key={row.idUserSystem}>
-                    <TableCell className="tableCell">
-                      {row.idUserSystem}
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row) => (
+                    <TableRow key={row.idUserSystem}>
+                      <TableCell className="tableCell">
+                        {row.idUserSystem}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {row.fullName}
+                      </TableCell>
+                      <TableCell className="tableCell" sx={{ width: "100px" }}>
+                        {row.userName}
+                      </TableCell>
+                      <TableCell className="tableCell" sx={{ width: "100px" }}>
+                        {row.email}
+                      </TableCell>
+                      <TableCell className="tableCell" sx={{ width: "220px" }}>
+                        {row.address}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        <span className={`staffStatus ${row.status}`}>
+                          {row.status === "ACTIVE"
+                            ? "ĐANG HOẠT ĐỘNG"
+                            : row.status === "DEACTIVE"
+                            ? "KHÔNG HOẠT ĐỘNG"
+                            : row.status}
+                        </span>
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {row.gender === "MALE"
+                          ? "NAM"
+                          : row.gender === "FEMALE"
+                          ? "NỮ"
+                          : row.gender}
+                      </TableCell>
+
+                      <TableCell className="tableCell">
+                        <MenuActionCustomerTable
+                          onOpenDetail={handleOpen}
+                          userData={row}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))
+              : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
+                  <TableRow hover={true} key={index}>
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
-                    <TableCell className="tableCell">
-                      {row.fullName}
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
-                    <TableCell className="tableCell" sx={{ width: "100px" }}>
-                      {row.userName}
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
-                    <TableCell className="tableCell" sx={{ width: "100px" }}>
-                      {row.email}
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
-                    <TableCell className="tableCell" sx={{ width: "220px" }}>
-                      {row.address}
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
-                    <TableCell className="tableCell">
-                      <span className={`staffStatus ${row.status}`}>
-                        {row.status === "ACTIVE" ? "ĐANG HOẠT ĐỘNG" : row.status === "DEACTIVE" ? "KHÔNG HOẠT ĐỘNG" : row.status}
-                      </span>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
-                    <TableCell className="tableCell">{row.gender === "MALE" ? "NAM" : row.gender === "FEMALE" ? "NỮ" : row.gender}</TableCell>
-                    <TableCell className="tableCell" sx={{ width: "220px" }}>
-                      {moment(row.updatedDate).format("DD/MM/YYYY")}
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
-                    <TableCell className="tableCell">
-                      <MenuActionCustomerTable
-                        onOpenDetail={handleOpen}
-                        userData={row}
-                      />
+
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
                   </TableRow>
-                ))
-              : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
-                <TableRow hover={true} key={index}>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                </TableRow>
-              ))}
+                ))}
           </TableBody>
           {/* Display modal popup */}
           {selectedUserData && (

@@ -65,10 +65,10 @@ export default function TripDetail() {
   const [formatMoney] = useMoneyFormatter();
 
   const startTimeeFormat = moment(dataTrip?.startTimee * 1000)
-    .subtract(7, 'hours')
+    .subtract(7, "hours")
     .format("hh:mm A");
   const endTimeeFormat = moment(dataTrip?.endTimee * 1000)
-    .subtract(7, 'hours')
+    .subtract(7, "hours")
     .format("hh:mm A");
 
   return (
@@ -84,7 +84,7 @@ export default function TripDetail() {
             color: "#696969",
           }}
         >
-          ꧁༺Thông Tin Chuyến Đi ༻꧂
+          ༺ Thông Tin Chuyến Đi ༻
         </Typography>
         <Divider />
         <Box sx={{ p: 2, pt: 5 }}>
@@ -108,10 +108,11 @@ export default function TripDetail() {
                   Ngày Xuất Phát:{" "}
                 </span>
                 {moment(dataTrip?.startTimee * 1000)
-                  .subtract(7, 'hours')
-                  .format("DD/MM/YYYY")} -{" "}
+                  .subtract(7, "hours")
+                  .format("DD/MM/YYYY")}{" "}
+                -{" "}
                 {moment(dataTrip?.endTimee * 1000)
-                  .subtract(7, 'hours')
+                  .subtract(7, "hours")
                   .format("DD/MM/YYYY")}
               </Typography>
             </Grid>
@@ -152,7 +153,8 @@ export default function TripDetail() {
                 >
                   Số Lượng Hành Khách:{" "}
                 </span>
-                {dataTrip?.bookedSeat} / {dataTrip ? dataTrip.bookedSeat + dataTrip.availableSeat : 0}
+                {dataTrip?.bookedSeat} /{" "}
+                {dataTrip ? dataTrip.bookedSeat + dataTrip.availableSeat : 0}
               </Typography>
             </Grid>
             <Grid item md={12}>
@@ -181,26 +183,33 @@ export default function TripDetail() {
                       dataTrip?.status === "RUN"
                         ? "#6499e9"
                         : dataTrip?.status === "READY"
-                          ? "goldenrod"
-                          : dataTrip?.status === "FINISH"
-                            ? "green"
-                            : dataTrip?.status === "CANCEL"
-                              ? "red"
-                              : "black",
+                        ? "goldenrod"
+                        : dataTrip?.status === "FINISH"
+                        ? "green"
+                        : dataTrip?.status === "CANCEL"
+                        ? "red"
+                        : "black",
                     backgroundColor:
                       dataTrip?.status === "RUN"
                         ? "rgb(166, 246, 255)"
                         : dataTrip?.status === "READY"
-                          ? "rgba(189, 189, 3, 0.103)"
-                          : dataTrip?.status === "FINISH"
-                            ? "rgba(0, 128, 0, 0.151)"
-                            : dataTrip?.status === "CANCEL"
-                              ? "rgb(253, 183, 183)"
-                              : "white",
+                        ? "rgba(189, 189, 3, 0.103)"
+                        : dataTrip?.status === "FINISH"
+                        ? "rgba(0, 128, 0, 0.151)"
+                        : dataTrip?.status === "CANCEL"
+                        ? "rgb(253, 183, 183)"
+                        : "white",
                   }}
                 >
-
-                  {dataTrip?.status === "READY" ? "CHUẨN BỊ" : dataTrip?.status === "RUN" ? "ĐANG ĐI" : dataTrip?.status === "CANCEL" ? "ĐÃ HỦY" : dataTrip?.status === "FINISH" ? "ĐÃ HOÀN THÀNH" : dataTrip?.status}
+                  {dataTrip?.status === "READY"
+                    ? "CHUẨN BỊ"
+                    : dataTrip?.status === "RUN"
+                    ? "ĐANG ĐI"
+                    : dataTrip?.status === "CANCEL"
+                    ? "ĐÃ HỦY"
+                    : dataTrip?.status === "FINISH"
+                    ? "ĐÃ HOÀN THÀNH"
+                    : dataTrip?.status}
                 </span>
               </Typography>
             </Grid>
@@ -289,7 +298,7 @@ export default function TripDetail() {
               <TableHead
                 sx={{
                   backgroundImage:
-                    "linear-gradient(to bottom, #f37106, #f8903b, #fac074, #f8aa85, #fcedc5)",
+                    "linear-gradient(to bottom, #9b9bff, #a1a1f7, #a7a7ee, #acace5, #b2b2dc)",
                 }}
               >
                 <TableRow>
@@ -387,7 +396,7 @@ export default function TripDetail() {
                 <TableHead
                   sx={{
                     backgroundImage:
-                      "linear-gradient(to bottom, #f37106, #f8903b, #fac074, #f8aa85, #fcedc5)",
+                      "linear-gradient(to bottom, #9b9bff, #a1a1f7, #a7a7ee, #acace5, #b2b2dc)",
                   }}
                 >
                   <TableRow>

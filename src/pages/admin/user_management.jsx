@@ -21,7 +21,7 @@ export default function UserManagement() {
   const theme = createTheme({
     palette: {
       secondary: {
-        main: "#f37106",
+        main: "#6464CD",
       },
     },
   });
@@ -38,9 +38,9 @@ export default function UserManagement() {
                 textColor="secondary"
                 indicatorColor="secondary"
               >
-                <Tab label="Khách Hàng" value="1" />
-                <Tab label="Nhân Viên" value="2" />
-                <Tab label="Tài Xế" value="3" />
+                <Tab sx={{ fontWeight: "bold" }} label="Khách Hàng" value="1" />
+                <Tab sx={{ fontWeight: "bold" }} label="Nhân Viên" value="2" />
+                <Tab sx={{ fontWeight: "bold" }} label="Tài Xế" value="3" />
               </TabList>
             </Box>
             <TabPanel value="1">

@@ -8,7 +8,7 @@ import TripRunList from "../../component/table/table_trip/tableTripRun";
 import TripTBL from "../../component/table/table_trip/trip_Table";
 import TripRequest from "../../component/table/table_trip/trip_request";
 import useAuth from "../../hook/useAuth";
-import TripRequestPendingByStaff from "../../component/table/table_trip/trip_request_by_staff"
+import TripRequestPendingByStaff from "../../component/table/table_trip/trip_request_by_staff";
 
 export default function Triplist() {
   const { auth } = useAuth();
@@ -21,7 +21,7 @@ export default function Triplist() {
   const theme = createTheme({
     palette: {
       secondary: {
-        main: "#f37106",
+        main: "#6464CD",
       },
     },
   });
@@ -38,11 +38,26 @@ export default function Triplist() {
                 textColor="secondary"
                 indicatorColor="secondary"
               >
-                <Tab sx={{ fontWeight: "bold" }} label="Chuyến Đi ( Chuẩn bị )" value="1" />
-                <Tab sx={{ fontWeight: "bold" }} label="Chuyến Đi ( Đang chạy )" value="2" />
-                <Tab sx={{ fontWeight: "bold" }} label="Chuyến Đi ( Kết thúc )" value="3" />
-                <Tab sx={{ fontWeight: "bold" }} label="Chuyến Đi ( Hủy bỏ)" value="4" />
-
+                <Tab
+                  sx={{ fontWeight: "bold" }}
+                  label="Chuyến Đi ( Chuẩn bị )"
+                  value="1"
+                />
+                <Tab
+                  sx={{ fontWeight: "bold" }}
+                  label="Chuyến Đi ( Đang chạy )"
+                  value="2"
+                />
+                <Tab
+                  sx={{ fontWeight: "bold" }}
+                  label="Chuyến Đi ( Kết thúc )"
+                  value="3"
+                />
+                <Tab
+                  sx={{ fontWeight: "bold" }}
+                  label="Chuyến Đi ( Hủy bỏ)"
+                  value="4"
+                />
               </TabList>
             </Box>
             <TabPanel value="1">
@@ -68,8 +83,16 @@ export default function Triplist() {
                 textColor="secondary"
                 indicatorColor="secondary"
               >
-                <Tab sx={{ fontWeight: "bold" }} label="Chuyến Xe Của Tôi Tạo" value="1" />
-                <Tab sx={{ fontWeight: "bold" }} label="Chuyến Xe Tôi Chờ Duyệt" value="2" />
+                <Tab
+                  sx={{ fontWeight: "bold" }}
+                  label="Chuyến Xe Của Tôi Tạo"
+                  value="1"
+                />
+                <Tab
+                  sx={{ fontWeight: "bold" }}
+                  label="Chuyến Xe Tôi Chờ Duyệt"
+                  value="2"
+                />
               </TabList>
             </Box>
             <TabPanel value="1">
@@ -78,7 +101,6 @@ export default function Triplist() {
             <TabPanel value="2">
               {/* <TripRequest /> */}
               <TripRequestPendingByStaff />
-
             </TabPanel>
           </TabContext>
         )}

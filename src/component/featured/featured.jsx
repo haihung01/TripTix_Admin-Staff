@@ -7,6 +7,7 @@ import "react-circular-progressbar/dist/styles.css";
 import { toast } from "react-toastify";
 import bookingApi from "../../utils/bookingAPI";
 import "./featured.scss";
+import useMoneyFormatter from "../../hook/useMoneyFormatter";
 
 const Featured = () => {
   //call api
@@ -30,6 +31,10 @@ const Featured = () => {
   useEffect(() => {
     fetchDataRevenue();
   }, [fetchDataRevenue]);
+
+  //format money
+  const [formatMoney] = useMoneyFormatter();
+
   return (
     <div className="featured">
       <div className="top">
@@ -39,7 +44,9 @@ const Featured = () => {
       </div>
       <div className="bottom">
         <p className="title">Tổng Lợi Nhuận Trong Ngày Hôm Nay</p>
-        <p className="amount">{dataRevenue.totalAmountPriceToday}</p>
+        <p className="amount">
+          {formatMoney(dataRevenue.totalAmountPriceToday)}
+        </p>
         <p className="desc">
           Xử lý giao dịch trước đó. Các khoản thanh toán cuối cùng có thể không
           được bao gồm.
@@ -75,7 +82,7 @@ const Featured = () => {
             >
               <ShowChartOutlinedIcon fontSize="small" />
               <div className="resultAmount">
-                {dataRevenue.totalAmountPriceYesterday}
+                {formatMoney(dataRevenue.totalAmountPriceYesterday)}
               </div>
             </div>
           </div>

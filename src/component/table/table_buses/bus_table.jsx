@@ -204,8 +204,11 @@ const BusTable = () => {
             variant="contained"
             sx={{
               zIndex: 1000,
-              bgcolor: "#FF4C8F",
-              ":hover": { bgcolor: "#FF3472" },
+
+              backgroundColor: "#6D6DFF",
+
+              ":hover": { bgcolor: "#6868AE" },
+
               color: "white",
             }}
             onClick={handleAddModalOpen}
@@ -219,7 +222,7 @@ const BusTable = () => {
           <TableHead
             sx={{
               backgroundImage:
-                "linear-gradient(to bottom, #f37106, #f8903b, #fac074, #f8aa85, #fcedc5)",
+                "linear-gradient(to bottom, #9b9bff, #a1a1f7, #a7a7ee, #acace5, #b2b2dc)",
             }}
           >
             <TableRow>
@@ -247,58 +250,62 @@ const BusTable = () => {
           <TableBody>
             {!loading
               ? filteredRows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => (
-                  <TableRow key={row.idBus}>
-                    <TableCell className="tableCell">{row.idBus}</TableCell>
-                    <TableCell className="tableCell">{row.name}</TableCell>
-                    <TableCell className="tableCell">{row.type}</TableCell>
-                    <TableCell className="tableCell">
-                      {moment(row.createdDate).format("DD/MM/YYYY")}
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row) => (
+                    <TableRow key={row.idBus}>
+                      <TableCell className="tableCell">{row.idBus}</TableCell>
+                      <TableCell className="tableCell">{row.name}</TableCell>
+                      <TableCell className="tableCell">{row.type}</TableCell>
+                      <TableCell className="tableCell">
+                        {moment(row.createdDate).format("DD/MM/YYYY")}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {moment(row.updatedDate).format("DD/MM/YYYY")}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        <span className={`busStatus ${row.status}`}>
+                          {row.status === "ACTIVE"
+                            ? "ĐANG HOẠT ĐỘNG"
+                            : row.status === "DEACTIVE"
+                            ? "KHÔNG HOẠT ĐỘNG"
+                            : row.status}
+                        </span>
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        <MenuActionBusTable
+                          busData={row}
+                          onOpenDetail={handleOpen}
+                          onOpenUpdate={handleUpdateModalOpen}
+                          onOpenDelete={handleCancelModelOpen}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))
+              : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
+                  <TableRow hover={true} key={index}>
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
-                    <TableCell className="tableCell">
-                      {moment(row.updatedDate).format("DD/MM/YYYY")}
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
-                    <TableCell className="tableCell">
-                      <span className={`busStatus ${row.status}`}>
-                        {row.status === "ACTIVE" ? "ĐANG HOẠT ĐỘNG" : row.status === "DEACTIVE" ? "KHÔNG HOẠT ĐỘNG" : row.status}
-                      </span>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
-                    <TableCell className="tableCell">
-                      <MenuActionBusTable
-                        busData={row}
-                        onOpenDetail={handleOpen}
-                        onOpenUpdate={handleUpdateModalOpen}
-                        onOpenDelete={handleCancelModelOpen}
-                      />
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
                   </TableRow>
-                ))
-              : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
-                <TableRow hover={true} key={index}>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                </TableRow>
-              ))}
+                ))}
           </TableBody>
           {selectBusData && (
             <ModalDetailBus

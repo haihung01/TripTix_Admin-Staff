@@ -1,5 +1,6 @@
 import InfoIcon from "@mui/icons-material/Info";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -40,7 +41,7 @@ export default function MenuActionCustomerTable({ userData, onOpenDetail }) {
       >
         <MoreHorizIcon
           sx={{
-            color: "#ec407a",
+            color: "#6464CD",
           }}
         />
       </Button>
@@ -65,7 +66,7 @@ export default function MenuActionCustomerTable({ userData, onOpenDetail }) {
         </MenuItem>
         {auth?.user?.role === "ROLE_STAFF" && (
           <MenuItem onClick={() => handleViewHistoryBookingOfCustomer()}>
-            <InfoIcon sx={{ mr: "4px" }} color="info" />
+            <ChangeCircleIcon sx={{ mr: "4px" }} color="success" />
             <span>Đổi Vé</span>
           </MenuItem>
         )}

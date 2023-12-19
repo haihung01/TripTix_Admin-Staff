@@ -9,7 +9,7 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import FeedIcon from "@mui/icons-material/Feed";
 import NotListedLocationIcon from "@mui/icons-material/NotListedLocation";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import RouteIcon from '@mui/icons-material/Route';
+import RouteIcon from "@mui/icons-material/Route";
 import {
   Divider,
   List,
@@ -60,7 +60,7 @@ const Sidebar = () => {
                 clipPath:
                   "polygon(0 0,0 0,100% 0,100% 0,100% calc(100% - 15px),calc(100% - 15px) 100%,15px 100%,0 100%)",
                 backgroundImage: isActive("/dash-board")
-                  ? "linear-gradient(to right, #f37106, #f8903b, #fac074, #f8aa85, #fcedc5)"
+                  ? "linear-gradient(to right, #3232a2, #5551b2, #7471c1, #9291cf, #b2b2dc)"
                   : "transparent",
                 color: isActive("/dash-board") ? "white" : "#888",
                 width: isActive("/dash-board") ? "245px" : "transparent",
@@ -69,7 +69,7 @@ const Sidebar = () => {
             >
               <ListItemIcon>
                 <DashboardIcon
-                  sx={{ color: isActive("/dash-board") ? "white" : "#f37106" }}
+                  sx={{ color: isActive("/dash-board") ? "white" : "#4C4CAA" }}
                 />
               </ListItemIcon>
               <ListItemText primary="Bảng Điều Khiển" />
@@ -86,7 +86,7 @@ const Sidebar = () => {
                 clipPath:
                   "polygon(0 0,0 0,100% 0,100% 0,100% calc(100% - 15px),calc(100% - 15px) 100%,15px 100%,0 100%)",
                 backgroundImage: isActive("/user-managements")
-                  ? "linear-gradient(to right, #f37106, #f8903b, #fac074, #f8aa85, #fcedc5)"
+                  ? "linear-gradient(to right, #3232a2, #5551b2, #7471c1, #9291cf, #b2b2dc)"
                   : "transparent",
                 color: isActive("/user-managements") ? "white" : "#888",
                 width: isActive("/user-managements") ? "245px" : "transparent",
@@ -96,7 +96,7 @@ const Sidebar = () => {
               <ListItemIcon>
                 <PersonOutlineIcon
                   sx={{
-                    color: isActive("/user-managements") ? "white" : "#f37106",
+                    color: isActive("/user-managements") ? "white" : "#4C4CAA",
                   }}
                 />
               </ListItemIcon>
@@ -112,7 +112,7 @@ const Sidebar = () => {
                 clipPath:
                   "polygon(0 0,0 0,100% 0,100% 0,100% calc(100% - 15px),calc(100% - 15px) 100%,15px 100%,0 100%)",
                 backgroundImage: isActive("/news-managements")
-                  ? "linear-gradient(to right, #f37106, #f8903b, #fac074, #f8aa85, #fcedc5)"
+                  ? "linear-gradient(to right, #3232a2, #5551b2, #7471c1, #9291cf, #b2b2dc)"
                   : "transparent",
                 color: isActive("/news-managements") ? "white" : "#888",
                 width: isActive("/news-managements") ? "245px" : "transparent",
@@ -122,7 +122,7 @@ const Sidebar = () => {
               <ListItemIcon>
                 <FeedIcon
                   sx={{
-                    color: isActive("/news-managements") ? "white" : "#f37106",
+                    color: isActive("/news-managements") ? "white" : "#4C4CAA",
                   }}
                 />
               </ListItemIcon>
@@ -138,7 +138,7 @@ const Sidebar = () => {
                 clipPath:
                   "polygon(0 0,0 0,100% 0,100% 0,100% calc(100% - 15px),calc(100% - 15px) 100%,15px 100%,0 100%)",
                 backgroundImage: isActive("/trip-managements")
-                  ? "linear-gradient(to right, #f37106, #f8903b, #fac074, #f8aa85, #fcedc5)"
+                  ? "linear-gradient(to right, #3232a2, #5551b2, #7471c1, #9291cf, #b2b2dc)"
                   : "transparent",
                 color: isActive("/trip-managements") ? "white" : "#888",
                 width: isActive("/trip-managements") ? "245px" : "transparent",
@@ -148,7 +148,7 @@ const Sidebar = () => {
               <ListItemIcon>
                 <CommuteIcon
                   sx={{
-                    color: isActive("/trip-managements") ? "white" : "#f37106",
+                    color: isActive("/trip-managements") ? "white" : "#4C4CAA",
                   }}
                 />
               </ListItemIcon>
@@ -167,7 +167,7 @@ const Sidebar = () => {
                   clipPath:
                     "polygon(0 0,0 0,100% 0,100% 0,100% calc(100% - 15px),calc(100% - 15px) 100%,15px 100%,0 100%)",
                   backgroundImage: isActive("/trip-request-managements")
-                    ? "linear-gradient(to right, #f37106, #f8903b, #fac074, #f8aa85, #fcedc5)"
+                    ? "linear-gradient(to right, #3232a2, #5551b2, #7471c1, #9291cf, #b2b2dc)"
                     : "transparent",
                   color: isActive("/trip-request-managements")
                     ? "white"
@@ -183,7 +183,7 @@ const Sidebar = () => {
                     sx={{
                       color: isActive("/trip-request-managements")
                         ? "white"
-                        : "#f37106",
+                        : "#4C4CAA",
                     }}
                   />
                 </ListItemIcon>
@@ -200,7 +200,7 @@ const Sidebar = () => {
                 clipPath:
                   "polygon(0 0,0 0,100% 0,100% 0,100% calc(100% - 15px),calc(100% - 15px) 100%,15px 100%,0 100%)",
                 backgroundImage: isActive("/station-managements")
-                  ? "linear-gradient(to right, #f37106, #f8903b, #fac074, #f8aa85, #fcedc5)"
+                  ? "linear-gradient(to right, #3232a2, #5551b2, #7471c1, #9291cf, #b2b2dc)"
                   : "transparent",
                 color: isActive("/station-managements") ? "white" : "#888",
                 width: isActive("/station-managements")
@@ -214,7 +214,7 @@ const Sidebar = () => {
                   sx={{
                     color: isActive("/station-managements")
                       ? "white"
-                      : "#f37106",
+                      : "#4C4CAA",
                   }}
                 />
               </ListItemIcon>
@@ -231,21 +231,17 @@ const Sidebar = () => {
                 clipPath:
                   "polygon(0 0,0 0,100% 0,100% 0,100% calc(100% - 15px),calc(100% - 15px) 100%,15px 100%,0 100%)",
                 backgroundImage: isActive("/Route-managements")
-                  ? "linear-gradient(to right, #f37106, #f8903b, #fac074, #f8aa85, #fcedc5)"
+                  ? "linear-gradient(to right, #3232a2, #5551b2, #7471c1, #9291cf, #b2b2dc)"
                   : "transparent",
                 color: isActive("/Route-managements") ? "white" : "#888",
-                width: isActive("/Route-managements")
-                  ? "245px"
-                  : "transparent",
+                width: isActive("/Route-managements") ? "245px" : "transparent",
                 ":hover": { width: "245px" },
               }}
             >
               <ListItemIcon>
                 <RouteIcon
                   sx={{
-                    color: isActive("/Route-managements")
-                      ? "white"
-                      : "#f37106",
+                    color: isActive("/Route-managements") ? "white" : "#4C4CAA",
                   }}
                 />
               </ListItemIcon>
@@ -261,7 +257,7 @@ const Sidebar = () => {
                 clipPath:
                   "polygon(0 0,0 0,100% 0,100% 0,100% calc(100% - 15px),calc(100% - 15px) 100%,15px 100%,0 100%)",
                 backgroundImage: isActive("/bus-managements")
-                  ? "linear-gradient(to right, #f37106, #f8903b, #fac074, #f8aa85, #fcedc5)"
+                  ? "linear-gradient(to right, #3232a2, #5551b2, #7471c1, #9291cf, #b2b2dc)"
                   : "transparent",
                 color: isActive("/bus-managements") ? "white" : "#888",
                 width: isActive("/bus-managements") ? "245px" : "transparent",
@@ -271,7 +267,7 @@ const Sidebar = () => {
               <ListItemIcon>
                 <DirectionsBusIcon
                   sx={{
-                    color: isActive("/bus-managements") ? "white" : "#f37106",
+                    color: isActive("/bus-managements") ? "white" : "#4C4CAA",
                   }}
                 />
               </ListItemIcon>
@@ -289,7 +285,7 @@ const Sidebar = () => {
                   clipPath:
                     "polygon(0 0,0 0,100% 0,100% 0,100% calc(100% - 15px),calc(100% - 15px) 100%,15px 100%,0 100%)",
                   backgroundImage: isActive("/config-service")
-                    ? "linear-gradient(to right, #f37106, #f8903b, #fac074, #f8aa85, #fcedc5)"
+                    ? "linear-gradient(to right, #3232a2, #5551b2, #7471c1, #9291cf, #b2b2dc)"
                     : "transparent",
                   color: isActive("/config-service") ? "white" : "#888",
                   width: isActive("/config-service") ? "245px" : "transparent",
@@ -299,7 +295,7 @@ const Sidebar = () => {
                 <ListItemIcon>
                   <DesignServicesIcon
                     sx={{
-                      color: isActive("/config-service") ? "white" : "#f37106",
+                      color: isActive("/config-service") ? "white" : "#4C4CAA",
                     }}
                   />
                 </ListItemIcon>
@@ -318,7 +314,7 @@ const Sidebar = () => {
                     "polygon(0 0,0 0,100% 0,100% 0,100% calc(100% - 15px),calc(100% - 15px) 100%,15px 100%,0 100%)",
 
                   backgroundImage: isActive("/change-ticket")
-                    ? "linear-gradient(to right, #f37106, #f8903b, #fac074, #f8aa85, #fcedc5)"
+                    ? "linear-gradient(to right, #3232a2, #5551b2, #7471c1, #9291cf, #b2b2dc)"
                     : "transparent",
                   color: isActive("/change-ticket") ? "white" : "#888",
                   width: isActive("/change-ticket") ? "245px" : "transparent",
@@ -328,7 +324,7 @@ const Sidebar = () => {
                 <ListItemIcon>
                   <ChangeCircleIcon
                     sx={{
-                      color: isActive("/change-ticket") ? "white" : "#f37106",
+                      color: isActive("/change-ticket") ? "white" : "#4C4CAA",
                     }}
                   />
                 </ListItemIcon>
@@ -347,7 +343,7 @@ const Sidebar = () => {
                 clipPath:
                   "polygon(0 0,0 0,100% 0,100% 0,100% calc(100% - 15px),calc(100% - 15px) 100%,15px 100%,0 100%)",
                 backgroundImage: isActive("/user-profile")
-                  ? "linear-gradient(to right, #f37106, #f8903b, #fac074, #f8aa85, #fcedc5)"
+                  ? "linear-gradient(to right, #3232a2, #5551b2, #7471c1, #9291cf, #b2b2dc)"
                   : "transparent",
                 color: isActive("/user-profile") ? "white" : "#888",
                 width: isActive("/user-profile") ? "245px" : "transparent",
@@ -357,7 +353,7 @@ const Sidebar = () => {
               <ListItemIcon>
                 <AccountCircleOutlinedIcon
                   sx={{
-                    color: isActive("/user-profile") ? "white" : "#f37106",
+                    color: isActive("/user-profile") ? "white" : "#4C4CAA",
                   }}
                 />
               </ListItemIcon>
@@ -377,13 +373,13 @@ const Sidebar = () => {
             }}
           >
             <ListItemIcon>
-              <ExitToAppIcon sx={{ color: "#f37106" }} />
+              <ExitToAppIcon sx={{ color: "#4C4CAA" }} />
             </ListItemIcon>
             <ListItemText primary="Đăng Xuất" />
           </ListItemButton>
         </List>
       </div>
-    </div >
+    </div>
   );
 };
 

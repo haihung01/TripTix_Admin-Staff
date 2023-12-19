@@ -71,7 +71,7 @@ const List = () => {
         <TableHead
           sx={{
             backgroundImage:
-              "linear-gradient(to bottom, #f984ab, #fb9dbb, #fbb4cb, #fbcbda, #f9e2e9)",
+              "linear-gradient(to bottom, #9b9bff, #a1a1f7, #a7a7ee, #acace5, #b2b2dc)",
           }}
         >
           <TableRow>

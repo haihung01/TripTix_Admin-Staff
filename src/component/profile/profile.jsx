@@ -70,7 +70,7 @@ const UserProfile = () => {
   }, [fetchUserData]);
 
   const [avatarImage] = useState(
-    "https://images.unsplash.com/photo-1624561172888-ac93c696e10c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDJ8fGF2YXRhcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60"
+    "https://icon-library.com/images/admin-icon-png/admin-icon-png-16.jpg"
   );
 
   // const handleImageUpload = (event) => {
@@ -129,7 +129,9 @@ const UserProfile = () => {
               sx={{ pt: "5px", fontSize: "18px", color: "grey" }}
             >
               <span style={{ fontWeight: 600, color: "black" }}>Khu Vực:</span>{" "}
-              {userData.assignedRegions === "Hỗn hợp" ? "Liên vùng" : userData.assignedRegions}
+              {userData.assignedRegions === "Hỗn hợp"
+                ? "Liên vùng"
+                : userData.assignedRegions}
             </Typography>
           </div>
           {/* <Divider />
@@ -229,10 +231,10 @@ const UserProfile = () => {
               onClick={handleOpenChangeProfile}
               variant="contained"
               sx={{
-                backgroundColor: "#FF5B94",
+                backgroundColor: "#6D6DFF",
                 color: "white",
                 width: "180px",
-                ":hover": { bgcolor: "#F84180" },
+                ":hover": { bgcolor: "#6868AE" },
               }}
             >
               Cập Nhật Hồ Sơ
@@ -242,10 +244,10 @@ const UserProfile = () => {
               onClick={handleOpenChangePassword}
               variant="contained"
               sx={{
-                backgroundColor: "#FF5B94",
+                backgroundColor: "#6D6DFF",
                 color: "white",
                 width: "180px",
-                ":hover": { bgcolor: "#F84180" },
+                ":hover": { bgcolor: "#6868AE" },
               }}
             >
               Thay Đổi Mật Khẩu

@@ -43,7 +43,12 @@ const ChangePasswordModal = ({ open, handleClose, id }) => {
       <DialogTitle
         id="form-dialog-title"
         textAlign="center"
-        textTransform="uppercase"
+        sx={{
+          textTransform: "uppercase",
+          color: "#575656",
+          backgroundImage:
+            "linear-gradient(to bottom, #9b9bff, #a1a1f7, #a7a7ee, #acace5, #b2b2dc)",
+        }}
       >
         thay đổi mật khẩu
       </DialogTitle>
@@ -162,10 +167,10 @@ const ChangePasswordModal = ({ open, handleClose, id }) => {
                 <Button
                   type="submit"
                   sx={{
-                    backgroundColor: "#FF5B94",
+                    backgroundColor: "#6D6DFF",
                     color: "white",
                     width: "160px",
-                    ":hover": { bgcolor: "#F84180" },
+                    ":hover": { bgcolor: "#6868AE" },
                   }}
                 >
                   Thay Đổi

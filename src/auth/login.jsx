@@ -74,7 +74,7 @@ export default function SignIn() {
             borderRadius: "10px",
 
             // boxShadow: "5px 10px 8px #888888",
-            background: '#fffffa',
+            background: "#fffffa",
             backgroundColor: "rgba(255, 255, 255, 0.75)",
           }}
         >
@@ -82,7 +82,7 @@ export default function SignIn() {
             sx={{
               m: 1,
               backgroundImage:
-                "linear-gradient(to bottom, #f984ab, #fb9dbb, #fbb4cb, #fbcbda, #f9e2e9)",
+                "linear-gradient(to bottom, #9b9bff, #a1a1f7, #a7a7ee, #acace5, #b2b2dc)",
             }}
           >
             <LockOutlinedIcon />

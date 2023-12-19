@@ -47,7 +47,7 @@ export default function MenuActionTripTable({
       >
         <MoreHorizIcon
           sx={{
-            color: "#ec407a",
+            color: "#6464CD",
           }}
         />
       </Button>

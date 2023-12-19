@@ -1,5 +1,6 @@
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import {
+  Autocomplete,
   Box,
   Button,
   Dialog,
@@ -17,14 +18,18 @@ import {
 } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import moment from "moment-timezone";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import listUserApi from "../../../../utils/listUsersAPI";
+import listStationApi from "../../../../utils/listStationAPI";
 
 // Validation schema using Yup
 const validationSchema = Yup.object().shape({
   fullName: Yup.string().required("Họ và tên là bắt buộc"),
+  userName: Yup.string()
+    .min(6, "Tên tài khoản ít nhất phải 6 kí tự")
+    .required("Tên tài khoản là bắt buộc"),
   citizenIdentityCard: Yup.string()
     .required("Chứng minh nhân dân là bắt buộc")
     .matches(/^[0-9]+$/, "Chứng minh nhân dân chỉ được chứa số")
@@ -50,6 +55,26 @@ const validationSchema = Yup.object().shape({
 });
 
 const AddDriverModel = ({ open, handleClose, fetchUserData }) => {
+  const [dataStation, setDataStation] = useState([]);
+
+  useEffect(() => {
+    const fetchListStation = async () => {
+      try {
+        const stationResponse = await listStationApi.getAll({});
+        console.log("dataTBL123", stationResponse.data);
+        setDataStation(stationResponse.data);
+      } catch (error) {
+        console.log("err", error);
+        if (error.response) {
+          toast.error(error.response.data.message);
+        } else {
+          toast.error("Load Data failed !");
+        }
+      }
+    };
+    fetchListStation();
+  }, []);
+
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle
@@ -59,7 +84,7 @@ const AddDriverModel = ({ open, handleClose, fetchUserData }) => {
           textTransform: "uppercase",
           color: "#575656",
           backgroundImage:
-            "linear-gradient(to bottom, #f37106, #f8903b, #fac074, #f8aa85, #fcedc5)",
+            "linear-gradient(to bottom, #9b9bff, #a1a1f7, #a7a7ee, #acace5, #b2b2dc)",
         }}
       >
         Thêm tài xế
@@ -70,10 +95,11 @@ const AddDriverModel = ({ open, handleClose, fetchUserData }) => {
           initialValues={{
             fullName: "",
             citizenIdentityCard: "",
+            userName: "",
             address: "",
             phone: "",
             email: "",
-            password: "",
+            password: "123456",
             birthday: "",
             gender: "",
             role: "DRIVER",
@@ -94,8 +120,8 @@ const AddDriverModel = ({ open, handleClose, fetchUserData }) => {
               handleClose();
               toast.success("Create User Success !");
             } catch (error) {
-              console.log("errr", error.response.data.data);
-              toast.error(error.response.data.data);
+              console.log("errr", error.response.data.message);
+              toast.error(error.response.data.message);
             }
           }}
         >
@@ -137,7 +163,42 @@ const AddDriverModel = ({ open, handleClose, fetchUserData }) => {
                     )}
                   </Field>
                 </Grid>
-
+                <Grid item xs={12} md={12}>
+                  <Field name="belongTo">
+                    {({ field, form, meta }) => (
+                      <>
+                        <Autocomplete
+                          // {...field}
+                          isOptionEqualToValue={(option, value) =>
+                            option === value
+                          }
+                          options={dataStation}
+                          getOptionLabel={(option) =>
+                            `Trạm số: ${option?.idStation} - ${option?.name} - (${option?.address})`
+                          }
+                          onChange={(event, newValue) => {
+                            form.setFieldValue(
+                              "belongTo",
+                              newValue ? newValue.idStation : ""
+                            );
+                          }}
+                          onBlur={form.handleBlur}
+                          renderInput={(params) => (
+                            <TextField
+                              {...field}
+                              {...params}
+                              label="Trạm"
+                              error={meta.touched && !!meta.error}
+                              helperText={
+                                meta.touched && meta.error ? meta.error : ""
+                              }
+                            />
+                          )}
+                        />
+                      </>
+                    )}
+                  </Field>
+                </Grid>
                 <Grid item xs={6} md={6}>
                   <Field name="address">
                     {({ field, meta }) => (
@@ -175,12 +236,12 @@ const AddDriverModel = ({ open, handleClose, fetchUserData }) => {
                 </Grid>
 
                 <Grid item xs={6} md={6}>
-                  <Field name="email">
+                  <Field name="userName">
                     {({ field, meta }) => (
                       <TextField
                         {...field}
                         margin="dense"
-                        label="Email"
+                        label="Tên tài khoản"
                         type="text"
                         fullWidth
                         error={meta.touched && !!meta.error}
@@ -193,13 +254,13 @@ const AddDriverModel = ({ open, handleClose, fetchUserData }) => {
                 </Grid>
 
                 <Grid item xs={6} md={6}>
-                  <Field name="password">
+                  <Field name="email">
                     {({ field, meta }) => (
                       <TextField
                         {...field}
                         margin="dense"
-                        label="Mật Khẩu"
-                        type="password"
+                        label="Email"
+                        type="text"
                         fullWidth
                         error={meta.touched && !!meta.error}
                         helperText={
@@ -254,8 +315,8 @@ const AddDriverModel = ({ open, handleClose, fetchUserData }) => {
                           fullWidth
                           error={meta.touched && !!meta.error}
                         >
-                          <MenuItem value="MALE">Male</MenuItem>
-                          <MenuItem value="FEMALE">Female</MenuItem>
+                          <MenuItem value="MALE">Nam</MenuItem>
+                          <MenuItem value="FEMALE">Nữ</MenuItem>
                         </Select>
                         <Typography
                           color="#D80032"
@@ -291,10 +352,10 @@ const AddDriverModel = ({ open, handleClose, fetchUserData }) => {
                 <Button
                   type="submit"
                   sx={{
-                    backgroundColor: "#FF5B94",
+                    backgroundColor: "#6D6DFF",
                     color: "white",
                     width: "160px",
-                    ":hover": { bgcolor: "#F84180" },
+                    ":hover": { bgcolor: "#6868AE" },
                   }}
                 >
                   Tạo Tài Xế

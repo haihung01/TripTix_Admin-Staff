@@ -32,7 +32,7 @@ const ModelDetailTrip = ({ open, handleClose, tripData }) => {
           textTransform: "uppercase",
           color: "#575656",
           backgroundImage:
-            "linear-gradient(to bottom, #fd4887, #ff77a2, #ff9ebb, #fdc2d3, #f8e4ea)",
+            "linear-gradient(to bottom, #9b9bff, #a1a1f7, #a7a7ee, #acace5, #b2b2dc)",
         }}
       >
         Chi tiết chuyến đi

@@ -71,10 +71,10 @@ const ModelDeleteStation = ({
         <Button
           onClick={handledeleteStation}
           sx={{
-            backgroundColor: "#FF5B94",
+            backgroundColor: "#6D6DFF",
             color: "white",
             width: "160px",
-            ":hover": { bgcolor: "#F84180" },
+            ":hover": { bgcolor: "#6868AE" },
           }}
         >
           Xác Nhận

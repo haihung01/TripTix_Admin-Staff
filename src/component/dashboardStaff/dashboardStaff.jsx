@@ -4,7 +4,7 @@ import {
   Skeleton,
   TablePagination,
   TableSortLabel,
-  TextField
+  TextField,
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -37,7 +37,7 @@ const DashboardStaff = () => {
     // setRowsPerPage(parseInt(event.target.value, 10));
     // setPage(0);
     // setRowsPerPage(parseInt(event.target.value, 10));
-    // setPage(0);  
+    // setPage(0);
     setPangination({
       ...pangination,
       pageSize: parseInt(event.target.value, 10),
@@ -247,7 +247,7 @@ const DashboardStaff = () => {
           <TableHead
             sx={{
               backgroundImage:
-                "linear-gradient(to bottom, #f37106, #f8903b, #fac074, #f8aa85, #fcedc5)",
+                "linear-gradient(to bottom, #9b9bff, #a1a1f7, #a7a7ee, #acace5, #b2b2dc)",
             }}
           >
             <TableRow>
@@ -283,58 +283,65 @@ const DashboardStaff = () => {
           <TableBody>
             {!loadingTrip
               ? filteredRows &&
-              filteredRows.map((row) => (
-                <TableRow key={row.idTrip}>
-                  <TableCell className="tableCell">{row.idTrip}</TableCell>
-                  <TableCell className="tableCell">
-                    {moment(row.startTimee * 1000).format(
-                      "DD/MM/YYYY - hh:mm A"
-                    )}
-                  </TableCell>
-                  <TableCell className="tableCell">
-                    {moment(row.endTimee * 1000).format(
-                      "DD/MM/YYYY - hh:mm A"
-                    )}
-                  </TableCell>
-                  <TableCell className="tableCell">
-                    {row.routeDTO.departurePoint}
-                  </TableCell>
-                  <TableCell className="tableCell">
-                    {row.routeDTO.destination}
-                  </TableCell>
-                  {/* <TableCell className="tableCell">
+                filteredRows.map((row) => (
+                  <TableRow key={row.idTrip}>
+                    <TableCell className="tableCell">{row.idTrip}</TableCell>
+                    <TableCell className="tableCell">
+                      {moment(row.startTimee * 1000).format(
+                        "DD/MM/YYYY - hh:mm A"
+                      )}
+                    </TableCell>
+                    <TableCell className="tableCell">
+                      {moment(row.endTimee * 1000).format(
+                        "DD/MM/YYYY - hh:mm A"
+                      )}
+                    </TableCell>
+                    <TableCell className="tableCell">
+                      {row.routeDTO.departurePoint}
+                    </TableCell>
+                    <TableCell className="tableCell">
+                      {row.routeDTO.destination}
+                    </TableCell>
+                    {/* <TableCell className="tableCell">
                       {row.routeDTO.region}
                     </TableCell> */}
-                  <TableCell className="tableCell">
-                    <span className={`tripStatus ${row.status}`}>
-                      {row.status === "RUN" ? "ĐANG ĐI" : row.status === "READY" ? "CHUẨN BỊ" : row.status === "CANCEL" ? "HỦY BỎ" : row.status === "FINISH" ? "ĐÃ HOÀN THÀNH" : row.status}
-                    </span>
-                  </TableCell>
-                </TableRow>
-              ))
+                    <TableCell className="tableCell">
+                      <span className={`tripStatus ${row.status}`}>
+                        {row.status === "RUN"
+                          ? "ĐANG ĐI"
+                          : row.status === "READY"
+                          ? "CHUẨN BỊ"
+                          : row.status === "CANCEL"
+                          ? "HỦY BỎ"
+                          : row.status === "FINISH"
+                          ? "ĐÃ HOÀN THÀNH"
+                          : row.status}
+                      </span>
+                    </TableCell>
+                  </TableRow>
+                ))
               : [0, 1, 2, 3, 4, 5, 6, 7, 8].map((index) => (
-                <TableRow hover={true} key={index}>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-
-                </TableRow>
-              ))}
+                  <TableRow hover={true} key={index}>
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                  </TableRow>
+                ))}
           </TableBody>
         </Table>
         <TablePagination
