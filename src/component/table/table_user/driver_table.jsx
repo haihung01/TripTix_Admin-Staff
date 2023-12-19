@@ -204,85 +204,85 @@ const List = () => {
           <TableBody>
             {!loading
               ? filteredRows
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => (
-                    <TableRow key={row.idUserSystem}>
-                      <TableCell className="tableCell">
-                        {row.idUserSystem}
-                      </TableCell>
-                      <TableCell className="tableCell">
-                        {row.fullName}
-                      </TableCell>
-                      <TableCell className="tableCell" sx={{ width: "100px" }}>
-                        {row.userName}
-                      </TableCell>
-                      <TableCell className="tableCell" sx={{ width: "100px" }}>
-                        {row.email}
-                      </TableCell>
-                      <TableCell className="tableCell" sx={{ width: "220px" }}>
-                        {row.address}
-                      </TableCell>
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row) => (
+                  <TableRow key={row.idUserSystem}>
+                    <TableCell className="tableCell">
+                      {row.idUserSystem}
+                    </TableCell>
+                    <TableCell className="tableCell">
+                      {row.fullName}
+                    </TableCell>
+                    <TableCell className="tableCell" sx={{ width: "100px" }}>
+                      {row.userName}
+                    </TableCell>
+                    <TableCell className="tableCell" sx={{ width: "100px" }}>
+                      {row.email}
+                    </TableCell>
+                    <TableCell className="tableCell" sx={{ width: "220px" }}>
+                      {row.address}
+                    </TableCell>
 
-                      <TableCell className="tableCell">
-                        <span className={`staffStatus ${row.status}`}>
-                          {row.status === "ACTIVE"
-                            ? "ĐANG HOẠT ĐỘNG"
-                            : row.status === "DEACTIVE"
+                    <TableCell className="tableCell">
+                      <span className={`staffStatus ${row.status}`}>
+                        {row.status === "ACTIVE"
+                          ? "ĐANG HOẠT ĐỘNG"
+                          : row.status === "DEACTIVE"
                             ? "KHÔNG HOẠT ĐỘNG"
                             : row.status}
-                        </span>
-                      </TableCell>
-                      <TableCell className="tableCell">
-                        {row.gender === "MALE"
-                          ? "NAM"
-                          : row.gender === "FEMALE"
+                      </span>
+                    </TableCell>
+                    <TableCell className="tableCell">
+                      {row.gender === "MALE"
+                        ? "NAM"
+                        : row.gender === "FEMALE"
                           ? "NỮ"
                           : row.gender}
-                      </TableCell>
-                      <TableCell className="tableCell">
-                        trạm số: {row?.belongTo}
-                      </TableCell>
-                      <TableCell>
-                        <MenuActionDriverTable
-                          onOpenDetail={handleOpen}
-                          onOpenBan={handleBanModelOpen}
-                          onOpenUnban={handleUnbanModelOpen}
-                          userData={row}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  ))
-              : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
-                  <TableRow hover={true} key={index}>
-                    <TableCell align="left">
-                      <Skeleton variant="rectangular" />
                     </TableCell>
-                    <TableCell align="left">
-                      <Skeleton variant="rectangular" />
+                    <TableCell className="tableCell">
+                      Trạm số: {row?.belongTo}
                     </TableCell>
-                    <TableCell align="center">
-                      <Skeleton variant="rectangular" />
-                    </TableCell>
-                    <TableCell align="left">
-                      <Skeleton variant="rectangular" />
-                    </TableCell>
-                    <TableCell align="center">
-                      <Skeleton variant="rectangular" />
-                    </TableCell>
-                    <TableCell align="center">
-                      <Skeleton variant="rectangular" />
-                    </TableCell>
-                    <TableCell align="center">
-                      <Skeleton variant="rectangular" />
-                    </TableCell>
-                    <TableCell align="center">
-                      <Skeleton variant="rectangular" />
-                    </TableCell>
-                    <TableCell align="center">
-                      <Skeleton variant="rectangular" />
+                    <TableCell>
+                      <MenuActionDriverTable
+                        onOpenDetail={handleOpen}
+                        onOpenBan={handleBanModelOpen}
+                        onOpenUnban={handleUnbanModelOpen}
+                        userData={row}
+                      />
                     </TableCell>
                   </TableRow>
-                ))}
+                ))
+              : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
+                <TableRow hover={true} key={index}>
+                  <TableCell align="left">
+                    <Skeleton variant="rectangular" />
+                  </TableCell>
+                  <TableCell align="left">
+                    <Skeleton variant="rectangular" />
+                  </TableCell>
+                  <TableCell align="center">
+                    <Skeleton variant="rectangular" />
+                  </TableCell>
+                  <TableCell align="left">
+                    <Skeleton variant="rectangular" />
+                  </TableCell>
+                  <TableCell align="center">
+                    <Skeleton variant="rectangular" />
+                  </TableCell>
+                  <TableCell align="center">
+                    <Skeleton variant="rectangular" />
+                  </TableCell>
+                  <TableCell align="center">
+                    <Skeleton variant="rectangular" />
+                  </TableCell>
+                  <TableCell align="center">
+                    <Skeleton variant="rectangular" />
+                  </TableCell>
+                  <TableCell align="center">
+                    <Skeleton variant="rectangular" />
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
 
           {/* Display modal popup */}

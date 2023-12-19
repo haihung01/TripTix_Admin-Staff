@@ -3,7 +3,7 @@ import "./navigate.scss";
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
-  const facebookMessagingLink = "https://www.facebook.com/messages/t";
+  const facebookMessagingLink = "https://business.facebook.com/latest/inbox/all?asset_id=158845683988030&bpn_id=1504787070355704&mailbox_id=&selected_item_id=100009676504994";
 
   return (
     <div className="navbar">
