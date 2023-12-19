@@ -85,11 +85,11 @@ export default function CreateTrip() {
           formikRef.current.setFieldValue("fare", response.data.fare);
           formikRef.current.setFieldValue(
             "startTime",
-            moment(response.data.startTime, "DD-MM-YYYY HH:mm:ss").toDate(),
+            moment(response.data.startTime, "DD-MM-YYYY HH:mm:ss").toDate()
           );
           formikRef.current.setFieldValue(
             "endTime",
-            moment(response.data.endTime, "DD-MM-YYYY HH:mm:ss").toDate(),
+            moment(response.data.endTime, "DD-MM-YYYY HH:mm:ss").toDate()
           );
           formikRef.current.setFieldValue(
             "listTripStop",
@@ -183,7 +183,6 @@ export default function CreateTrip() {
     }
   };
 
-
   return (
     <Formik
       innerRef={formikRef}
@@ -241,11 +240,11 @@ export default function CreateTrip() {
               WebkitBoxShadow: "2px 4px 10px 1px rgba(0, 0, 0, 0.47)",
               boxShadow: "2px 4px 10px 1px rgba(70, 68, 68, 0.47)",
               width: "85  %",
-              margin: "auto"
+              margin: "auto",
             }}
           >
             <h1 style={{ color: "grey", textTransform: "uppercase" }}>
-              ꧁༺ Tạo Chuyến Đi Mới ༻꧂
+              ༺ Tạo Chuyến Đi Mới ༻
             </h1>
 
             <Grid container spacing={4}>
@@ -260,7 +259,17 @@ export default function CreateTrip() {
                         }
                         options={routeData}
                         getOptionLabel={(option) =>
-                          `${option?.departurePoint} - ${option?.destination} (${option?.region === "Nam" ? "Phía Nam" : option?.region === "Bắc" ? "Phía Bắc" : option?.region === "Hỗn hợp" ? "Liên vùng" : option?.region})`
+                          `${option?.departurePoint} - ${
+                            option?.destination
+                          } (${
+                            option?.region === "Nam"
+                              ? "Phía Nam"
+                              : option?.region === "Bắc"
+                              ? "Phía Bắc"
+                              : option?.region === "Hỗn hợp"
+                              ? "Liên vùng"
+                              : option?.region
+                          })`
                         }
                         onChange={(event, newValue) => {
                           form.setFieldValue(
@@ -284,10 +293,10 @@ export default function CreateTrip() {
                       <Button
                         onClick={() => handleFormatForm(field.value)}
                         sx={{
-                          backgroundColor: "#FF5B94",
+                          backgroundColor: "#6D6DFF",
                           color: "white",
                           width: "160px",
-                          ":hover": { bgcolor: "#F84180" },
+                          ":hover": { bgcolor: "#6868AE" },
                           mt: 2,
                         }}
                       >
@@ -304,9 +313,14 @@ export default function CreateTrip() {
                     <Autocomplete
                       // {...field}
                       isOptionEqualToValue={(option, value) => option === value}
-                      options={driverData}
+                      options={driverData.map((option, index) => ({
+                        ...option,
+                        index,
+                      }))}
                       getOptionLabel={(option) =>
-                        `${option?.fullName} - ( ${option?.address} )`
+                        `${option.index + 1}. ${option?.fullName} - ( ${
+                          option?.address
+                        } ) - Thuộc về trạm số: ${option.belongTo}`
                       }
                       onChange={(event, newValue) => {
                         form.setFieldValue(
@@ -314,7 +328,7 @@ export default function CreateTrip() {
                           newValue ? newValue.idUserSystem : ""
                         );
                       }}
-                      onBlur={form.handleBlur}
+                      // onBlur={form.handleBlur}
                       renderInput={(params) => (
                         <TextField
                           {...field}
@@ -337,9 +351,16 @@ export default function CreateTrip() {
                     <Autocomplete
                       // {...field}
                       isOptionEqualToValue={(option, value) => option === value}
-                      options={busData}
+                      options={busData.map((option, index) => ({
+                        ...option,
+                        index,
+                      }))}
                       getOptionLabel={(option) =>
-                        `${option?.name} - ( ${option?.type} ) - Xe:  ${option?.capacity} chỗ`
+                        `${option.index + 1}. ${option?.name} - ( ${
+                          option?.type
+                        } ) - Xe:  ${
+                          option?.capacity
+                        } chỗ - Thuộc về trạm số: ${option.belongTo}`
                       }
                       onChange={(event, newValue) => {
                         form.setFieldValue(
@@ -472,15 +493,20 @@ export default function CreateTrip() {
                             Trạm {index + 1}
                           </Typography>
 
-                          <Grid container spacing={2}>
-                            <Grid item xs={12} md={3}>
+                          <Grid container spacing={4}>
+                            <Grid item xs={12} md={7}>
                               <Field name={`listTripStop.${index}.idStation`}>
                                 {({ field, form, meta }) => (
                                   <Autocomplete
                                     {...field}
-                                    options={dataStation}
+                                    options={dataStation.map(
+                                      (option, index) => ({
+                                        ...option,
+                                        index,
+                                      })
+                                    )}
                                     getOptionLabel={(option) =>
-                                      `${option?.name} - ( ${option?.address} )`
+                                      `Trạm số: ${option.idStation} - ${option?.name} - ( ${option?.address} )`
                                     }
                                     value={
                                       dataStation.find(
@@ -513,31 +539,7 @@ export default function CreateTrip() {
                               </Field>
                             </Grid>
 
-                            {/* <Grid item xs={12} md={2}>
-                              <Field name={`listTripStop.${index}.type`}>
-                                {({ field, meta }) => (
-                                  <FormControl fullWidth margin="dense">
-                                    <InputLabel>Loại</InputLabel>
-                                    <Select
-                                      {...field}
-                                      label="Loại"
-                                      error={meta.touched && !!meta.error}
-                                    >
-                                      <MenuItem value="PICKUP">Pickup</MenuItem>
-                                      <MenuItem value="DROPOFF">
-                                        Dropoff
-                                      </MenuItem>
-                                    </Select>
-                                    {meta.touched && meta.error && (
-                                      <div style={{ color: "red" }}>
-                                        {meta.error}
-                                      </div>
-                                    )}
-                                  </FormControl>
-                                )}
-                              </Field>
-                            </Grid> */}
-                            <Grid item xs={12} md={3}>
+                            <Grid item xs={12} md={2}>
                               <Field
                                 name={`listTripStop.${index}.costsIncurred`}
                               >
@@ -560,7 +562,7 @@ export default function CreateTrip() {
                               </Field>
                             </Grid>
 
-                            <Grid item xs={12} md={3}>
+                            <Grid item xs={12} md={2}>
                               <Field name={`listTripStop.${index}.timeComes`}>
                                 {({ field, form, meta }) => (
                                   <ReactDatePicker
@@ -629,10 +631,10 @@ export default function CreateTrip() {
                         type="button"
                         variant="contained"
                         sx={{
-                          backgroundColor: "#FF5B94",
+                          backgroundColor: "#6D6DFF",
                           color: "white",
                           width: "100px",
-                          ":hover": { bgcolor: "#F84180" },
+                          ":hover": { bgcolor: "#6868AE" },
                           mt: 2,
                         }}
                         onClick={() =>
@@ -651,23 +653,24 @@ export default function CreateTrip() {
               </Grid>
             </Grid>
 
-            <Box sx={{
-              display: 'flex',
-              mt: "20px",
-              gap: "100px",
-              // justifyContent: "space-evenly"
-
-            }}>
+            <Box
+              sx={{
+                display: "flex",
+                mt: "20px",
+                gap: "100px",
+                // justifyContent: "space-evenly"
+              }}
+            >
               <Button
                 sx={{
                   // mt: "20px",
                   display: "flex",
                   alignItems: "center",
                   justifyItems: "center",
-                  backgroundColor: "#FF5B94",
+                  backgroundColor: "#6D6DFF",
                   color: "white",
                   width: "160px",
-                  ":hover": { bgcolor: "#F84180" },
+                  ":hover": { bgcolor: "#6868AE" },
                 }}
                 type="submit"
               >

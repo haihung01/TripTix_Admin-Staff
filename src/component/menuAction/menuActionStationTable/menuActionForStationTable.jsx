@@ -40,7 +40,7 @@ export default function MenuActionStationTable({
       >
         <MoreHorizIcon
           sx={{
-            color: "#ec407a",
+            color: "#6464CD",
           }}
         />
       </Button>

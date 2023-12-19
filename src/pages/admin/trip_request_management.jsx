@@ -15,7 +15,7 @@ export default function TripRequestList() {
   const theme = createTheme({
     palette: {
       secondary: {
-        main: "#f37106",
+        main: "#6464CD",
       },
     },
   });

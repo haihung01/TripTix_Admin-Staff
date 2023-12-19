@@ -27,7 +27,7 @@ const SeatingChart = ({ data, floor, listTickets }) => {
           seatName: listSeatSelected,
         };
         await bookingApi.changeTicketForCustomer(dataUpdate);
-        toast.success("Change Ticket(s) Success !");
+        toast.success("Đổi chỗ ngồi thành công !");
         navigate("/change-ticket");
       } catch (error) {
         console.log("errr", error.response.data.message);
@@ -90,7 +90,7 @@ const SeatingChart = ({ data, floor, listTickets }) => {
                       onClick={() => handleSeatClick(seat.seatName)}
                       disabled={
                         listSeatSelected?.find((t) => t === seat.seatName) ||
-                          listSeatSelectedAPI?.find((t) => t === seat.seatName)
+                        listSeatSelectedAPI?.find((t) => t === seat.seatName)
                           ? false
                           : true
                       }
@@ -116,10 +116,26 @@ const SeatingChart = ({ data, floor, listTickets }) => {
     );
   } else {
     return (
-      <Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         <Box>
-          <Grid container spacing={4}>
-            <Grid container item justifyContent="center" spacing={6} xs={6}>
+          <Grid
+            container
+            spacing={2}
+            sx={{ display: "flex", justifyContent: "center" }}
+          >
+            <Grid
+              container
+              item
+              justifyContent="center"
+              spacing={6}
+              xs={6}
+              md={6}
+            >
               {data
                 .slice(0, Math.round(data?.length / 2))
                 .map((seat, seatIndex) => (
@@ -147,7 +163,7 @@ const SeatingChart = ({ data, floor, listTickets }) => {
                         onClick={() => handleSeatClick(seat.seatName)}
                         disabled={
                           listSeatSelected?.find((t) => t === seat.seatName) ||
-                            listSeatSelectedAPI?.find((t) => t === seat.seatName)
+                          listSeatSelectedAPI?.find((t) => t === seat.seatName)
                             ? false
                             : true
                         }
@@ -158,7 +174,14 @@ const SeatingChart = ({ data, floor, listTickets }) => {
                   </Grid>
                 ))}
             </Grid>
-            <Grid container item justifyContent="center" spacing={6} xs={6}>
+            <Grid
+              container
+              item
+              justifyContent="center"
+              spacing={6}
+              xs={6}
+              md={6}
+            >
               {data
                 .slice(Math.round(data?.length / 2), data?.length)
                 .map((seat, seatIndex) => (
@@ -186,7 +209,7 @@ const SeatingChart = ({ data, floor, listTickets }) => {
                         onClick={() => handleSeatClick(seat.seatName)}
                         disabled={
                           listSeatSelected?.find((t) => t === seat.seatName) ||
-                            listSeatSelectedAPI?.find((t) => t === seat.seatName)
+                          listSeatSelectedAPI?.find((t) => t === seat.seatName)
                             ? false
                             : true
                         }
@@ -204,15 +227,14 @@ const SeatingChart = ({ data, floor, listTickets }) => {
             display: "flex",
             justifyContent: "center",
             m: "100px",
-            pb: "100px",
           }}
         >
           <Button
             sx={{
-              backgroundColor: "#ef5350",
+              backgroundColor: "#6D6DFF",
               color: "white",
               width: "160px",
-              ":hover": { bgcolor: "#f44336" },
+              ":hover": { bgcolor: "#6868AE" },
             }}
             onClick={handleSubmitChage}
           >

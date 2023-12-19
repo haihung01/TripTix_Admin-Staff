@@ -102,7 +102,7 @@ const List = () => {
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy("status");
   };
-  console.log("datatripppppp", dataTrip)
+  console.log("datatripppppp", dataTrip);
   const sortedData = dataTrip.slice().sort((a, b) => {
     const orderMultiplier = order === "asc" ? 1 : -1;
     const statusOrder = ["RUN", "READY", "FINISH", "CANCEL"]; // Định nghĩa thứ tự sắp xếp
@@ -254,7 +254,7 @@ const List = () => {
           <TableHead
             sx={{
               backgroundImage:
-                "linear-gradient(to bottom, #f37106, #f8903b, #fac074, #f8aa85, #fcedc5)",
+                "linear-gradient(to bottom, #9b9bff, #a1a1f7, #a7a7ee, #acace5, #b2b2dc)",
             }}
           >
             <TableRow>
@@ -294,36 +294,36 @@ const List = () => {
           <TableBody>
             {!loadingTrip
               ? filteredRows &&
-              filteredRows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => (
-                  <TableRow key={row?.idTrip}>
-                    <TableCell className="tableCell">{row?.idTrip}</TableCell>
-                    <TableCell className="tableCell">
-                      {moment(row?.startTimee * 1000)
-                        .subtract(7, "hours")
-                        .format("DD/MM/YYYY - hh:mm A")}
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      {moment(row?.endTimee * 1000)
-                        .subtract(7, "hours")
-                        .format("DD/MM/YYYY - hh:mm A")}
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      {row?.routeDTO?.departurePoint}
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      {row?.routeDTO?.destination}
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      {formatMoney(row?.fare)}
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      <span className={`tripStatus ${row?.status}`}>
-                        ĐÃ HỦY
-                      </span>
-                    </TableCell>
-                    {/* <TableCell className="tableCell">
+                filteredRows
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row) => (
+                    <TableRow key={row?.idTrip}>
+                      <TableCell className="tableCell">{row?.idTrip}</TableCell>
+                      <TableCell className="tableCell">
+                        {moment(row?.startTimee * 1000)
+                          .subtract(7, "hours")
+                          .format("DD/MM/YYYY - hh:mm A")}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {moment(row?.endTimee * 1000)
+                          .subtract(7, "hours")
+                          .format("DD/MM/YYYY - hh:mm A")}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {row?.routeDTO?.departurePoint}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {row?.routeDTO?.destination}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {formatMoney(row?.fare)}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        <span className={`tripStatus ${row?.status}`}>
+                          ĐÃ HỦY
+                        </span>
+                      </TableCell>
+                      {/* <TableCell className="tableCell">
                       <Rating
                         name={`rating-${row?.tripID}`}
                         value={row?.averageStar}
@@ -331,46 +331,43 @@ const List = () => {
                         readOnly
                       />
                     </TableCell> */}
-                    <TableCell>
-                      <MenuActionTripTable
-                        tripData={row}
-                        onOpenUpdate={handleUpdateModalOpen}
-                        onOpenCancel={handleCancelModelOpen}
-                      />
+                      <TableCell>
+                        <MenuActionTripTable
+                          tripData={row}
+                          onOpenUpdate={handleUpdateModalOpen}
+                          onOpenCancel={handleCancelModelOpen}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))
+              : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
+                  <TableRow hover={true} key={index}>
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
                   </TableRow>
-                ))
-              : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
-                <TableRow hover={true} key={index}>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                </TableRow>
-              ))}
+                ))}
           </TableBody>
 
           {selectedTripData && (

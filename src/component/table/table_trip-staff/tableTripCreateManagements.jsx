@@ -96,7 +96,7 @@ const TripCreatedByStaff = () => {
         pageSize: pangination?.pageSize || 10,
         totalPage: pangination?.totalPage || 1,
       };
-      console.log("hjahahaha", params)
+      console.log("hjahahaha", params);
       const response = await listTripApi.getTripByStaffId(params);
       const trips = response.data;
       setDataTrip(trips);
@@ -122,7 +122,6 @@ const TripCreatedByStaff = () => {
   //format money
   const [formatMoney] = useMoneyFormatter();
 
-
   // SORT STATUS
   const [orderBy, setOrderBy] = useState("");
   const [order, setOrder] = useState("asc");
@@ -145,8 +144,6 @@ const TripCreatedByStaff = () => {
     }
     return 0;
   });
-
-
 
   // FILTER BY DATE AND departurePoint & destination
   const [startDate, setStartDate] = useState("");
@@ -294,8 +291,8 @@ const TripCreatedByStaff = () => {
                 variant="contained"
                 sx={{
                   zIndex: 1000,
-                  bgcolor: "#FF4C8F",
-                  ":hover": { bgcolor: "#FF3472" },
+                  bgcolor: "#6D6DFF",
+                  ":hover": { bgcolor: "#6868AE" },
                   color: "white",
                 }}
               >
@@ -309,7 +306,7 @@ const TripCreatedByStaff = () => {
             <TableHead
               sx={{
                 backgroundImage:
-                  "linear-gradient(to bottom, #f37106, #f8903b, #fac074, #f8aa85, #fcedc5)",
+                  "linear-gradient(to bottom, #9b9bff, #a1a1f7, #a7a7ee, #acace5, #b2b2dc)",
               }}
             >
               <TableRow>
@@ -357,9 +354,7 @@ const TripCreatedByStaff = () => {
               {!loadingTrip && filteredRows.length > 0 ? (
                 filteredRows.map((row) => (
                   <TableRow key={row.idTrip}>
-                    <TableCell className="tableCell">
-                      {row.idTrip}
-                    </TableCell>
+                    <TableCell className="tableCell">{row.idTrip}</TableCell>
                     <TableCell className="tableCell">
                       {moment(row.startTimee * 1000)
                         .subtract(7, "hours")
@@ -384,7 +379,13 @@ const TripCreatedByStaff = () => {
                         </TableCell> */}
                     <TableCell className="tableCell">
                       <span className={`tripRqStatus ${row.adminCheck}`}>
-                        {row.adminCheck === "ACCEPT" ? "CHẤP THUẬN" : row.adminCheck === "PENDING" ? "CHỜ DUYỆT" : row.adminCheck === "CANCEL" ? "HỦY BỎ" : row.adminCheck}
+                        {row.adminCheck === "ACCEPT"
+                          ? "CHẤP THUẬN"
+                          : row.adminCheck === "PENDING"
+                          ? "CHỜ DUYỆT"
+                          : row.adminCheck === "CANCEL"
+                          ? "HỦY BỎ"
+                          : row.adminCheck}
                       </span>
                     </TableCell>
                     <TableCell className="tableCell">
@@ -416,7 +417,9 @@ const TripCreatedByStaff = () => {
                       />
                     </div>
                     <div sx={{ textAlign: "center", marginTop: "10px" }}>
-                      <h2 sx={{ display: "inline-block" }}>Hiện chưa có chuyến...</h2>
+                      <h2 sx={{ display: "inline-block" }}>
+                        Hiện chưa có chuyến...
+                      </h2>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -488,5 +491,5 @@ const TripCreatedByStaff = () => {
   } else if (loadingTrip) {
     return <div>Loading...</div>;
   }
-}
+};
 export default TripCreatedByStaff;

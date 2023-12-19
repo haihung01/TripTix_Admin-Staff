@@ -170,8 +170,8 @@ const List = () => {
           variant="contained"
           sx={{
             zIndex: 1000,
-            bgcolor: "#FF4C8F",
-            ":hover": { bgcolor: "#FF3472" },
+            bgcolor: "#6D6DFF",
+            ":hover": { bgcolor: "#6868AE" },
             color: "white",
           }}
           onClick={handleAddModalOpen}
@@ -184,7 +184,7 @@ const List = () => {
           <TableHead
             sx={{
               backgroundImage:
-                "linear-gradient(to bottom, #f37106, #f8903b, #fac074, #f8aa85, #fcedc5)",
+                "linear-gradient(to bottom, #9b9bff, #a1a1f7, #a7a7ee, #acace5, #b2b2dc)",
             }}
           >
             <TableRow>
@@ -212,9 +212,7 @@ const List = () => {
               <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
                 Khu Vực
               </TableCell>
-              <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
-                Ngày Cập Nhật Cuối
-              </TableCell>
+
               <TableCell
                 className="tableTitle"
                 sx={{ color: "#443A3E" }}
@@ -224,76 +222,88 @@ const List = () => {
           <TableBody>
             {!loading
               ? filteredRows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => (
-                  <TableRow key={row.idUserSystem}>
-                    <TableCell className="tableCell">
-                      {row.idUserSystem}
-                    </TableCell>
-                    <TableCell
-                      className="tableCell"
-                      onClick={() => handleOpen(row)}
-                    >
-                      {row.fullName}
-                    </TableCell>
-                    <TableCell className="tableCell">{row.userName}</TableCell>
-                    <TableCell className="tableCell">{row.email}</TableCell>
-                    <TableCell className="tableCell">{row.address}</TableCell>
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row) => (
+                    <TableRow key={row.idUserSystem}>
+                      <TableCell className="tableCell">
+                        {row.idUserSystem}
+                      </TableCell>
+                      <TableCell
+                        className="tableCell"
+                        onClick={() => handleOpen(row)}
+                      >
+                        {row.fullName}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {row.userName}
+                      </TableCell>
+                      <TableCell className="tableCell">{row.email}</TableCell>
+                      <TableCell className="tableCell">{row.address}</TableCell>
 
-                    <TableCell className="tableCell">
-                      <span className={`staffStatus ${row.status}`}>
-                        {row.status === "ACTIVE" ? "ĐANG HOẠT ĐỘNG" : row.status === "DEACTIVE" ? "KHÔNG HOẠT ĐỘNG" : row.status}
-                      </span>
+                      <TableCell className="tableCell">
+                        <span className={`staffStatus ${row.status}`}>
+                          {row.status === "ACTIVE"
+                            ? "ĐANG HOẠT ĐỘNG"
+                            : row.status === "DEACTIVE"
+                            ? "KHÔNG HOẠT ĐỘNG"
+                            : row.status}
+                        </span>
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {row.gender === "MALE"
+                          ? "NAM"
+                          : row.gender === "FEMALE"
+                          ? "NỮ"
+                          : row.gender}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {row.assignedRegions === "Hỗn hợp"
+                          ? "Liên vùng"
+                          : row.assignedRegions}
+                      </TableCell>
+
+                      <TableCell>
+                        <MenuActionStaffTable
+                          onOpenUpdate={handleUpdateModalOpen}
+                          onOpenDetail={handleOpen}
+                          onOpenBan={handleBanModelOpen}
+                          onOpenUnban={handleUnbanModelOpen}
+                          userData={row}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))
+              : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
+                  <TableRow hover={true} key={index}>
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
-                    <TableCell className="tableCell">{row.gender === "MALE" ? "NAM" : row.gender === "FEMALE" ? "NỮ" : row.gender}</TableCell>
-                    <TableCell className="tableCell">
-                      {row.assignedRegions === "Hỗn hợp" ? "Liên vùng" : row.assignedRegions}
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
-                    <TableCell className="tableCell">
-                      {moment(row.updatedDate).format("DD/MM/YYYY")}
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
-                    <TableCell>
-                      <MenuActionStaffTable
-                        onOpenUpdate={handleUpdateModalOpen}
-                        onOpenDetail={handleOpen}
-                        onOpenBan={handleBanModelOpen}
-                        onOpenUnban={handleUnbanModelOpen}
-                        userData={row}
-                      />
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
                   </TableRow>
-                ))
-              : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
-                <TableRow hover={true} key={index}>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                </TableRow>
-              ))}
+                ))}
           </TableBody>
           {/* Display modal popup */}
 

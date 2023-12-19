@@ -48,12 +48,12 @@ export default function ChangeSeatingForCustomer() {
         Đổi Vé Chuyến Đi Cho Khách Hàng
       </Typography>
       <Divider />
-      <div></div>
+
       <div
         style={{
           width: "40vw",
-          marginLeft: "29rem",
-          marginTop: "5rem",
+          paddingLeft: "29rem",
+          paddingTop: "5rem",
         }}
       >
         <SeatingChart

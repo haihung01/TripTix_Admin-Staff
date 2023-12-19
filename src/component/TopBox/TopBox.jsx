@@ -64,7 +64,7 @@ export default function TopDeal() {
         <TableHead
           sx={{
             backgroundImage:
-              "linear-gradient(to bottom, #f37106, #f8903b, #fac074, #f8aa85, #fcedc5)",
+              "linear-gradient(to bottom, #9b9bff, #a1a1f7, #a7a7ee, #acace5, #b2b2dc)",
           }}
         >
           <TableRow>
@@ -79,25 +79,25 @@ export default function TopDeal() {
         <TableBody>
           {!loading
             ? dataCustomer?.map((row) => (
-              <TableRow key={row.top}>
-                <TableCell className="tableCell">
-                  {row?.nameCustomer}
-                </TableCell>
-                <TableCell className="tableCell">
-                  {formatMoney(row?.totalPriceUsed)}
-                </TableCell>
-              </TableRow>
-            ))
+                <TableRow key={row.top}>
+                  <TableCell className="tableCell">
+                    {row?.nameCustomer}
+                  </TableCell>
+                  <TableCell className="tableCell">
+                    {formatMoney(row?.totalPriceUsed)}
+                  </TableCell>
+                </TableRow>
+              ))
             : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
-              <TableRow hover={true} key={index}>
-                <TableCell align="left">
-                  <Skeleton variant="rectangular" />
-                </TableCell>
-                <TableCell align="left">
-                  <Skeleton variant="rectangular" />
-                </TableCell>
-              </TableRow>
-            ))}
+                <TableRow hover={true} key={index}>
+                  <TableCell align="left">
+                    <Skeleton variant="rectangular" />
+                  </TableCell>
+                  <TableCell align="left">
+                    <Skeleton variant="rectangular" />
+                  </TableCell>
+                </TableRow>
+              ))}
         </TableBody>
       </Table>
       <TablePagination

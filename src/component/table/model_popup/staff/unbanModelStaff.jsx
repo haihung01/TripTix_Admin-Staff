@@ -10,7 +10,9 @@ const UnbanStaffModal = ({ open, handleClose, userData, fetchUsersData }) => {
   });
 
   const handleUnban = async () => {
-    const isConfirm = window.confirm("Bạn chắc chắn muốn kích hoạt lại tài khoản này ?");
+    const isConfirm = window.confirm(
+      "Bạn chắc chắn muốn kích hoạt lại tài khoản này ?"
+    );
     if (isConfirm) {
       try {
         const response = await listUserApi.unbanUser(unbanUser.idUserSystem);
@@ -58,10 +60,10 @@ const UnbanStaffModal = ({ open, handleClose, userData, fetchUsersData }) => {
         <Button
           onClick={handleUnban}
           sx={{
-            backgroundColor: "#FF5B94",
+            backgroundColor: "#6D6DFF",
             color: "white",
             width: "160px",
-            ":hover": { bgcolor: "#F84180" },
+            ":hover": { bgcolor: "#6868AE" },
           }}
         >
           Kích Hoạt

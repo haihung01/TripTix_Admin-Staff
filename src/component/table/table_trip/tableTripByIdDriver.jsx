@@ -161,7 +161,7 @@ const List = () => {
           <TableHead
             sx={{
               backgroundImage:
-                "linear-gradient(to bottom, #f37106, #f8903b, #fac074, #f8aa85, #fcedc5)",
+                "linear-gradient(to bottom, #9b9bff, #a1a1f7, #a7a7ee, #acace5, #b2b2dc)",
             }}
           >
             <TableRow>
@@ -201,72 +201,80 @@ const List = () => {
           <TableBody>
             {!loadingTrip
               ? filteredRows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => (
-                  <TableRow key={row.idTrip}>
-                    <TableCell className="tableCell">{row.idTrip}</TableCell>
-                    <TableCell className="tableCell">
-                      {moment(row.startTimee * 1000).format(
-                        "DD/MM/YYYY hh:mm A"
-                      )}
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row) => (
+                    <TableRow key={row.idTrip}>
+                      <TableCell className="tableCell">{row.idTrip}</TableCell>
+                      <TableCell className="tableCell">
+                        {moment(row.startTimee * 1000).format(
+                          "DD/MM/YYYY hh:mm A"
+                        )}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {moment(row.endTimee * 1000).format(
+                          "DD/MM/YYYY hh:mm A"
+                        )}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {row.routeDTO.departurePoint}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {row.routeDTO.destination}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {formatMoney(row?.fare)}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        <span className={`tripStatus ${row.status}`}>
+                          {row.status === "RUN"
+                            ? "ĐANG ĐI"
+                            : row.status === "READY"
+                            ? "CHUẨN BỊ"
+                            : row.status === "FINISH"
+                            ? "ĐÃ HOÀN THÀNH"
+                            : row.status === "CANCEL"
+                            ? "ĐÃ HỦY"
+                            : row.status}
+                        </span>
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        <Rating
+                          name={`rating-${row.tripID}`}
+                          value={row.averageStar}
+                          precision={0.2}
+                          readOnly
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))
+              : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
+                  <TableRow hover={true} key={index}>
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
-                    <TableCell className="tableCell">
-                      {moment(row.endTimee * 1000).format(
-                        "DD/MM/YYYY hh:mm A"
-                      )}
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
-                    <TableCell className="tableCell">
-                      {row.routeDTO.departurePoint}
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
-                    <TableCell className="tableCell">
-                      {row.routeDTO.destination}
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
-                    <TableCell className="tableCell">
-                      {formatMoney(row?.fare)}
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
-                    <TableCell className="tableCell">
-                      <span className={`tripStatus ${row.status}`}>
-                        {row.status === "RUN" ? "ĐANG ĐI" : row.status === "READY" ? "CHUẨN BỊ" : row.status === "FINISH" ? "ĐÃ HOÀN THÀNH" : row.status === "CANCEL" ? "ĐÃ HỦY" : row.status}
-                      </span>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
-                    <TableCell className="tableCell">
-                      <Rating
-                        name={`rating-${row.tripID}`}
-                        value={row.averageStar}
-                        precision={0.2}
-                        readOnly
-                      />
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
                   </TableRow>
-                ))
-              : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
-                <TableRow hover={true} key={index}>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                </TableRow>
-              ))}
+                ))}
           </TableBody>
         </Table>
         <TablePagination

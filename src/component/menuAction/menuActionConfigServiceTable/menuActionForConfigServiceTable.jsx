@@ -46,7 +46,7 @@ export default function MenuActionConfigServiceTable({
       >
         <MoreHorizIcon
           sx={{
-            color: "#ec407a",
+            color: "#6464CD",
           }}
         />
       </Button>
