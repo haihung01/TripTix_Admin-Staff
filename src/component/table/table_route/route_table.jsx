@@ -15,19 +15,15 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { useEffect, useState } from "react";
-// import DeleteStationModel from "../model_popup/station/modelDeleteStation";
-// import UpdateStationModal from "../model_popup/station/modelUpdateStation";
 import "../table.scss";
-// import listStationApi from "../../../utils/listStationAPI";
 import useAuth from "../../../hook/useAuth";
 import { toast } from "react-toastify";
 import moment from "moment";
-import AddStationPopup from "../model_popup/station/modelAddStation";
-import MenuActionStationTable from "../../menuAction/menuActionStationTable/menuActionForStationTable";
 import listRouteApi from "../../../utils/listRouteAPI";
 import AddRoutePopup from "../model_popup/route/modelAddRoute";
 import ModelDeleteRoute from "../model_popup/route/modelDeleteRoute";
 import MenuActionRouteTable from "../../menuAction/menuActionRouteTable/menuActionForRouteTable";
+import { Link } from "react-router-dom";
 
 const List = () => {
   const { auth } = useAuth();
@@ -107,7 +103,6 @@ const List = () => {
   const [dataRoute, setDataRoute] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  console.log("hahaha");
   const fetchListRoute = async () => {
     try {
       setLoading(true);
@@ -220,21 +215,23 @@ const List = () => {
           />
         </Box>
         {auth?.user?.role === "ROLE_ADMIN" && (
-          <Button
-            variant="contained"
-            sx={{
-              zIndex: 1000,
+          <Link to="/create-route">
+            <Button
+              variant="contained"
+              sx={{
+                zIndex: 1000,
 
-              backgroundColor: "#6D6DFF",
+                backgroundColor: "#6D6DFF",
 
-              ":hover": { bgcolor: "#6868AE" },
+                ":hover": { bgcolor: "#6868AE" },
 
-              color: "white",
-            }}
-            onClick={handleAddModalOpen}
-          >
-            Thêm Tuyến
-          </Button>
+                color: "white",
+              }}
+              onClick={handleAddModalOpen}
+            >
+              Thêm Tuyến
+            </Button>
+          </Link>
         )}
       </Box>
       <TableContainer component={Paper} className="table">
@@ -254,9 +251,6 @@ const List = () => {
               </TableCell>
               <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
                 Điểm Xuống
-              </TableCell>
-              <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
-                Vùng
               </TableCell>
               <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
                 Ngày Tạo
@@ -284,9 +278,6 @@ const List = () => {
                       </TableCell>
                       <TableCell className="tableCell">
                         {row.destination}
-                      </TableCell>
-                      <TableCell className="tableCell">
-                        {row.region === "Hỗn hợp" ? "Liên vùng" : row.region}
                       </TableCell>
                       <TableCell className="tableCell">
                         {moment(row.createdDate).format("DD/MM/YYYY")}

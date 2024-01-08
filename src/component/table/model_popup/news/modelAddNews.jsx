@@ -62,10 +62,7 @@ const AddNewsPopup = ({ open, handleClose, fetchListNews }) => {
             formData.append("idStaff", values.idStaff);
             formData.append("title", values.title);
             formData.append("description", values.description);
-
-            for (let i = 0; i < values.fileList.length; i++) {
-              formData.append("fileList", values.fileList[i]);
-            }
+            formData.append("image", values.fileList);
 
             try {
               const response = await listNewsApi.createNews(formData);
@@ -143,14 +140,13 @@ const AddNewsPopup = ({ open, handleClose, fetchListNews }) => {
                     {({ field, form, meta }) => (
                       <>
                         <input
-                          multiple
                           type="file"
                           name="fileList"
                           id="fileList"
                           onChange={(event) =>
                             form.setFieldValue(
                               field.name,
-                              event.currentTarget.files
+                              event.currentTarget.files[0]
                             )
                           }
                         />

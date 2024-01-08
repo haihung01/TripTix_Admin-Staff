@@ -1,5 +1,5 @@
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import {
+  Autocomplete,
   Button,
   Dialog,
   DialogActions,
@@ -8,7 +8,6 @@ import {
   Divider,
   FormControl,
   Grid,
-  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
@@ -16,13 +15,12 @@ import {
   Typography,
 } from "@mui/material";
 import { Field, Form, Formik } from "formik";
-import moment from "moment";
-import React from "react";
-import ReactDatePicker from "react-datepicker";
+import React, { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import listBusesApi from "../../../../utils/listBusAPI";
+import listStationApi from "../../../../utils/listStationAPI";
 
 const StationSchema = Yup.object().shape({
   name: Yup.string()
@@ -39,6 +37,28 @@ const StationSchema = Yup.object().shape({
 });
 
 const AddBusesPopup = ({ open, handleClose, fetchListbuses }) => {
+  const [dataStation, setDataStation] = useState([]);
+
+  const fetchListStation = async () => {
+    try {
+      const response = await listStationApi.getAll({});
+      console.log("dataTBL", response);
+      setDataStation(response.data);
+    } catch (error) {
+      console.log("err", error);
+      setDataStation([]);
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Load Data failed !");
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchListStation();
+  }, []);
+
   return (
     <Dialog
       open={open}
@@ -67,7 +87,7 @@ const AddBusesPopup = ({ open, handleClose, fetchListbuses }) => {
             description: "",
             capacity: 0,
             floor: 0,
-            inspectionDate: "",
+            idStation: "",
             fileList: null,
           }}
           validationSchema={StationSchema}
@@ -80,20 +100,14 @@ const AddBusesPopup = ({ open, handleClose, fetchListbuses }) => {
             formData.append("description", values.description);
             formData.append("capacity", values.capacity);
             formData.append("floor", values.floor);
-            formData.append(
-              "inspectionDate",
-              moment(values.inspectionDate).format("YYYY-MM-DD")
-            );
-
-            for (let i = 0; i < values.fileList.length; i++) {
-              formData.append("fileList", values.fileList[i]);
-            }
+            formData.append("idStation", values.idStation);
+            formData.append("image", values.fileList);
 
             try {
               const response = await listBusesApi.createNewBuses(formData);
               console.log("Buse", response);
               fetchListbuses();
-              toast.success("Thêm Xe Khách Mới Thành công !");
+              toast.success(response?.message);
               handleClose();
             } catch (error) {
               console.log("errr", error.response.data.error);
@@ -196,41 +210,42 @@ const AddBusesPopup = ({ open, handleClose, fetchListbuses }) => {
                     )}
                   </Field>
                 </Grid>
+
                 <Grid item xs={12} md={12}>
-                  <Field name="inspectionDate">
+                  <Field name="idStation">
                     {({ field, form, meta }) => (
-                      <ReactDatePicker
-                        className="react-datepicker-wrapper"
+                      <Autocomplete
                         {...field}
-                        customInput={
+                        options={dataStation.map((option, index) => ({
+                          ...option,
+                          index,
+                        }))}
+                        getOptionLabel={(option) =>
+                          `Trạm số: ${option.idStation} - ${option?.name} - ( ${option?.address} )`
+                        }
+                        value={
+                          dataStation.find(
+                            (option) => option?.idStation === field.value
+                          ) || null
+                        }
+                        onChange={(event, newValue) => {
+                          form.setFieldValue(
+                            `idStation`,
+                            newValue ? newValue.idStation : ""
+                          );
+                        }}
+                        onBlur={form.handleBlur}
+                        renderInput={(params) => (
                           <TextField
-                            {...field}
-                            label="Hạn Kiểm Định"
-                            sx={{
-                              "& .MuiInputBase-root": {
-                                borderRadius: 2,
-                              },
-                            }}
-                            InputProps={{
-                              startAdornment: (
-                                <InputAdornment position="start">
-                                  <CalendarTodayIcon />
-                                </InputAdornment>
-                              ),
-                            }}
+                            {...params}
+                            margin="dense"
+                            label="Trạm"
                             error={meta.touched && !!meta.error}
                             helperText={
                               meta.touched && meta.error ? meta.error : ""
                             }
                           />
-                        }
-                        selectsRange={false}
-                        selected={values.inspectionDate || null}
-                        onChange={(val) => {
-                          form.setFieldValue("inspectionDate", val);
-                        }}
-                        placeholderText="Chọn Ngày"
-                        dateFormat="dd/MM/yyyy"
+                        )}
                       />
                     )}
                   </Field>
@@ -240,6 +255,8 @@ const AddBusesPopup = ({ open, handleClose, fetchListbuses }) => {
                     {({ field, meta }) => (
                       <TextField
                         {...field}
+                        rows={3}
+                        maxRows={6}
                         margin="dense"
                         label="Mô Tả Xe"
                         multiline
@@ -259,14 +276,13 @@ const AddBusesPopup = ({ open, handleClose, fetchListbuses }) => {
                     {({ field, form, meta }) => (
                       <>
                         <input
-                          multiple
                           type="file"
                           name="fileList"
                           id="fileList"
                           onChange={(event) =>
                             form.setFieldValue(
                               field.name,
-                              event.currentTarget.files
+                              event.currentTarget.files[0]
                             )
                           }
                         />

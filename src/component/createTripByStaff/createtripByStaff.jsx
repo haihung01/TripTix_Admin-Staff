@@ -60,6 +60,7 @@ export default function CreateTrip() {
         }
       }
     };
+    
     if (isFetchData) {
       fetchData();
       setIsFetchData(false);
@@ -211,7 +212,6 @@ export default function CreateTrip() {
         });
         console.log("dataAS: ", listTripStopFormat);
         try {
-          // await handleSaveTemplate(values);
           const tripPost = {
             ...values,
             listTripStop: listTripStopFormat,
@@ -466,8 +466,8 @@ export default function CreateTrip() {
                 </Field>
               </Grid>
 
-              <Grid item xs={12} md={12}>
-                {/* <Field name="fare">
+              {/* <Grid item xs={12} md={12}>
+                <Field name="fare">
                   {({ field, meta }) => (
                     <TextField
                       {...field}
@@ -480,8 +480,8 @@ export default function CreateTrip() {
                       helperText={meta.touched && meta.error ? meta.error : ""}
                     />
                   )}
-                </Field> */}
-              </Grid>
+                </Field>
+              </Grid> */}
 
               <Grid item xs={12} md={12}>
                 <FieldArray name="listTripStop">
@@ -688,7 +688,7 @@ export default function CreateTrip() {
                   width: "160px",
                   ":hover": { bgcolor: "#F84180" },
                 }}
-                type="submit"
+                type="button"
                 onClick={() => handleSaveTemplate(values)}
               >
                 Lưu chuyến đi

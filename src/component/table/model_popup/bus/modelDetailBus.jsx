@@ -38,20 +38,15 @@ const ModelDetailBus = ({ open, handleClose, busData }) => {
       </DialogTitle>
       <Divider />
       <DialogContent>
-        <Carousel sx={{ margin: "auto", border: "none", pb: "20px" }}>
-          {busData.imgLink &&
-            busData.imgLink.map((i, index) => (
-              <CardMedia
-                key={index}
-                component="img"
-                height="345"
-                image={i}
-                alt="img"
-                sx={{ objectFit: "cover" }}
-              />
-            ))}
-        </Carousel>
-
+        <Box sx={{ margin: "auto", border: "none", pb: "20px" }}>
+          <CardMedia
+            component="img"
+            height="345"
+            image={busData.imgLink}
+            alt="img"
+            sx={{ objectFit: "cover" }}
+          />
+        </Box>
         <Box>
           <Grid container spacing={2}>
             <Grid item xs={12} md={12}>

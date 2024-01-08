@@ -10,25 +10,21 @@ const ModelDeleteBus = ({ open, handleClose, busData, fetchBusesData }) => {
   });
 
   const handleDeleteBus = async () => {
-    const isConfirm = window.confirm(
-      "Bạn có chắc chắn xóa chiếc xe khách này không ?"
-    );
-    if (isConfirm) {
-      try {
-        const response = await listBusesApi.deleteBus(deleteBus.idBus);
-        console.log("mnhas", response);
-        toast.success(response.message);
-        fetchBusesData();
-        handleClose();
-      } catch (error) {
-        console.log("err", error);
-        if (error.response) {
-          toast.error(error.response.data.message);
-        } else {
-          toast.error("Delete failed !!");
-        }
+    try {
+      const response = await listBusesApi.deleteBus(deleteBus.idBus);
+      console.log("mnhas", response);
+      toast.success(response.message);
+      fetchBusesData();
+      handleClose();
+    } catch (error) {
+      console.log("err", error);
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Delete failed !!");
       }
     }
+
     console.log("datalog", deleteBus);
   };
 

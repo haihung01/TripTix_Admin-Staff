@@ -1,5 +1,5 @@
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import {
+  Autocomplete,
   Button,
   Dialog,
   DialogActions,
@@ -8,22 +8,20 @@ import {
   Divider,
   FormControl,
   Grid,
-  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
   TextField,
-  Typography,
+  Typography
 } from "@mui/material";
 import { Field, Form, Formik } from "formik";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import * as yup from "yup";
 import listBusesApi from "../../../../utils/listBusAPI";
-import ReactDatePicker from "react-datepicker";
+import listStationApi from "../../../../utils/listStationAPI";
 import "./modelUpdateBus.scss";
-import moment from "moment";
 
 const BusesSchema = yup.object().shape({
   name: yup
@@ -40,15 +38,34 @@ const BusesSchema = yup.object().shape({
     .required("Mô tả cho chiếc xe là cần thiết và bắt buộc !"),
   capacity: yup.number().required("Số chỗ ngồi cần phải được điền !"),
   floor: yup.number().required("Số tầng của chiếc xe điền !"),
-  inspectionDate: yup.date().required("Hạn kiểm định phải được khai báo !"),
+
   status: yup
     .string()
     .required("Trường này là bắt buộc, hãy chọn trạng thái cho chiếc xe !"),
 });
 
 const ModelUpdateBus = ({ open, handleClose, busData, fetchListBuses }) => {
-  //Format InspectionDate
-  const formatInspectionDate = new Date(busData?.inspectionDate * 1000);
+  const [dataStation, setDataStation] = useState([]);
+
+  const fetchListStation = async () => {
+    try {
+      const response = await listStationApi.getAll({});
+      console.log("dataTBL", response);
+      setDataStation(response.data);
+    } catch (error) {
+      console.log("err", error);
+      setDataStation([]);
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Load Data failed !");
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchListStation();
+  }, []);
 
   return (
     <Dialog
@@ -83,22 +100,16 @@ const ModelUpdateBus = ({ open, handleClose, busData, fetchListBuses }) => {
             description: busData?.description,
             capacity: busData?.capacity,
             floor: busData?.floor,
-            inspectionDate: formatInspectionDate,
+            idStation: busData?.station?.idStation,
             status: busData?.status,
           }}
           validationSchema={BusesSchema}
           onSubmit={async (values) => {
             try {
-              const busPut = {
-                ...values,
-                inspectionDate: moment(values.inspectionDate).format(
-                  "YYYY-MM-DD"
-                ),
-              };
-              const response = await listBusesApi.updateBus(busPut);
+              const response = await listBusesApi.updateBus(values);
               console.log("mmal", response);
               fetchListBuses();
-              toast.success("Update Buses Success !");
+              toast.success(response.message);
               handleClose();
             } catch (error) {
               console.log("errr", error.response.data.message);
@@ -109,7 +120,7 @@ const ModelUpdateBus = ({ open, handleClose, busData, fetchListBuses }) => {
           {({ values }) => (
             <Form>
               <Grid container spacing={2}>
-                <Grid item xs={12} md={12}>
+                <Grid item xs={12} md={2}>
                   <Field name="idBus">
                     {({ field }) => (
                       <TextField
@@ -123,7 +134,7 @@ const ModelUpdateBus = ({ open, handleClose, busData, fetchListBuses }) => {
                     )}
                   </Field>
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} md={5}>
                   <Field name="name">
                     {({ field, meta }) => (
                       <TextField
@@ -140,7 +151,7 @@ const ModelUpdateBus = ({ open, handleClose, busData, fetchListBuses }) => {
                     )}
                   </Field>
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} md={5}>
                   <Field name="licensePlates">
                     {({ field, meta }) => (
                       <TextField
@@ -182,12 +193,12 @@ const ModelUpdateBus = ({ open, handleClose, busData, fetchListBuses }) => {
                     )}
                   </Field>
                 </Grid>
-                <Grid item xs={12} md={4}>
+                <Grid item xs={12} md={2}>
                   <Field name="capacity">
                     {({ field, meta }) => (
                       <TextField
                         {...field}
-                        label="Số Lượng Chỗ Ngồi"
+                        label="Số Chỗ"
                         type="number"
                         fullWidth
                         error={meta.touched && !!meta.error}
@@ -198,7 +209,7 @@ const ModelUpdateBus = ({ open, handleClose, busData, fetchListBuses }) => {
                     )}
                   </Field>
                 </Grid>
-                <Grid item xs={12} md={4}>
+                <Grid item xs={12} md={2}>
                   <Field name="floor">
                     {({ field, meta }) => (
                       <TextField
@@ -214,41 +225,67 @@ const ModelUpdateBus = ({ open, handleClose, busData, fetchListBuses }) => {
                     )}
                   </Field>
                 </Grid>
+                <Grid item xs={12} md={4}>
+                  <Field name="status">
+                    {({ field, meta }) => (
+                      <FormControl fullWidth>
+                        <InputLabel htmlFor="area-select">
+                          Trạng Thái
+                        </InputLabel>
+                        <Select
+                          {...field}
+                          label="Trạng Thái"
+                          fullWidth
+                          error={meta.touched && !!meta.error}
+                        >
+                          <MenuItem value="ACTIVE">Hoạt Động</MenuItem>
+                          <MenuItem value="DEACTIVE">Ngưng Hoạt Động</MenuItem>
+                        </Select>
+                        <Typography
+                          color="#D80032"
+                          sx={{ fontSize: "12px", p: 0.5 }}
+                        >
+                          {meta.touched && meta.error ? meta.error : ""}
+                        </Typography>
+                      </FormControl>
+                    )}
+                  </Field>
+                </Grid>
                 <Grid item xs={12} md={12}>
-                  <Field name="inspectionDate">
+                  <Field name="idStation">
                     {({ field, form, meta }) => (
-                      <ReactDatePicker
-                        className="react-datepicker-wrapper"
+                      <Autocomplete
                         {...field}
-                        customInput={
+                        options={dataStation.map((option, index) => ({
+                          ...option,
+                          index,
+                        }))}
+                        getOptionLabel={(option) =>
+                          `Trạm số: ${option.idStation} - ${option?.name} - ( ${option?.address} )`
+                        }
+                        value={
+                          dataStation.find(
+                            (option) => option?.idStation === field.value
+                          ) || null
+                        }
+                        onChange={(event, newValue) => {
+                          form.setFieldValue(
+                            `idStation`,
+                            newValue ? newValue.idStation : ""
+                          );
+                        }}
+                        onBlur={form.handleBlur}
+                        renderInput={(params) => (
                           <TextField
-                            {...field}
-                            label="Hạn Kiểm Định"
-                            sx={{
-                              "& .MuiInputBase-root": {
-                                borderRadius: 2,
-                              },
-                            }}
-                            InputProps={{
-                              startAdornment: (
-                                <InputAdornment position="start">
-                                  <CalendarTodayIcon />
-                                </InputAdornment>
-                              ),
-                            }}
+                            {...params}
+                            margin="dense"
+                            label="Trạm"
                             error={meta.touched && !!meta.error}
                             helperText={
                               meta.touched && meta.error ? meta.error : ""
                             }
                           />
-                        }
-                        selectsRange={false}
-                        selected={values.inspectionDate || null}
-                        onChange={(val) => {
-                          form.setFieldValue("inspectionDate", val);
-                        }}
-                        placeholderText="Chọn Ngày"
-                        dateFormat="dd/MM/yyyy"
+                        )}
                       />
                     )}
                   </Field>
@@ -258,6 +295,8 @@ const ModelUpdateBus = ({ open, handleClose, busData, fetchListBuses }) => {
                     {({ field, meta }) => (
                       <TextField
                         {...field}
+                        rows={3}
+                        maxRows={6}
                         margin="dense"
                         label="Mô Tả"
                         multiline

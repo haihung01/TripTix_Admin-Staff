@@ -33,7 +33,7 @@ const AddStationPopup = ({ open, handleClose, fetchListStation }) => {
   useEffect(() => {
     const fetchListProvinceCity = async () => {
       try {
-        const response = await listProvinceCityApi.getAll({ type: "VN" });
+        const response = await listProvinceCityApi.getAll({});
         console.log("dataTBL", response);
         setDataProvinceCity(response.data);
       } catch (error) {

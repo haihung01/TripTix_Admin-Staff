@@ -1,7 +1,7 @@
 import axiosClient from "./axiosCustomize";
 const listBusesApi = {
   getAll: (params) => {
-    const url = "/buses";
+    const url = "/vehicles";
     return axiosClient.get(url, {
       params,
       paramsSerializer: {
@@ -10,7 +10,7 @@ const listBusesApi = {
     });
   },
   createNewBuses: (payload) => {
-    const url = "/buses";
+    const url = "/vehicles";
     return axiosClient.post(url, payload, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -18,11 +18,11 @@ const listBusesApi = {
     });
   },
   deleteBus: (payload) => {
-    const url = `/buses?id=${payload}`;
+    const url = `/vehicles?id=${payload}`;
     return axiosClient.delete(url);
   },
   updateBus: (payload) => {
-    const url = "/buses";
+    const url = "/vehicles";
     return axiosClient.put(url, payload);
   },
 };

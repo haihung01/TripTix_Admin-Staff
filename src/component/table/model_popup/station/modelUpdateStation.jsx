@@ -47,7 +47,7 @@ const ModelUpdateStation = ({
   useEffect(() => {
     const fetchListProvinceCity = async () => {
       try {
-        const response = await listProvinceCityApi.getAll({ type: "VN" });
+        const response = await listProvinceCityApi.getAll({});
         setDataProvinceCity(response.data);
       } catch (error) {
         console.log("err", error);

@@ -12,10 +12,10 @@ import UserManagement from "../pages/admin/user_management";
 import HistoryTripByIdDriver from "../pages/admin/viewHistoryTripByIdDriver";
 import Dashboard from "../pages/dashboard/dashboard";
 import ChangeTicketPage from "../pages/staff/change_ticket";
-import RouteManagement from "../pages/admin/route_management"
+import RouteManagement from "../pages/admin/route_management";
 import TableHistoryBookingOfCustomer from "../component/table/table_booking/tableHistoryBookingOfCustomer";
 import ChangeSeatingForCustomerPage from "../pages/staff/change_seating_for_customer";
-
+import CreateRoute from "../component/createNewRoute/CreateRoute";
 
 export const publicRoutes = [
   {
@@ -67,6 +67,10 @@ export const adminRoutes = [
   {
     path: "/config-service",
     element: <ListSystemServicePage />,
+  },
+  {
+    path: "/create-route",
+    element: <CreateRoute />,
   },
 ];
 
