@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Grid,
+  IconButton,
   Skeleton,
   TablePagination,
   TextField,
@@ -20,7 +21,7 @@ import listTripApi from "../../../utils/listTripAPI";
 import ModalApprovedTrip from "../model_popup/trip-managements/modelApprovedTrip";
 import "../table.scss";
 import useAuth from "../../../hook/useAuth";
-import useMoneyFormatter from "../../../hook/useMoneyFormatter";
+import SearchIcon from "@mui/icons-material/Search";
 
 const TripRequestPendingByStaff = () => {
   const { auth } = useAuth();
@@ -63,6 +64,7 @@ const TripRequestPendingByStaff = () => {
         params
       );
       const trips = response.data;
+      console.log("my data: ", response.data);
       setDataTrip(trips);
     } catch (error) {
       console.log("err", error);
@@ -94,38 +96,24 @@ const TripRequestPendingByStaff = () => {
   };
 
   const [startPoint, setStartPoint] = useState("");
-  const [endPoint, setEndPoint] = useState("");
 
   const handleStartPointChange = (event) => {
     setStartPoint(event.target.value);
   };
 
-  const handleEndPointChange = (event) => {
-    setEndPoint(event.target.value);
-  };
-
-  //format money
-  const [formatMoney] = useMoneyFormatter();
-
   const filteredRows = dataTrip.filter((row) => {
     const isStartPointMatch =
       !startPoint ||
-      row?.routeDTO?.departurePoint
-        .toLowerCase()
-        .includes(startPoint.toLowerCase());
+      row?.route?.name.toLowerCase().includes(startPoint.toLowerCase());
 
-    const isEndPointMatch =
-      !endPoint ||
-      row?.routeDTO?.destination.toLowerCase().includes(endPoint.toLowerCase());
+    if (!startDate && !endDate) return isStartPointMatch;
 
-    if (!startDate && !endDate) return isStartPointMatch && isEndPointMatch;
+    if (!row?.departureDateLT) return false;
 
-    if (!row?.startTimee) return false;
-
-    const rowStartDate = moment(row?.startTimee * 1000)
+    const rowStartDate = moment(row?.departureDateLT * 1000)
       .subtract(7, "hours")
       .startOf("day");
-    const rowEndDate = moment(row?.startTimee * 1000)
+    const rowEndDate = moment(row?.departureDateLT * 1000)
       .subtract(7, "hours")
       .endOf("day");
 
@@ -134,7 +122,6 @@ const TripRequestPendingByStaff = () => {
       const endMoment = moment(endDate).endOf("day");
       return (
         isStartPointMatch &&
-        isEndPointMatch &&
         rowStartDate.isSameOrBefore(endMoment) &&
         rowEndDate.isSameOrAfter(startMoment)
       );
@@ -142,23 +129,15 @@ const TripRequestPendingByStaff = () => {
 
     if (startDate) {
       const startMoment = moment(startDate).startOf("day");
-      return (
-        isStartPointMatch &&
-        isEndPointMatch &&
-        rowStartDate.isSameOrAfter(startMoment)
-      );
+      return isStartPointMatch && rowStartDate.isSameOrAfter(startMoment);
     }
 
     if (endDate) {
       const endMoment = moment(endDate).endOf("day");
-      return (
-        isStartPointMatch &&
-        isEndPointMatch &&
-        rowEndDate.isSameOrBefore(endMoment)
-      );
+      return isStartPointMatch && rowEndDate.isSameOrBefore(endMoment);
     }
 
-    return isStartPointMatch && isEndPointMatch;
+    return isStartPointMatch;
   });
 
   return (
@@ -193,7 +172,7 @@ const TripRequestPendingByStaff = () => {
               }}
             />
           </Grid>
-          <Grid item xs={4} md={2}>
+          <Grid item xs={12} md={4}>
             <TextField
               id="startPoint"
               label="Điểm Bắt Đầu"
@@ -201,16 +180,13 @@ const TripRequestPendingByStaff = () => {
               fullWidth
               value={startPoint}
               onChange={handleStartPointChange}
-            />
-          </Grid>
-          <Grid item xs={4} md={2}>
-            <TextField
-              id="endPoint"
-              label="Điểm Kết Thúc"
-              size="small"
-              fullWidth
-              value={endPoint}
-              onChange={handleEndPointChange}
+              InputProps={{
+                endAdornment: (
+                  <IconButton>
+                    <SearchIcon />
+                  </IconButton>
+                ),
+              }}
             />
           </Grid>
         </Grid>
@@ -234,17 +210,8 @@ const TripRequestPendingByStaff = () => {
                 Thời Gian Kết Thúc
               </TableCell>
               <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
-                Điểm Bắt Đầu
+                Tên Chuyến
               </TableCell>
-              <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
-                Điểm Kết Thúc
-              </TableCell>
-              <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
-                Giá / 1 vé
-              </TableCell>
-              {/* <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
-                  Tuyến Đường
-                </TableCell> */}
               <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
                 Tình Trạng
               </TableCell>
@@ -264,27 +231,18 @@ const TripRequestPendingByStaff = () => {
                   <TableRow key={row.idTrip}>
                     <TableCell className="tableCell">{row.idTrip}</TableCell>
                     <TableCell className="tableCell">
-                      {moment(row.startTimee * 1000)
+                      {moment(row?.departureDateLT * 1000)
                         .subtract(7, "hours")
                         .format("DD/MM/YYYY hh:mm A")}
                     </TableCell>
                     <TableCell className="tableCell">
-                      {moment(row.endTimee * 1000)
+                      {moment(row?.endDateLT * 1000)
                         .subtract(7, "hours")
                         .format("DD/MM/YYYY hh:mm A")}
                     </TableCell>
                     <TableCell className="tableCell">
-                      {row.routeDTO.departurePoint}
+                      {row?.route?.name}
                     </TableCell>
-                    <TableCell className="tableCell">
-                      {row.routeDTO.destination}
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      {formatMoney(row?.fare)}
-                    </TableCell>
-                    {/* <TableCell className="tableCell">
-                        {row.routeDTO.region}
-                      </TableCell> */}
                     <TableCell className="tableCell">
                       <span className={`tripRqStatus ${row.adminCheck}`}>
                         CHỜ DUYỆT

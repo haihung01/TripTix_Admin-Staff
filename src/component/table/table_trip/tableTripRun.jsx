@@ -257,7 +257,7 @@ const TripRunList = () => {
                           .format("DD/MM/YYYY - hh:mm A")}
                       </TableCell>
                       <TableCell className="tableCell">
-                        {row?.routeDTO?.departurePoint}
+                        {/* {row?.routeDTO?.departurePoint} */}
                       </TableCell>
                       <TableCell className="tableCell">
                         {row?.routeDTO?.destination}

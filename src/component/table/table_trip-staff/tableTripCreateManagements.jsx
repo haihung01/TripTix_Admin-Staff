@@ -7,6 +7,7 @@ import {
   TableSortLabel,
   TablePagination,
   TextField,
+  IconButton,
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -25,7 +26,7 @@ import MenuActionMyTripCreatedTable from "../../menuAction/menuActionTripTable/m
 import CancelTripModel from "../model_popup/trip-managements/modelCancelTrip";
 import UpdateTripModal from "../model_popup/trip-managements/modelUpdateTrip";
 import "../table.scss";
-import useMoneyFormatter from "../../../hook/useMoneyFormatter";
+import SearchIcon from "@mui/icons-material/Search";
 
 const TripCreatedByStaff = () => {
   const { auth } = useAuth();
@@ -99,6 +100,7 @@ const TripCreatedByStaff = () => {
       console.log("hjahahaha", params);
       const response = await listTripApi.getTripByStaffId(params);
       const trips = response.data;
+      console.log("my data trip: ", response.data);
       setDataTrip(trips);
       setPangination({
         pageIndex: response?.pageIndex || 1,
@@ -119,8 +121,6 @@ const TripCreatedByStaff = () => {
       fetchTripData();
     }
   }, [isLoadAPI]);
-  //format money
-  const [formatMoney] = useMoneyFormatter();
 
   // SORT STATUS
   const [orderBy, setOrderBy] = useState("");
@@ -158,35 +158,24 @@ const TripCreatedByStaff = () => {
   };
 
   const [startPoint, setStartPoint] = useState("");
-  const [endPoint, setEndPoint] = useState("");
 
   const handleStartPointChange = (event) => {
     setStartPoint(event.target.value);
   };
 
-  const handleEndPointChange = (event) => {
-    setEndPoint(event.target.value);
-  };
-
   const filteredRows = sortedData.filter((row) => {
     const isStartPointMatch =
       !startPoint ||
-      row?.routeDTO?.departurePoint
-        .toLowerCase()
-        .includes(startPoint.toLowerCase());
+      row?.route?.name.toLowerCase().includes(startPoint.toLowerCase());
 
-    const isEndPointMatch =
-      !endPoint ||
-      row?.routeDTO?.destination.toLowerCase().includes(endPoint.toLowerCase());
+    if (!startDate && !endDate) return isStartPointMatch;
 
-    if (!startDate && !endDate) return isStartPointMatch && isEndPointMatch;
+    if (!row?.departureDateLT) return false;
 
-    if (!row?.startTimee) return false;
-
-    const rowStartDate = moment(row?.startTimee * 1000)
+    const rowStartDate = moment(row?.departureDateLT * 1000)
       .subtract(7, "hours")
       .startOf("day");
-    const rowEndDate = moment(row?.startTimee * 1000)
+    const rowEndDate = moment(row?.departureDateLT * 1000)
       .subtract(7, "hours")
       .endOf("day");
 
@@ -195,7 +184,6 @@ const TripCreatedByStaff = () => {
       const endMoment = moment(endDate).endOf("day");
       return (
         isStartPointMatch &&
-        isEndPointMatch &&
         rowStartDate.isSameOrBefore(endMoment) &&
         rowEndDate.isSameOrAfter(startMoment)
       );
@@ -203,23 +191,15 @@ const TripCreatedByStaff = () => {
 
     if (startDate) {
       const startMoment = moment(startDate).startOf("day");
-      return (
-        isStartPointMatch &&
-        isEndPointMatch &&
-        rowStartDate.isSameOrAfter(startMoment)
-      );
+      return isStartPointMatch && rowStartDate.isSameOrAfter(startMoment);
     }
 
     if (endDate) {
       const endMoment = moment(endDate).endOf("day");
-      return (
-        isStartPointMatch &&
-        isEndPointMatch &&
-        rowEndDate.isSameOrBefore(endMoment)
-      );
+      return isStartPointMatch && rowEndDate.isSameOrBefore(endMoment);
     }
 
-    return isStartPointMatch && isEndPointMatch;
+    return isStartPointMatch;
   });
 
   if (dataTrip.length >= 0) {
@@ -263,7 +243,7 @@ const TripCreatedByStaff = () => {
                   }}
                 />
               </Grid>
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} md={6}>
                 <TextField
                   id="startPoint"
                   label="Điểm Bắt Đầu"
@@ -271,16 +251,13 @@ const TripCreatedByStaff = () => {
                   fullWidth
                   value={startPoint}
                   onChange={handleStartPointChange}
-                />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <TextField
-                  id="endPoint"
-                  label="Điểm Kết Thúc"
-                  size="small"
-                  fullWidth
-                  value={endPoint}
-                  onChange={handleEndPointChange}
+                  InputProps={{
+                    endAdornment: (
+                      <IconButton>
+                        <SearchIcon />
+                      </IconButton>
+                    ),
+                  }}
                 />
               </Grid>
             </Grid>
@@ -320,20 +297,8 @@ const TripCreatedByStaff = () => {
                   Thời Gian Kết Thúc
                 </TableCell>
                 <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
-                  Điểm Bắt Đầu
+                  Tên Chuyến
                 </TableCell>
-                <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
-                  Điểm Kết Thúc
-                </TableCell>
-                <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
-                  Giá / 1 vé
-                </TableCell>
-                {/* <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
-                  Tuyến Đường
-                </TableCell> */}
-                {/* <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
-                  Trạng Thái
-                </TableCell> */}
                 <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
                   <TableSortLabel
                     active={orderBy === "adminCheck"}
@@ -347,7 +312,7 @@ const TripCreatedByStaff = () => {
                 <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
                   Đánh Giá
                 </TableCell>
-                <TableCell></TableCell>
+                <TableCell className="tableTitle"></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -356,30 +321,22 @@ const TripCreatedByStaff = () => {
                   <TableRow key={row.idTrip}>
                     <TableCell className="tableCell">{row.idTrip}</TableCell>
                     <TableCell className="tableCell">
-                      {moment(row.startTimee * 1000)
+                      {moment(row?.departureDateLT * 1000)
                         .subtract(7, "hours")
                         .format("DD/MM/YYYY hh:mm A")}
                     </TableCell>
                     <TableCell className="tableCell">
-                      {moment(row.endTimee * 1000)
+                      {moment(row?.endDateLT * 1000)
                         .subtract(7, "hours")
                         .format("DD/MM/YYYY hh:mm A")}
                     </TableCell>
                     <TableCell className="tableCell">
-                      {row.routeDTO.departurePoint}
+                      {row?.route?.name}
                     </TableCell>
-                    <TableCell className="tableCell">
-                      {row.routeDTO.destination}
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      {formatMoney(row?.fare)}
-                    </TableCell>
-                    {/* <TableCell className="tableCell">
-                          {row.routeDTO.region}
-                        </TableCell> */}
+
                     <TableCell className="tableCell">
                       <span className={`tripRqStatus ${row.adminCheck}`}>
-                        {row.adminCheck === "ACCEPT"
+                        {row.adminCheck === "ACCEPTED"
                           ? "CHẤP THUẬN"
                           : row.adminCheck === "PENDING"
                           ? "CHỜ DUYỆT"
@@ -427,12 +384,6 @@ const TripCreatedByStaff = () => {
                 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
                   <TableRow hover={true} key={index}>
                     <TableCell align="left">
-                      <Skeleton variant="rectangular" />
-                    </TableCell>
-                    <TableCell align="left">
-                      <Skeleton variant="rectangular" />
-                    </TableCell>
-                    <TableCell align="center">
                       <Skeleton variant="rectangular" />
                     </TableCell>
                     <TableCell align="left">

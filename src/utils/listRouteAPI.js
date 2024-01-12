@@ -27,5 +27,9 @@ const listRouteApi = {
     const url = "/route";
     return axiosClient.put(url, payload);
   },
+  routeDetail: (params) => {
+    const url = "/route/detail";
+    return axiosClient.get(url, { params });
+  },
 };
 export default listRouteApi;

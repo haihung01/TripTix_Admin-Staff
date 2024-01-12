@@ -71,7 +71,6 @@ export default function CreateRoute() {
         listTicketType: [
           {
             name: "",
-            type: "",
             idEarlyOnStation: 0,
             idLateOffStation: 0,
             defaultPrice: 0,
@@ -120,9 +119,9 @@ export default function CreateRoute() {
               flexDirection: "column",
               alignItems: "center",
               p: "30px",
-              WebkitBoxShadow: "2px 4px 10px 1px rgba(0, 0, 0, 0.47)",
-              boxShadow: "2px 4px 10px 1px rgba(70, 68, 68, 0.47)",
-              width: "85  %",
+              // WebkitBoxShadow: "2px 4px 10px 1px rgba(0, 0, 0, 0.47)",
+              // boxShadow: "2px 4px 10px 1px rgba(70, 68, 68, 0.47)",
+              width: "90%",
               margin: "auto",
             }}
           >
@@ -285,7 +284,7 @@ export default function CreateRoute() {
                                     {...field}
                                     required
                                     margin="dense"
-                                    label="Giá Trạm"
+                                    label="Khoảng Cách"
                                     type="number"
                                     fullWidth
                                     error={meta.touched && !!meta.error}
@@ -327,8 +326,7 @@ export default function CreateRoute() {
                         onClick={() =>
                           push({
                             idStation: 0,
-                            type: "",
-                            timeComes: "",
+                            distance: 0,
                           })
                         }
                       >
@@ -346,19 +344,39 @@ export default function CreateRoute() {
                   Danh Sách Loại Vé:{" "}
                 </Typography>
                 <br />
-                <FieldArray name="listStationInRoute">
+                <FieldArray name="listTicketType">
                   {({ push, remove }) => (
                     <div>
-                      {values.listStationInRoute.map((st, index) => (
+                      {values.listTicketType.map((st, index) => (
                         <div key={index}>
                           <Typography sx={{ mb: 1 }}>
-                            Trạm {index + 1}
+                            Loại vé {index + 1}
                           </Typography>
 
                           <Grid container spacing={4}>
-                            <Grid item xs={12} md={9}>
+                            <Grid item xs={12} md={3}>
+                              <Field name={`listTicketType.${index}.name`}>
+                                {({ field, meta }) => (
+                                  <TextField
+                                    {...field}
+                                    required
+                                    margin="dense"
+                                    label="Tên Loại Vé"
+                                    type="text"
+                                    fullWidth
+                                    error={meta.touched && !!meta.error}
+                                    helperText={
+                                      meta.touched && meta.error
+                                        ? meta.error
+                                        : ""
+                                    }
+                                  />
+                                )}
+                              </Field>
+                            </Grid>
+                            <Grid item xs={12} md={3}>
                               <Field
-                                name={`listStationInRoute.${index}.idStation`}
+                                name={`listTicketType.${index}.idEarlyOnStation`}
                               >
                                 {({ field, form, meta }) => (
                                   <Autocomplete
@@ -380,7 +398,7 @@ export default function CreateRoute() {
                                     }
                                     onChange={(event, newValue) => {
                                       form.setFieldValue(
-                                        `listStationInRoute.${index}.idStation`,
+                                        `listTicketType.${index}.idEarlyOnStation`,
                                         newValue ? newValue.idStation : ""
                                       );
                                     }}
@@ -389,7 +407,54 @@ export default function CreateRoute() {
                                       <TextField
                                         {...params}
                                         margin="dense"
-                                        label="Trạm"
+                                        label="Điểm Lên"
+                                        error={meta.touched && !!meta.error}
+                                        helperText={
+                                          meta.touched && meta.error
+                                            ? meta.error
+                                            : ""
+                                        }
+                                      />
+                                    )}
+                                  />
+                                )}
+                              </Field>
+                            </Grid>
+
+                            <Grid item xs={12} md={3}>
+                              <Field
+                                name={`listTicketType.${index}.idLateOffStation`}
+                              >
+                                {({ field, form, meta }) => (
+                                  <Autocomplete
+                                    {...field}
+                                    options={dataStation.map(
+                                      (option, index) => ({
+                                        ...option,
+                                        index,
+                                      })
+                                    )}
+                                    getOptionLabel={(option) =>
+                                      `Trạm số: ${option.idStation} - ${option?.name} - ( ${option?.address} )`
+                                    }
+                                    value={
+                                      dataStation.find(
+                                        (option) =>
+                                          option?.idStation === field.value
+                                      ) || null
+                                    }
+                                    onChange={(event, newValue) => {
+                                      form.setFieldValue(
+                                        `listTicketType.${index}.idLateOffStation`,
+                                        newValue ? newValue.idStation : ""
+                                      );
+                                    }}
+                                    onBlur={form.handleBlur}
+                                    renderInput={(params) => (
+                                      <TextField
+                                        {...params}
+                                        margin="dense"
+                                        label="Điểm xuống"
                                         error={meta.touched && !!meta.error}
                                         helperText={
                                           meta.touched && meta.error
@@ -405,14 +470,14 @@ export default function CreateRoute() {
 
                             <Grid item xs={12} md={2}>
                               <Field
-                                name={`listStationInRoute.${index}.distance`}
+                                name={`listTicketType.${index}.defaultPrice`}
                               >
                                 {({ field, meta }) => (
                                   <TextField
                                     {...field}
                                     required
                                     margin="dense"
-                                    label="Giá Trạm"
+                                    label="Giá Vé Cơ Bản"
                                     type="number"
                                     fullWidth
                                     error={meta.touched && !!meta.error}
@@ -453,9 +518,10 @@ export default function CreateRoute() {
                         }}
                         onClick={() =>
                           push({
-                            idStation: 0,
-                            type: "",
-                            timeComes: "",
+                            name: "",
+                            idEarlyOnStation: 0,
+                            idLateOffStation: 0,
+                            defaultPrice: 0,
                           })
                         }
                       >
