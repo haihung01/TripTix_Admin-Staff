@@ -16,11 +16,10 @@ import TableRow from "@mui/material/TableRow";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import useAuth from "../../../hook/useAuth";
 import listTripApi from "../../../utils/listTripAPI";
 import ModalApprovedTrip from "../model_popup/trip-managements/modelApprovedTrip";
 import "../table.scss";
-import useAuth from "../../../hook/useAuth";
-import useMoneyFormatter from "../../../hook/useMoneyFormatter";
 
 const TripRequestPending = () => {
   const { auth } = useAuth();
@@ -58,7 +57,6 @@ const TripRequestPending = () => {
   const fetchListTrip = async () => {
     try {
       setLoading(true);
-      const params = { staffId: auth.user.idUserSystem };
       const response = await listTripApi.getTripPendingByAdmin();
       const trips = response.data;
       setDataTrip(trips);
@@ -102,28 +100,25 @@ const TripRequestPending = () => {
     setEndPoint(event.target.value);
   };
 
-  //format money
-  const [formatMoney] = useMoneyFormatter();
-
   const filteredRows = dataTrip.filter((row) => {
     const isStartPointMatch =
       !startPoint ||
-      row?.routeDTO?.departurePoint
+      row?.route?.departurePoint
         .toLowerCase()
         .includes(startPoint.toLowerCase());
 
     const isEndPointMatch =
       !endPoint ||
-      row?.routeDTO?.destination.toLowerCase().includes(endPoint.toLowerCase());
+      row?.route?.destination.toLowerCase().includes(endPoint.toLowerCase());
 
     if (!startDate && !endDate) return isStartPointMatch && isEndPointMatch;
 
-    if (!row?.startTimee) return false;
+    if (!row?.departureDateLT) return false;
 
-    const rowStartDate = moment(row?.startTimee * 1000)
+    const rowStartDate = moment(row?.departureDateLT * 1000)
       .subtract(7, "hours")
       .startOf("day");
-    const rowEndDate = moment(row?.startTimee * 1000)
+    const rowEndDate = moment(row?.departureDateLT * 1000)
       .subtract(7, "hours")
       .endOf("day");
 
@@ -238,12 +233,6 @@ const TripRequestPending = () => {
                 Điểm Kết Thúc
               </TableCell>
               <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
-                Giá / 1 vé
-              </TableCell>
-              {/* <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
-                Tuyến Đường
-              </TableCell> */}
-              <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
                 Tình Trạng
               </TableCell>
               {auth?.user?.role === "ROLE_ADMIN" && (
@@ -262,27 +251,21 @@ const TripRequestPending = () => {
                     <TableRow key={row.idTrip}>
                       <TableCell className="tableCell">{row.idTrip}</TableCell>
                       <TableCell className="tableCell">
-                        {moment(row.startTimee * 1000)
+                        {moment(row.departureDateLT * 1000)
                           .subtract(7, "hours")
                           .format("DD/MM/YYYY hh:mm A")}
                       </TableCell>
                       <TableCell className="tableCell">
-                        {moment(row.endTimee * 1000)
+                        {moment(row.endDateLT * 1000)
                           .subtract(7, "hours")
                           .format("DD/MM/YYYY hh:mm A")}
                       </TableCell>
                       <TableCell className="tableCell">
-                        {row.routeDTO.departurePoint}
+                        {row.route.departurePoint}
                       </TableCell>
                       <TableCell className="tableCell">
-                        {row.routeDTO.destination}
+                        {row.route.destination}
                       </TableCell>
-                      <TableCell className="tableCell">
-                        {formatMoney(row?.fare)}
-                      </TableCell>
-                      {/* <TableCell className="tableCell">
-                      {row.routeDTO.region}
-                    </TableCell> */}
                       <TableCell className="tableCell">
                         <span className={`tripRqStatus ${row.adminCheck}`}>
                           CHỜ DUYỆT
@@ -317,9 +300,6 @@ const TripRequestPending = () => {
                       <Skeleton variant="rectangular" />
                     </TableCell>
                     <TableCell align="left">
-                      <Skeleton variant="rectangular" />
-                    </TableCell>
-                    <TableCell align="center">
                       <Skeleton variant="rectangular" />
                     </TableCell>
                     <TableCell align="center">

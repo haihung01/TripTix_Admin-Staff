@@ -123,6 +123,8 @@ const ModelUpdateNews = ({ open, handleClose, newsData, fetchListNews }) => {
                       <TextField
                         {...field}
                         margin="dense"
+                        rows={4}
+                        maxRows={4}
                         multiline
                         label="Nội dung tin tức"
                         type="text"

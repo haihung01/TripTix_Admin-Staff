@@ -4,6 +4,8 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { useNavigate } from "react-router-dom";
+import InfoIcon from "@mui/icons-material/Info";
 import * as React from "react";
 
 export default function MenuActionStationTable({
@@ -11,7 +13,9 @@ export default function MenuActionStationTable({
   onOpenUpdate,
   onOpenDelete,
 }) {
+  console.log("station data: ", stationData);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const navigate = useNavigate();
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -21,6 +25,10 @@ export default function MenuActionStationTable({
   };
   const handleUpdate = () => {
     onOpenUpdate(stationData);
+    setAnchorEl(null);
+  };
+  const handleDetail = () => {
+    navigate(`/station-detail/${stationData.idStation}`);
     setAnchorEl(null);
   };
   const handleDelete = () => {
@@ -59,6 +67,10 @@ export default function MenuActionStationTable({
           horizontal: "left",
         }}
       >
+        <MenuItem onClick={() => handleDetail()}>
+          <InfoIcon sx={{ mr: "4px" }} color="info" />
+          <span>Chi Tiết</span>
+        </MenuItem>
         <MenuItem onClick={() => handleUpdate()}>
           <EditIcon sx={{ mr: "4px", color: "#9ADE7B" }} />
           <span>Cập nhật</span>

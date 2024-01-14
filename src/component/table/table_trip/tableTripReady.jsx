@@ -1,10 +1,9 @@
 import {
   Box,
   Grid,
-  Rating,
   Skeleton,
   TablePagination,
-  TextField,
+  TextField
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -21,7 +20,6 @@ import MenuActionTripReadyTable from "../../menuAction/menuActionTripTable/menuA
 import CancelTripModel from "../model_popup/trip-managements/modelCancelTrip";
 import UpdateTripModal from "../model_popup/trip-managements/modelUpdateTrip";
 import "../table.scss";
-import useMoneyFormatter from "../../../hook/useMoneyFormatter";
 
 const TripReadyList = () => {
   // PAGINATION
@@ -64,6 +62,7 @@ const TripReadyList = () => {
     setCancelModalOpen(false);
   };
 
+  //call api
   const [dataTrip, setDataTrip] = useState([]);
   const [loadingTrip, setLoadingTrip] = useState(false);
 
@@ -89,9 +88,6 @@ const TripReadyList = () => {
   useEffect(() => {
     fetchListTrip();
   }, []);
-
-  //format money
-  const [formatMoney] = useMoneyFormatter();
 
   // FILTER BY DATE AND departurePoint & destination
   const [startDate, setStartDate] = useState("");
@@ -119,22 +115,22 @@ const TripReadyList = () => {
   const filteredRows = dataTrip.filter((row) => {
     const isStartPointMatch =
       !startPoint ||
-      row?.routeDTO?.departurePoint
+      row?.route?.departurePoint
         .toLowerCase()
         .includes(startPoint.toLowerCase());
 
     const isEndPointMatch =
       !endPoint ||
-      row?.routeDTO?.destination.toLowerCase().includes(endPoint.toLowerCase());
+      row?.route?.destination.toLowerCase().includes(endPoint.toLowerCase());
 
     if (!startDate && !endDate) return isStartPointMatch && isEndPointMatch;
 
-    if (!row?.startTimee) return false;
+    if (!row?.departureDateLT) return false;
 
-    const rowStartDate = moment(row?.startTimee * 1000)
+    const rowStartDate = moment(row?.departureDateLT * 1000)
       .subtract(7, "hours")
       .startOf("day");
-    const rowEndDate = moment(row?.startTimee * 1000)
+    const rowEndDate = moment(row?.departureDateLT * 1000)
       .subtract(7, "hours")
       .endOf("day");
 
@@ -248,9 +244,7 @@ const TripReadyList = () => {
               <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
                 Điểm Kết Thúc
               </TableCell>
-              <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
-                Giá / 1 Vé
-              </TableCell>
+
               <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
                 Trạng Thái
               </TableCell>
@@ -274,24 +268,22 @@ const TripReadyList = () => {
                     <TableRow key={row.idTrip}>
                       <TableCell className="tableCell">{row?.idTrip}</TableCell>
                       <TableCell className="tableCell">
-                        {moment(row?.startTimee * 1000)
+                        {moment(row?.departureDateLT * 1000)
                           .subtract(7, "hours")
                           .format("DD/MM/YYYY - hh:mm A")}
                       </TableCell>
                       <TableCell className="tableCell">
-                        {moment(row?.endTimee * 1000)
+                        {moment(row?.endDateLT * 1000)
                           .subtract(7, "hours")
                           .format("DD/MM/YYYY - hh:mm A")}
                       </TableCell>
                       <TableCell className="tableCell">
-                        {row?.routeDTO?.departurePoint}
+                        {row?.route?.departurePoint}
                       </TableCell>
                       <TableCell className="tableCell">
-                        {row?.routeDTO?.destination}
+                        {row?.route?.destination}
                       </TableCell>
-                      <TableCell className="tableCell">
-                        {formatMoney(row?.fare)}
-                      </TableCell>
+
                       <TableCell className="tableCell">
                         <span className={`tripStatus ${row?.status}`}>
                           CHUẨN BỊ
@@ -334,9 +326,6 @@ const TripReadyList = () => {
                       <Skeleton variant="rectangular" />
                     </TableCell>
                     <TableCell align="left">
-                      <Skeleton variant="rectangular" />
-                    </TableCell>
-                    <TableCell align="center">
                       <Skeleton variant="rectangular" />
                     </TableCell>
                     <TableCell align="center">

@@ -19,7 +19,6 @@ import { toast } from "react-toastify";
 import listTripApi from "../../../utils/listTripAPI";
 import MenuActionTripFinishTable from "../../menuAction/menuActionTripTable/menuActionForTripFinishTable";
 import "../table.scss";
-import useMoneyFormatter from "../../../hook/useMoneyFormatter";
 
 const TripFinishList = () => {
   // PAGINATION
@@ -87,8 +86,6 @@ const TripFinishList = () => {
     }
   }, [isLoadAPI]);
 
-  //format money
-  const [formatMoney] = useMoneyFormatter();
 
   // FILTER BY DATE AND departurePoint & destination
   const [startDate, setStartDate] = useState("");
@@ -116,22 +113,22 @@ const TripFinishList = () => {
   const filteredRows = dataTrip.filter((row) => {
     const isStartPointMatch =
       !startPoint ||
-      row?.routeDTO?.departurePoint
+      row?.route?.departurePoint
         .toLowerCase()
         .includes(startPoint.toLowerCase());
 
     const isEndPointMatch =
       !endPoint ||
-      row?.routeDTO?.destination.toLowerCase().includes(endPoint.toLowerCase());
+      row?.route?.destination.toLowerCase().includes(endPoint.toLowerCase());
 
     if (!startDate && !endDate) return isStartPointMatch && isEndPointMatch;
 
-    if (!row?.startTimee) return false;
+    if (!row?.departureDateLT) return false;
 
-    const rowStartDate = moment(row?.startTimee * 1000)
+    const rowStartDate = moment(row?.departureDateLT * 1000)
       .subtract(7, "hours")
       .startOf("day");
-    const rowEndDate = moment(row?.startTimee * 1000)
+    const rowEndDate = moment(row?.departureDateLT * 1000)
       .subtract(7, "hours")
       .endOf("day");
 
@@ -246,9 +243,6 @@ const TripFinishList = () => {
                 Điểm Kết Thúc
               </TableCell>
               <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
-                Giá / 1 Vé
-              </TableCell>
-              <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
                 Trạng Thái
               </TableCell>
               <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
@@ -267,24 +261,22 @@ const TripFinishList = () => {
                   <TableRow key={row.idTrip}>
                     <TableCell className="tableCell">{row?.idTrip}</TableCell>
                     <TableCell className="tableCell">
-                      {moment(row?.startTimee * 1000)
+                      {moment(row?.departureDateLT * 1000)
                         .subtract(7, "hours")
                         .format("DD/MM/YYYY - hh:mm A")}
                     </TableCell>
                     <TableCell className="tableCell">
-                      {moment(row?.endTimee * 1000)
+                      {moment(row?.endDateLT * 1000)
                         .subtract(7, "hours")
                         .format("DD/MM/YYYY - hh:mm A")}
                     </TableCell>
                     <TableCell className="tableCell">
-                      {row?.routeDTO?.departurePoint}
+                      {row?.route?.departurePoint}
                     </TableCell>
                     <TableCell className="tableCell">
-                      {row?.routeDTO?.destination}
+                      {row?.route?.destination}
                     </TableCell>
-                    <TableCell className="tableCell">
-                      {formatMoney(row?.fare)}
-                    </TableCell>
+
                     <TableCell className="tableCell">
                       <span className={`tripStatus ${row?.status}`}>
                         ĐÃ HOÀN THÀNH
@@ -319,9 +311,6 @@ const TripFinishList = () => {
                       <Skeleton variant="rectangular" />
                     </TableCell>
                     <TableCell align="center">
-                      <Skeleton variant="rectangular" />
-                    </TableCell>
-                    <TableCell align="left">
                       <Skeleton variant="rectangular" />
                     </TableCell>
                     <TableCell align="center">

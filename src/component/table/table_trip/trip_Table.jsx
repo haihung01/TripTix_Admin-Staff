@@ -1,11 +1,10 @@
 import {
   Box,
   Grid,
-  Rating,
   Skeleton,
   TablePagination,
   TableSortLabel,
-  TextField,
+  TextField
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -17,11 +16,11 @@ import TableRow from "@mui/material/TableRow";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import useMoneyFormatter from "../../../hook/useMoneyFormatter";
 import listTripApi from "../../../utils/listTripAPI";
 import MenuActionTripTable from "../../menuAction/menuActionTripTable/menuActionForTripTable";
 import CancelTripModel from "../model_popup/trip-managements/modelCancelTrip";
 import UpdateTrip from "../model_popup/trip-managements/modelUpdateTrip";
-import useMoneyFormatter from "../../../hook/useMoneyFormatter";
 import "../table.scss";
 
 const List = () => {
@@ -310,10 +309,10 @@ const List = () => {
                           .format("DD/MM/YYYY - hh:mm A")}
                       </TableCell>
                       <TableCell className="tableCell">
-                        {row?.routeDTO?.departurePoint}
+                        {row?.route?.departurePoint}
                       </TableCell>
                       <TableCell className="tableCell">
-                        {row?.routeDTO?.destination}
+                        {row?.route?.destination}
                       </TableCell>
                       <TableCell className="tableCell">
                         {formatMoney(row?.fare)}
@@ -323,14 +322,7 @@ const List = () => {
                           ĐÃ HỦY
                         </span>
                       </TableCell>
-                      {/* <TableCell className="tableCell">
-                      <Rating
-                        name={`rating-${row?.tripID}`}
-                        value={row?.averageStar}
-                        precision={0.2}
-                        readOnly
-                      />
-                    </TableCell> */}
+
                       <TableCell>
                         <MenuActionTripTable
                           tripData={row}

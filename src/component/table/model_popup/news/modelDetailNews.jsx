@@ -69,6 +69,8 @@ const ModelDetailNews = ({ open, handleClose, newsData }) => {
             <Grid item xs={12} md={12}>
               <TextField
                 fullWidth
+                rows={4}
+                maxRows={4}
                 multiline
                 label="Nội dung bài viết"
                 value={newsData.description}

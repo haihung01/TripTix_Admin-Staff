@@ -65,18 +65,18 @@ const ModalTripApprovedPopup = ({
     setUpdatedTripData((prevData) => ({
       ...prevData,
       idTrip: tripData.idTrip,
-      adminCheck: "ACCEPT",
+      adminCheck: "ACCEPTED",
     }));
     toast.success("Accepted successfully !");
   };
 
   const handleReject = () => {
-    const isConfirm = window.confirm("Do you really want cancel this trip ?");
+    const isConfirm = window.confirm("Bạn Thực sự muốn hủy yêu cầu tạo chuyến này ?");
     if (isConfirm) {
       setUpdatedTripData((prevData) => ({
         ...prevData,
         idTrip: tripData.idTrip,
-        adminCheck: "CANCEL",
+        adminCheck: "CANCELED",
       }));
     }
     toast.success("Cancel successfully !");

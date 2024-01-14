@@ -1,7 +1,7 @@
 import axiosClient from "./axiosCustomize";
 const listTripApi = {
   getTripAccept: (params) => {
-    const url = `/trips?adminCheck=${"ACCEPT"}`;
+    const url = `/trips?adminCheck=${"ACCEPTED"}`;
     return axiosClient.get(url, {
       params,
       paramsSerializer: {
@@ -10,7 +10,7 @@ const listTripApi = {
     });
   },
   getTripRunning: (params) => {
-    const url = `/trips?adminCheck=${"ACCEPT"}&status=${"RUN"}`;
+    const url = `/trips?adminCheck=${"ACCEPTED"}&status=${"RUNNING"}`;
     return axiosClient.get(url, {
       params,
       paramsSerializer: {
@@ -20,7 +20,7 @@ const listTripApi = {
   },
 
   getTripFinish: (params) => {
-    const url = `/trips?adminCheck=${"ACCEPT"}&status=${"FINISH"}`;
+    const url = `/trips?adminCheck=${"ACCEPTED"}&status=${"FINISHED"}`;
     return axiosClient.get(url, {
       params,
       paramsSerializer: {
@@ -30,7 +30,7 @@ const listTripApi = {
   },
 
   getTripReady: (params) => {
-    const url = `/trips?adminCheck=${"ACCEPT"}&status=${"READY"}`;
+    const url = `/trips?adminCheck=${"ACCEPTED"}&status=${"READY"}`;
     return axiosClient.get(url, {
       params,
       paramsSerializer: {
@@ -39,7 +39,7 @@ const listTripApi = {
     });
   },
   getTripCancel: (params) => {
-    const url = `/trips?adminCheck=${"ACCEPT"}&status=${"CANCEL"}`;
+    const url = `/trips?adminCheck=${"ACCEPTED"}&status=${"CANCELED"}`;
     return axiosClient.get(url, {
       params,
       paramsSerializer: {
@@ -47,8 +47,6 @@ const listTripApi = {
       },
     });
   },
-
-
 
   getTripPendingByAdmin: (params) => {
     const url = `/trips?adminCheck=${"PENDING"}`;
@@ -60,7 +58,7 @@ const listTripApi = {
     });
   },
   getTripCancelByAdmin: (params) => {
-    const url = `/trips?adminCheck=${"CANCEL"}`;
+    const url = `/trips?adminCheck=${"CANCELED"}`;
     return axiosClient.get(url, {
       params,
       paramsSerializer: {
@@ -86,7 +84,7 @@ const listTripApi = {
   },
 
   getTripByAdminCheckAccept: (params) => {
-    const url = `/trips?adminCheck=${"ACCEPT"}`;
+    const url = `/trips?adminCheck=${"ACCEPTED"}`;
     return axiosClient.get(url, {
       params,
       paramsSerializer: {

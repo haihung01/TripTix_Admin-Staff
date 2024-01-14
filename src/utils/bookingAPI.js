@@ -1,7 +1,7 @@
 import axiosClient from "./axiosCustomize";
 const bookingApi = {
   getDataBookingOfCustomer: (params) => {
-    const url = "/bookings";
+    const url = "/ticket";
     return axiosClient.get(url, {
       params,
       paramsSerializer: {
@@ -10,7 +10,7 @@ const bookingApi = {
     });
   },
   getQuarterRevenue: (params) => {
-    const url = "/bookings/revenue-chart-quy";
+    const url = "/ticket/revenue-chart-quy";
     return axiosClient.get(url, {
       params,
       paramsSerializer: {
@@ -19,7 +19,7 @@ const bookingApi = {
     });
   },
   getDataMonthRevenue: (params) => {
-    const url = "/bookings/revenue-chart-month";
+    const url = "/ticket/revenue-chart-month";
     return axiosClient.get(url, {
       params,
       paramsSerializer: {
@@ -28,7 +28,7 @@ const bookingApi = {
     });
   },
   getDailyRevenue: (params) => {
-    const url = "/bookings/revenue-today";
+    const url = "/ticket/revenue-today";
     return axiosClient.get(url, {
       params,
       paramsSerializer: {
@@ -37,7 +37,7 @@ const bookingApi = {
     });
   },
   getDataPotentialCustomer: (params) => {
-    const url = "/bookings/top-10-list-of-potential-customers";
+    const url = "/ticket/top-10-list-of-potential-customers";
     return axiosClient.get(url, {
       params,
       paramsSerializer: {
@@ -46,7 +46,7 @@ const bookingApi = {
     });
   },
   getDataBookingDetail: (params) => {
-    const url = "/bookings/detail";
+    const url = "/ticket/detail";
     return axiosClient.get(url, {
       params,
       paramsSerializer: {
@@ -55,7 +55,7 @@ const bookingApi = {
     });
   },
   changeTicketForCustomer: (payload) => {
-    const url = "/bookings/change-seat-of-ticket-by-customer";
+    const url = "/ticket/change-seat-of-ticket-by-customer";
     return axiosClient.put(url, payload);
   },
 };

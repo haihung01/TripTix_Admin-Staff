@@ -32,7 +32,7 @@
     padding: 5px;
     border-radius: 5px;
 
-    &.ACTIVE {
+    &.ACTIVED {
       color: green;
       background-color: rgba(0, 128, 0, 0.151);
     }
@@ -56,7 +56,7 @@
     padding: 5px;
     border-radius: 5px;
 
-    &.RUN {
+    &.RUNNING {
       color: #6499e9;
       background-color: rgb(166, 246, 255);
     }
@@ -64,11 +64,11 @@
       color: goldenrod;
       background-color: rgba(189, 189, 3, 0.103);
     }
-    &.FINISH {
+    &.FINISHED {
       color: green;
       background-color: rgba(0, 128, 0, 0.151);
     }
-    &.CANCEL {
+    &.CANCELED {
       color: red;
       background-color: rgb(253, 183, 183);
     }
@@ -85,7 +85,7 @@
       color: green;
       background-color: rgba(0, 128, 0, 0.151);
     }
-    &.CANCEL {
+    &.CANCELED {
       color: red;
       background-color: rgb(253, 183, 183);
     }

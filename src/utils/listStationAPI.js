@@ -21,5 +21,9 @@ const listStationApi = {
     const url = "/stations";
     return axiosClient.put(url, payload);
   },
+  stationDetail: (params) => {
+    const url = "/stations/detail";
+    return axiosClient.get(url, { params });
+  },
 };
 export default listStationApi;
