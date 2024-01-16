@@ -3,27 +3,28 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import InfoIcon from "@mui/icons-material/Info";
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../../../hook/useAuth";
 
-export default function MenuActionRouteTable({
-  stationData,
-  onOpenUpdate,
-  onOpenDelete,
-}) {
+export default function MenuActionRouteTable({ routeData, onOpenDelete }) {
+  const { auth } = useAuth();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const navigate = useNavigate();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
-  // const handleUpdate = () => {
-  //     onOpenUpdate(stationData);
-  //     setAnchorEl(null);
-  // };
+  const handleDetail = () => {
+    navigate(`/route-detail/${routeData.idRoute}`);
+    setAnchorEl(null);
+  };
   const handleDelete = () => {
-    onOpenDelete(stationData);
+    onOpenDelete(routeData);
     setAnchorEl(null);
   };
 
@@ -58,20 +59,16 @@ export default function MenuActionRouteTable({
           horizontal: "left",
         }}
       >
-        {/* <MenuItem onClick={() => handleUpdate()}>
-                    <EditIcon sx={{ mr: "4px", color: "#9ADE7B" }} />
-                    <span>Cập nhậtsss</span>
-                </MenuItem> */}
-
-        <MenuItem onClick={() => handleDelete()}>
-          <BlockIcon sx={{ mr: "4px" }} color="error" />
-          <span>Xóa</span>
+        <MenuItem onClick={() => handleDetail()}>
+          <InfoIcon sx={{ mr: "4px" }} color="info" />
+          <span>Chi Tiết</span>
         </MenuItem>
-
-        {/* <MenuItem onClick={() => handleStartFeedBack(id)}>
-          <FeedbackOutlinedIcon sx={{ mr: "4px" }} color="success" />
-          <span>Mở phản hồi</span>
-        </MenuItem> */}
+        {auth?.user?.role === "ROLE_ADMIN" && (
+          <MenuItem onClick={() => handleDelete()}>
+            <BlockIcon sx={{ mr: "4px" }} color="error" />
+            <span>Xóa</span>
+          </MenuItem>
+        )}
       </Menu>
     </div>
   );

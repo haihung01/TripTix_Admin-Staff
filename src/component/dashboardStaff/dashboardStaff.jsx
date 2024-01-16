@@ -137,13 +137,13 @@ const DashboardStaff = () => {
   const filteredRows = sortedData.filter((row) => {
     const isStartPointMatch =
       !startPoint ||
-      row?.routeDTO?.departurePoint
+      row?.route?.departurePoint
         .toLowerCase()
         .includes(startPoint.toLowerCase());
 
     const isEndPointMatch =
       !endPoint ||
-      row?.routeDTO?.destination.toLowerCase().includes(endPoint.toLowerCase());
+      row?.route?.destination.toLowerCase().includes(endPoint.toLowerCase());
 
     if (!startDate && !endDate) return isStartPointMatch && isEndPointMatch;
 
@@ -266,9 +266,6 @@ const DashboardStaff = () => {
               <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
                 Điểm Kết Thúc
               </TableCell>
-              {/* <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
-                Khu Vực
-              </TableCell> */}
               <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
                 <TableSortLabel
                   active={orderBy === "status"}
@@ -283,65 +280,65 @@ const DashboardStaff = () => {
           <TableBody>
             {!loadingTrip
               ? filteredRows &&
-              filteredRows.map((row) => (
-                <TableRow key={row.idTrip}>
-                  <TableCell className="tableCell">{row.idTrip}</TableCell>
-                  <TableCell className="tableCell">
-                    {moment(row.startTimee * 1000).format(
-                      "DD/MM/YYYY - hh:mm A"
-                    )}
-                  </TableCell>
-                  <TableCell className="tableCell">
-                    {moment(row.endTimee * 1000).format(
-                      "DD/MM/YYYY - hh:mm A"
-                    )}
-                  </TableCell>
-                  <TableCell className="tableCell">
-                    {row.routeDTO.departurePoint}
-                  </TableCell>
-                  <TableCell className="tableCell">
-                    {row.routeDTO.destination}
-                  </TableCell>
-                  {/* <TableCell className="tableCell">
-                      {row.routeDTO.region}
+                filteredRows.map((row) => (
+                  <TableRow key={row.idTrip}>
+                    <TableCell className="tableCell">{row.idTrip}</TableCell>
+                    <TableCell className="tableCell">
+                      {moment(row.startTimee * 1000).format(
+                        "DD/MM/YYYY - hh:mm A"
+                      )}
+                    </TableCell>
+                    <TableCell className="tableCell">
+                      {moment(row.endTimee * 1000).format(
+                        "DD/MM/YYYY - hh:mm A"
+                      )}
+                    </TableCell>
+                    <TableCell className="tableCell">
+                      {row.route.departurePoint}
+                    </TableCell>
+                    <TableCell className="tableCell">
+                      {row.route.destination}
+                    </TableCell>
+                    {/* <TableCell className="tableCell">
+                      {row.route.region}
                     </TableCell> */}
-                  <TableCell className="tableCell">
-                    <span className={`tripStatus ${row.status}`}>
-                      {row.status === "RUN"
-                        ? "ĐANG ĐI"
-                        : row.status === "READY"
+                    <TableCell className="tableCell">
+                      <span className={`tripStatus ${row.status}`}>
+                        {row.status === "RUN"
+                          ? "ĐANG ĐI"
+                          : row.status === "READY"
                           ? "CHUẨN BỊ"
                           : row.status === "CANCEL"
-                            ? "HỦY BỎ"
-                            : row.status === "FINISH"
-                              ? "ĐÃ HOÀN THÀNH"
-                              : row.status}
-                    </span>
-                  </TableCell>
-                </TableRow>
-              ))
+                          ? "HỦY BỎ"
+                          : row.status === "FINISH"
+                          ? "ĐÃ HOÀN THÀNH"
+                          : row.status}
+                      </span>
+                    </TableCell>
+                  </TableRow>
+                ))
               : [0, 1, 2, 3, 4, 5, 6, 7, 8].map((index) => (
-                <TableRow hover={true} key={index}>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                </TableRow>
-              ))}
+                  <TableRow hover={true} key={index}>
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                  </TableRow>
+                ))}
           </TableBody>
         </Table>
         <TablePagination

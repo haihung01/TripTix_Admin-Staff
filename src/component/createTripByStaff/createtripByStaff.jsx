@@ -80,6 +80,21 @@ export default function CreateTrip() {
       setDataStation(stationResponse.data?.listStationInRoute || []);
       setDataTicketInRoute(stationResponse.data?.listTicketType || []);
       setIsDisabled(false);
+      const listStationInRouteAPI =
+        stationResponse.data?.listStationInRoute || [];
+      formikRef.current.setFieldValue(
+        "listStationTimeCome",
+        listStationInRouteAPI
+      );
+      const listTicketInRoute = stationResponse.data?.listTicketType?.map(
+        (p) => {
+          return { idTicketType: p.idTicketType, price: p.defaultPrice };
+        }
+      );
+      formikRef.current.setFieldValue(
+        "listTicketTypeInTrip",
+        listTicketInRoute
+      );
     } catch (error) {
       console.log("err", error);
       if (error.response) {
@@ -167,39 +182,6 @@ export default function CreateTrip() {
   //     })
   //   ),
   // });
-
-  const handleSaveTemplate = async (values) => {
-    try {
-      // Format dữ liệu cho listStationTimeCome
-      const listStationTimeComeFormat = values.listStationTimeCome.map((p) => ({
-        idStationInRoute: p.idStation,
-        timeComes: moment(p.timeComes).format("DD-MM-yyyy HH:mm:ss"),
-      }));
-
-      // Tạo object để gửi lên API
-      const tripPost = {
-        ...values,
-        listStationTimeCome: listStationTimeComeFormat,
-        departureDate: moment(values.departureDate).format(
-          "DD-MM-yyyy HH:mm:ss"
-        ),
-        endDate: moment(values.endDate).format("DD-MM-yyyy HH:mm:ss"),
-      };
-
-      // Gọi API để lưu template chuyến đi
-      const response = await listTripApi.saveTemplateTrip(tripPost);
-
-      // Xử lý phản hồi
-      console.log("Phản hồi từ API:", response);
-      toast.success("Lưu mẫu chuyến đi thành công!");
-    } catch (error) {
-      console.error(
-        "Lỗi khi lưu mẫu chuyến đi:",
-        error.response?.data.message || error.message
-      );
-      toast.error("Lỗi khi lưu mẫu chuyến đi. Vui lòng thử lại.");
-    }
-  };
 
   return (
     <Formik
@@ -309,18 +291,6 @@ export default function CreateTrip() {
                           />
                         )}
                       />
-                      <Button
-                        onClick={() => handleFormatForm(field.value)}
-                        sx={{
-                          backgroundColor: "#6D6DFF",
-                          color: "white",
-                          width: "160px",
-                          ":hover": { bgcolor: "#6868AE" },
-                          mt: 2,
-                        }}
-                      >
-                        Sử Dụng Mẫu
-                      </Button>
                     </>
                   )}
                 </Field>
@@ -482,25 +452,16 @@ export default function CreateTrip() {
                   )}
                 </Field>
               </Grid>
-
-              {/* <Grid item xs={12} md={12}>
-                <Field name="fare">
-                  {({ field, meta }) => (
-                    <TextField
-                      {...field}
-                      required
-                      margin="dense"
-                      label="Giá Vé"
-                      type="number"
-                      fullWidth
-                      error={meta.touched && !!meta.error}
-                      helperText={meta.touched && meta.error ? meta.error : ""}
-                    />
-                  )}
-                </Field>
-              </Grid> */}
               <Grid item xs={12} md={12}>
-                <Grid item xs={12} md={12}>
+                <Grid
+                  item
+                  xs={12}
+                  md={12}
+                  sx={{ display: "flex", alignItems: "center" }}
+                >
+                  <Typography variant="h5" sx={{ color: "grey", mr: 1 }}>
+                    Danh sách những ngày lặp lại chuyến:{" "}
+                  </Typography>
                   <Field name="listSchedule">
                     {({ field, form, meta }) => (
                       <DatePicker
@@ -508,11 +469,6 @@ export default function CreateTrip() {
                         multiple
                         value={values.listSchedule}
                         onChange={(date) => {
-                          console.log("form: ", new Date(date[0]));
-                          // const newArrayTime = [
-                          //   ...form.values.listSchedule,
-                          //   ...date,
-                          // ];
                           form.setFieldValue("listSchedule", date);
                         }}
                         format={"DD/MM/YYYY"}
@@ -710,7 +666,7 @@ export default function CreateTrip() {
                                 {({ field, form, meta }) => (
                                   <Autocomplete
                                     {...field}
-                                    disabled={isDisabled}
+                                    disabled={true}
                                     options={dataTicketInRoute.map(
                                       (option, index) => ({
                                         ...option,
@@ -841,23 +797,6 @@ export default function CreateTrip() {
                 type="submit"
               >
                 Tạo Chuyến
-              </Button>
-
-              <Button
-                sx={{
-                  // mt: "20px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyItems: "center",
-                  backgroundColor: "#FF5B94",
-                  color: "white",
-                  width: "160px",
-                  ":hover": { bgcolor: "#F84180" },
-                }}
-                type="button"
-                onClick={() => handleSaveTemplate(values)}
-              >
-                Lưu chuyến đi
               </Button>
             </Box>
           </Box>

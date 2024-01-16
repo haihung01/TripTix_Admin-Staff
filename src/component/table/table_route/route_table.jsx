@@ -14,16 +14,16 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { useEffect, useState } from "react";
-import "../table.scss";
-import useAuth from "../../../hook/useAuth";
-import { toast } from "react-toastify";
 import moment from "moment";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import useAuth from "../../../hook/useAuth";
 import listRouteApi from "../../../utils/listRouteAPI";
+import MenuActionRouteTable from "../../menuAction/menuActionRouteTable/menuActionForRouteTable";
 import AddRoutePopup from "../model_popup/route/modelAddRoute";
 import ModelDeleteRoute from "../model_popup/route/modelDeleteRoute";
-import MenuActionRouteTable from "../../menuAction/menuActionRouteTable/menuActionForRouteTable";
-import { Link } from "react-router-dom";
+import "../table.scss";
 
 const List = () => {
   const { auth } = useAuth();
@@ -42,18 +42,6 @@ const List = () => {
   };
 
   const [selectStationData, setSelectStationData] = useState(null);
-
-  //MODEL UPDATE
-  const [updateModalOpen, setUpdateModalOpen] = useState(false);
-
-  const handleUpdateModalOpen = (stationData) => {
-    setSelectStationData(stationData);
-    setUpdateModalOpen(true);
-  };
-
-  const handleUpdateModalClose = () => {
-    setUpdateModalOpen(false);
-  };
 
   // MODEL DELETE
   const [deleteModelOpen, setDeleteModelOpen] = useState(false);
@@ -261,9 +249,7 @@ const List = () => {
               <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
                 Trạng Thái
               </TableCell>
-              {auth?.user?.role === "ROLE_ADMIN" && (
-                <TableCell className="tableCell"></TableCell>
-              )}
+              <TableCell className="tableCell"></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -294,14 +280,12 @@ const List = () => {
                             : row.status}
                         </span>
                       </TableCell>
-                      {auth?.user?.role === "ROLE_ADMIN" && (
-                        <TableCell>
-                          <MenuActionRouteTable
-                            stationData={row}
-                            onOpenDelete={handleDeleteModelOpen}
-                          />
-                        </TableCell>
-                      )}
+                      <TableCell>
+                        <MenuActionRouteTable
+                          routeData={row}
+                          onOpenDelete={handleDeleteModelOpen}
+                        />
+                      </TableCell>
                     </TableRow>
                   ))
               : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
@@ -327,11 +311,9 @@ const List = () => {
                     <TableCell align="center">
                       <Skeleton variant="rectangular" />
                     </TableCell>
-                    {auth?.user?.role === "ROLE_ADMIN" && (
-                      <TableCell align="center">
-                        <Skeleton variant="rectangular" />
-                      </TableCell>
-                    )}
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
                   </TableRow>
                 ))}
           </TableBody>

@@ -17,6 +17,7 @@ import TableHistoryBookingOfCustomer from "../component/table/table_booking/tabl
 import ChangeSeatingForCustomerPage from "../pages/staff/change_seating_for_customer";
 import CreateRoute from "../component/createNewRoute/CreateRoute";
 import StationDetailPage from "../pages/admin/stationDetailPage";
+import RouteDetailPage from "../pages/admin/routeDetailPage";
 
 export const publicRoutes = [
   {
@@ -34,6 +35,10 @@ export const publicRoutes = [
   {
     path: "/station-detail/:id",
     element: <StationDetailPage />,
+  },
+  {
+    path: "/route-detail/:id",
+    element: <RouteDetailPage />,
   },
   {
     path: "/user-managements",

@@ -1,0 +1,33 @@
+@import "~leaflet/dist/leaflet";
+.station_detail_container {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(6, 1fr);
+  grid-auto-rows: minmax(180px, auto);
+
+  .box {
+    padding: 10px;
+    border-radius: 5px;
+    -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+    box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+  }
+
+  .box1 {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+
+  .box2 {
+    grid-column: span 4;
+    grid-row: span 2;
+  }
+
+  .box3 {
+    grid-column: span 6;
+    grid-row: span 2;
+  }
+  .box4 {
+    grid-column: span 6;
+    grid-row: span 1;
+  }
+}
