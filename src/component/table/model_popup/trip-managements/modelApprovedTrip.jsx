@@ -14,9 +14,10 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import moment from "moment-timezone";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import listTripApi from "../../../../utils/listTripAPI";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import useMoneyFormatter from "../../../../hook/useMoneyFormatter";
 
 const ModalTripApprovedPopup = ({
@@ -26,6 +27,12 @@ const ModalTripApprovedPopup = ({
   fetchListTrip,
 }) => {
   const [expanded, setExpanded] = React.useState(false);
+
+  console.log("test6tripData", tripData);
+
+  const [listSchedule, setListSchedule] = useState(
+    tripData?.listSchedules || []
+  );
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -66,12 +73,15 @@ const ModalTripApprovedPopup = ({
       ...prevData,
       idTrip: tripData.idTrip,
       adminCheck: "ACCEPTED",
+      listIdTripSchedule: listSchedule.map((s) => s.idTrip) || [],
     }));
     toast.success("Accepted successfully !");
   };
 
   const handleReject = () => {
-    const isConfirm = window.confirm("Bạn Thực sự muốn hủy yêu cầu tạo chuyến này ?");
+    const isConfirm = window.confirm(
+      "Bạn Thực sự muốn hủy yêu cầu tạo chuyến này ?"
+    );
     if (isConfirm) {
       setUpdatedTripData((prevData) => ({
         ...prevData,
@@ -80,6 +90,11 @@ const ModalTripApprovedPopup = ({
       }));
     }
     toast.success("Cancel successfully !");
+  };
+
+  const handleDelete = (schedule) => {
+    const updateSchedule = listSchedule.filter((s) => s.idTrip !== schedule);
+    setListSchedule(updateSchedule);
   };
 
   return (
@@ -103,7 +118,7 @@ const ModalTripApprovedPopup = ({
             <TextField
               fullWidth
               label="Nhân Viên Tạo"
-              value={tripData?.staffDTO?.fullName}
+              value={tripData?.staff?.fullName}
               InputProps={{
                 readOnly: true,
               }}
@@ -125,7 +140,7 @@ const ModalTripApprovedPopup = ({
               margin="dense"
               fullWidth
               label="Tài Xế"
-              value={tripData?.driverDTO?.fullName}
+              value={tripData?.driver?.fullName}
               InputProps={{
                 readOnly: true,
               }}
@@ -136,7 +151,7 @@ const ModalTripApprovedPopup = ({
               margin="dense"
               fullWidth
               label="Tên Xe"
-              value={tripData?.busDTO?.name}
+              value={tripData?.vehicle?.name}
               InputProps={{
                 readOnly: true,
               }}
@@ -147,7 +162,7 @@ const ModalTripApprovedPopup = ({
               margin="dense"
               fullWidth
               label="Loại Xe"
-              value={tripData?.busDTO?.type}
+              value={tripData?.vehicle?.type}
               InputProps={{
                 readOnly: true,
               }}
@@ -158,7 +173,7 @@ const ModalTripApprovedPopup = ({
               margin="dense"
               fullWidth
               label="Số Chỗ Ngồi"
-              value={tripData?.busDTO?.capacity}
+              value={tripData?.vehicle?.capacity}
               InputProps={{
                 readOnly: true,
               }}
@@ -170,7 +185,7 @@ const ModalTripApprovedPopup = ({
               fullWidth
               label="Thời Gian Bắt Đầu"
               value={moment
-                .unix(tripData?.startTimee)
+                .unix(tripData?.departureDateLT)
                 .subtract(7, "hours")
                 .format("DD/MM/YYYY - hh:mm A")}
               InputProps={{
@@ -184,7 +199,7 @@ const ModalTripApprovedPopup = ({
               fullWidth
               label="Thời Gian Kết Thúc"
               value={moment
-                .unix(tripData?.endTimee)
+                .unix(tripData?.endDateLT)
                 .subtract(7, "hours")
                 .format("DD/MM/YYYY - hh:mm A")}
               InputProps={{
@@ -196,7 +211,7 @@ const ModalTripApprovedPopup = ({
             <TextField
               fullWidth
               label="Điểm Bắt Đầu"
-              value={tripData?.routeDTO?.departurePoint}
+              value={tripData?.route?.departurePoint}
               InputProps={{
                 readOnly: true,
               }}
@@ -206,12 +221,34 @@ const ModalTripApprovedPopup = ({
             <TextField
               fullWidth
               label="Điểm Kết Thúc"
-              value={tripData?.routeDTO?.destination}
+              value={tripData?.route?.destination}
               InputProps={{
                 readOnly: true,
               }}
             />
           </Grid>
+
+          {listSchedule.map((dataListSchedule, index) => (
+            <Box key={dataListSchedule.idTrip} sx={{ width: "100%" }}>
+              <Typography>{dataListSchedule.idTrip}</Typography>
+              <Typography>
+                {moment(dataListSchedule?.departureDateLT * 1000)
+                  .subtract(7, "hours")
+                  .format("hh:mm A")}
+              </Typography>
+              <Button
+                type="button"
+                sx={{
+                  mb: "20px",
+                  color: "red",
+                }}
+                onClick={() => handleDelete(dataListSchedule.idTrip)}
+              >
+                <HighlightOffIcon />
+              </Button>
+            </Box>
+          ))}
+
           <Grid item xs={12} md={12}>
             {tripData?.listtripStopDTO?.map((dataTrip, index) => (
               <Box key={index}>
