@@ -22,12 +22,12 @@ const ModelEnterConfirmChangeTicketCode = ({
   const [confirmCode, setConfirmCode] = useState();
 
   const handleConfirmCode = async () => {
-    console.log("max: ", bookingData.bookingCode);
+    console.log("max: ", bookingData?.ticketCode);
     if (!confirmCode) {
       toast.error("Vui lòng nhập mã !");
       return;
     }
-    if (bookingData?.bookingCode?.toString() !== confirmCode) {
+    if (bookingData?.ticketCode?.toString() !== confirmCode) {
       toast.error("Mã vé không trùng khớp !");
       return;
     }

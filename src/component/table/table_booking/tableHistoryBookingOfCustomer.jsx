@@ -104,15 +104,15 @@ export default function TableHistoryBookingOfCustomer() {
     setOrderBy("bookingStatus");
   };
 
-  const sortedData = dataBooking.slice().sort((a, b) => {
+  const sortedData = dataBooking?.slice().sort((a, b) => {
     const orderMultiplier = order === "asc" ? 1 : -1;
     const statusOrder = [
       "PAID",
       "CHECKIN",
-      "NO_CHECKIN",
+      "NOT_CHECKIN",
       "NO_SHOW",
-      "CANCEL",
-      "FINISH",
+      "CANCELED",
+      "FINISHED",
     ]; // Định nghĩa thứ tự sắp xếp
 
     if (
@@ -130,7 +130,7 @@ export default function TableHistoryBookingOfCustomer() {
     return 0;
   });
 
-  /* FINISH HANDLE SORT bookingStatus*/
+  /* FINISHED HANDLE SORT bookingStatus*/
 
   // HANDLE FILTER SEARCH
   const filteredRows = sortedData.filter((row) => {
@@ -234,103 +234,127 @@ export default function TableHistoryBookingOfCustomer() {
           <TableBody>
             {!loading
               ? filteredRows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => (
-                  <TableRow key={index}>
-                    <TableCell className="tableCell">
-                      {row.idBooking}
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      {moment(row?.tripDTO?.startTimee * 1000).format(
-                        "DD/MM/YYYY hh:mm A"
-                      )}
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      {moment(row?.tripDTO?.endTimee * 1000).format(
-                        "DD/MM/YYYY hh:mm A"
-                      )}
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      {row?.tripDTO?.routeDTO?.departurePoint}
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      {row?.tripDTO?.routeDTO?.destination}
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      {formatMoney(row?.totalPrice)}
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      {" "}
-                      {row?.listTicket
-                        .slice(0, 30)
-                        .map((ticket) => ticket.seatName)
-                        .join(", ")}
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      <span
-                        className={`tripStatus ${row?.bookingStatus}`}
-                        style={{
-                          color: row?.bookingStatus === 'PAID' ? 'yellow' : row?.bookingStatus === 'NO_CHECKIN' ? 'blue' : row?.bookingStatus === 'CHECKIN' ? 'green' : row?.bookingStatus === 'NO_SHOW' ? 'gray' : '',
-                          border: row?.bookingStatus === 'PAID' ? '2px solid yellow' : row?.bookingStatus === 'NO_CHECKIN' ? '2px solid  blue' : row?.bookingStatus === 'CHECKIN' ? '2px solid  green' : row?.bookingStatus === 'NO_SHOW' ? '2px solid  gray' : '',
-                          background: row?.bookingStatus === 'NO_CHECKIN' ? 'lightblue' : row?.bookingStatus === 'PAID' ? 'lightyellow' : row?.bookingStatus === 'CHECKIN' ? 'lightgreen' : row?.bookingStatus === 'NO_SHOW' ? 'lightgray' : '',
-                          padding: '5px',
-                        }}
-                      >
-                        {row?.bookingStatus === "PAID"
-                          ? "ĐÃ THANH TOÁN"
-                          : row?.bookingStatus === "NO_CHECKIN"
+                  ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row, index) => (
+                    <TableRow key={index}>
+                      <TableCell className="tableCell">
+                        {row.idBooking}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {moment(row?.trip?.departureDate * 1000).format(
+                          "DD/MM/YYYY hh:mm A"
+                        )}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {moment(row?.trip?.endDate * 1000).format(
+                          "DD/MM/YYYY hh:mm A"
+                        )}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {row?.onStation?.name}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {row?.offStation?.name}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {formatMoney(row?.price)}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        {" "}
+                        {row?.seatName}
+                      </TableCell>
+                      <TableCell className="tableCell">
+                        <span
+                          className={`tripStatus ${row?.status}`}
+                          style={{
+                            color:
+                              row?.status === "PAID"
+                                ? "yellow"
+                                : row?.status === "NOT_CHECKIN"
+                                ? "blue"
+                                : row?.status === "CHECKIN"
+                                ? "green"
+                                : row?.status === "NO_SHOW"
+                                ? "gray"
+                                : "",
+                            border:
+                              row?.status === "PAID"
+                                ? "2px solid yellow"
+                                : row?.status === "NOT_CHECKIN"
+                                ? "2px solid  blue"
+                                : row?.status === "CHECKIN"
+                                ? "2px solid  green"
+                                : row?.status === "NO_SHOW"
+                                ? "2px solid  gray"
+                                : "",
+                            background:
+                              row?.status === "NOT_CHECKIN"
+                                ? "lightblue"
+                                : row?.status === "PAID"
+                                ? "lightyellow"
+                                : row?.status === "CHECKIN"
+                                ? "lightgreen"
+                                : row?.status === "NO_SHOW"
+                                ? "lightgray"
+                                : "",
+                            padding: "5px",
+                          }}
+                        >
+                          {row?.status === "PAID"
+                            ? "ĐÃ THANH TOÁN"
+                            : row?.status === "NOT_CHECKIN"
                             ? "CHỜ CHECKIN"
-                            : row?.bookingStatus === "NO_SHOW"
-                              ? "LỠ CHUYẾN"
-                              : row?.bookingStatus === "CHECKIN"
-                                ? "ĐÃ CHECKIN"
-                                : row?.bookingStatus === "FINISH"
-                                  ? "ĐÃ HOÀN THÀNH"
-                                  : row?.bookingStatus === "CANCEL"
-                                    ? "HỦY"
-                                    : row?.bookingStatus}
-                      </span>
-                    </TableCell>
+                            : row?.status === "NO_SHOW"
+                            ? "LỠ CHUYẾN"
+                            : row?.status === "CHECKIN"
+                            ? "ĐÃ CHECKIN"
+                            : row?.status === "FINISHED"
+                            ? "ĐÃ HOÀN THÀNH"
+                            : row?.status === "CANCELED"
+                            ? "HỦY"
+                            : row?.status}
+                        </span>
+                      </TableCell>
 
-                    <TableCell className="tableCell">
-                      <MenuActionChangeTicket
-                        bookingData={row}
-                        onOpen={handleOpen}
-                      />
+                      <TableCell className="tableCell">
+                        <MenuActionChangeTicket
+                          bookingData={row}
+                          onOpen={handleOpen}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))
+              : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
+                  <TableRow hover={true} key={index}>
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="left">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton variant="rectangular" />
                     </TableCell>
                   </TableRow>
-                ))
-              : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
-                <TableRow hover={true} key={index}>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="left">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton variant="rectangular" />
-                  </TableCell>
-                </TableRow>
-              ))}
+                ))}
           </TableBody>
           {selectedBookingData && (
             <ModelEnterConfirmChangeTicketCode

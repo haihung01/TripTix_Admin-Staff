@@ -171,7 +171,7 @@ const ChangeTicket = () => {
             </TableHead>
             <TableBody>
               {filteredRows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => (
                   <TableRow key={row.idUserSystem}>
                     <TableCell className="tableCell">

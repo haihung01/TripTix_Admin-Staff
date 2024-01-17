@@ -37,7 +37,7 @@ const bookingApi = {
     });
   },
   getDataPotentialCustomer: (params) => {
-    const url = "/ticket/top-10-list-of-potential-customers";
+    const url = "/ticket/top-10-list-of-highest-revenue-trips";
     return axiosClient.get(url, {
       params,
       paramsSerializer: {

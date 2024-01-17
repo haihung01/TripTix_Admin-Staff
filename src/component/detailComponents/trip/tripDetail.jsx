@@ -46,7 +46,7 @@ export default function TripDetail() {
         ?.split(",")
         ?.map(Number);
       setBusLocaion(location || [10.8991, 106.8769]);
-      console.log("list booking: ", response?.data?.listBooking);
+      console.log("list booking: ", response?.data);
       setDataTrip(response.data);
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -64,10 +64,10 @@ export default function TripDetail() {
   //format money
   const [formatMoney] = useMoneyFormatter();
 
-  const startTimeeFormat = moment(dataTrip?.startTimee * 1000)
+  const startTimeeFormat = moment(dataTrip?.departureDateLT * 1000)
     .subtract(7, "hours")
     .format("hh:mm A");
-  const endTimeeFormat = moment(dataTrip?.endTimee * 1000)
+  const endTimeeFormat = moment(dataTrip?.endDateLT * 1000)
     .subtract(7, "hours")
     .format("hh:mm A");
 
@@ -96,8 +96,7 @@ export default function TripDetail() {
                 >
                   Tuyến Đường:{" "}
                 </span>
-                {dataTrip?.routeDTO?.departurePoint} -{" "}
-                {dataTrip?.routeDTO?.destination}
+                {dataTrip?.route?.name}
               </Typography>
             </Grid>
             <Grid item md={12}>
@@ -105,13 +104,13 @@ export default function TripDetail() {
                 <span
                   style={{ fontWeight: "bold", fontSize: 20, color: "black" }}
                 >
-                  Ngày Xuất Phát:{" "}
+                  Xuất Phát - Kết Thúc:{" "}
                 </span>
-                {moment(dataTrip?.startTimee * 1000)
+                {moment(dataTrip?.departureDateLT * 1000)
                   .subtract(7, "hours")
                   .format("DD/MM/YYYY")}{" "}
                 -{" "}
-                {moment(dataTrip?.endTimee * 1000)
+                {moment(dataTrip?.endDateLT * 1000)
                   .subtract(7, "hours")
                   .format("DD/MM/YYYY")}
               </Typography>
@@ -121,7 +120,7 @@ export default function TripDetail() {
                 <span
                   style={{ fontWeight: "bold", fontSize: 20, color: "black" }}
                 >
-                  Thời Gian Xuất Phát:{" "}
+                  Thời Gian:{" "}
                 </span>
                 {startTimeeFormat} - {endTimeeFormat}
               </Typography>
@@ -133,7 +132,7 @@ export default function TripDetail() {
                 >
                   Tài Xế:{" "}
                 </span>
-                {dataTrip?.driverDTO?.fullName}
+                {dataTrip?.driver?.fullName}
               </Typography>
             </Grid>
             <Grid item md={12}>
@@ -143,7 +142,7 @@ export default function TripDetail() {
                 >
                   Xe Khách:{" "}
                 </span>
-                {dataTrip?.busDTO?.name}
+                {dataTrip?.vehicle?.name}
               </Typography>
             </Grid>
             <Grid item md={12}>
@@ -157,7 +156,7 @@ export default function TripDetail() {
                 {dataTrip ? dataTrip.bookedSeat + dataTrip.availableSeat : 0}
               </Typography>
             </Grid>
-            <Grid item md={12}>
+            {/* <Grid item md={12}>
               <Typography sx={{ color: "#696969", fontSize: 18 }}>
                 <span
                   style={{ fontWeight: "bold", fontSize: 20, color: "black" }}
@@ -166,7 +165,7 @@ export default function TripDetail() {
                 </span>
                 {formatMoney(dataTrip?.fare)}
               </Typography>
-            </Grid>
+            </Grid> */}
             <Grid item md={12}>
               <Typography sx={{ color: "#696969", fontSize: 18 }}>
                 <span
@@ -218,7 +217,7 @@ export default function TripDetail() {
                 Đánh Giá:{""}
               </Typography>
               <Rating
-                name={`rating-${dataTrip?.tripID}`}
+                name={`rating-${dataTrip?.idTrip}`}
                 value={dataTrip?.averageStar || null}
                 precision={0.2}
                 readOnly
@@ -233,7 +232,20 @@ export default function TripDetail() {
       <div className="box box3">
         <Grid container spacing={2}>
           <Grid item xs={12} md={12}>
-            {dataTrip?.listtripStopDTO?.map((dataTrip, index) => (
+            <Typography
+              textAlign="center"
+              sx={{
+                m: 1,
+                mb: 4,
+                fontSize: "20px",
+                fontWeight: "bold",
+                color: "#696969",
+              }}
+            >
+              ༺ Danh sách trạm xe ༻
+            </Typography>
+            <Divider />
+            {dataTrip?.route?.listStationInRoute?.map((dataTrip, index) => (
               <Box key={index}>
                 <Accordion
                   expanded={expanded === `panel${index + 1}`}
@@ -253,7 +265,7 @@ export default function TripDetail() {
                         flexShrink: 0,
                       }}
                     >
-                      {dataTrip?.stationDTO?.name}
+                      {dataTrip?.station?.name}
                     </Typography>
                     <Typography
                       sx={{ color: "text.secondary" }}
@@ -266,23 +278,21 @@ export default function TripDetail() {
                   <AccordionDetails>
                     <Typography sx={{ mb: 2 }}>
                       <span style={{ fontWeight: 600 }}>Địa chỉ: </span>
-                      {dataTrip?.stationDTO?.address}
+                      {dataTrip?.station?.address}
                     </Typography>
                     <Typography sx={{ mb: 2 }}>
                       <span style={{ fontWeight: 600 }}>Tỉnh/Thành: </span>
-                      {dataTrip?.stationDTO?.province}
+                      {dataTrip?.station?.province}
                     </Typography>
                     <Typography sx={{ mb: 2 }}>
                       <span style={{ fontWeight: 600 }}>
-                        Thời Gian Đến ( Dự Kiến):{" "}
+                        Thời Gian Đến (Dự Kiến):{" "}
                       </span>
-                      {moment(dataTrip?.timeComess * 1000)
-                        .subtract(7, "hours")
-                        .format("hh:mm A")}
+                      {dataTrip?.timeCome}
                     </Typography>
                     <Typography sx={{ mb: 2 }}>
-                      <span style={{ fontWeight: 600 }}>Giá Trạm: </span>
-                      {formatMoney(dataTrip?.costsIncurred)}
+                      <span style={{ fontWeight: 600 }}>Khoảng cách: </span>
+                      {dataTrip?.distance} Km
                     </Typography>
                   </AccordionDetails>
                 </Accordion>
@@ -291,8 +301,121 @@ export default function TripDetail() {
           </Grid>
         </Grid>
       </div>
+      <div className="box box5">
+        {" "}
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={12}>
+            <Typography
+              textAlign="center"
+              sx={{
+                m: 1,
+                mb: 4,
+                fontSize: "20px",
+                fontWeight: "bold",
+                color: "#696969",
+              }}
+            >
+              ༺ Danh sách Loại Vé ༻
+            </Typography>
+            <Divider />
+            {dataTrip?.route?.listTicketType !== "" ? (
+              <TableContainer component={Paper} className="table">
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                  <TableHead
+                    sx={{
+                      backgroundImage:
+                        "linear-gradient(to bottom, #9b9bff, #a1a1f7, #a7a7ee, #acace5, #b2b2dc)",
+                    }}
+                  >
+                    <TableRow>
+                      <TableCell
+                        className="tableCell"
+                        sx={{ color: "#443A3E", fontWeight: "bold" }}
+                      >
+                        ID Loại vé
+                      </TableCell>
+                      <TableCell
+                        className="tableCell"
+                        sx={{ color: "#443A3E", fontWeight: "bold" }}
+                      >
+                        Loại vé
+                      </TableCell>
+                      <TableCell
+                        className="tableCell"
+                        sx={{ color: "#443A3E", fontWeight: "bold" }}
+                      >
+                        Giá vé
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {dataTrip?.route?.listTicketType?.map((row) => (
+                      <TableRow key={row.idTicketType}>
+                        <TableCell className="tableCell">
+                          {row.idTicketType}
+                        </TableCell>
+                        <TableCell className="tableCell">{row.name}</TableCell>
+                        <TableCell className="tableCell">
+                          {formatMoney(row.defaultPrice)}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            ) : (
+              <div>
+                <TableContainer component={Paper} className="table">
+                  <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead
+                      sx={{
+                        backgroundImage:
+                          "linear-gradient(to bottom, #9b9bff, #a1a1f7, #a7a7ee, #acace5, #b2b2dc)",
+                      }}
+                    >
+                      <TableRow>
+                        <TableCell
+                          className="tableCell"
+                          sx={{ color: "#443A3E", fontWeight: "bold" }}
+                        >
+                          ID Loại vé
+                        </TableCell>
+                        <TableCell
+                          className="tableCell"
+                          sx={{ color: "#443A3E", fontWeight: "bold" }}
+                        >
+                          Loại vé
+                        </TableCell>
+                        <TableCell
+                          className="tableCell"
+                          sx={{ color: "#443A3E", fontWeight: "bold" }}
+                        >
+                          Giá vé
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                  </Table>
+                </TableContainer>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    sx={{ textAlign: "center", fontSize: "18px", m: 1 }}
+                  >
+                    Chưa có Loại vé cho tuyến đường này !
+                  </Typography>
+                </Box>
+              </div>
+            )}
+          </Grid>
+        </Grid>
+      </div>
       <div className="box box4">
-        {dataTrip?.listBooking !== "" ? (
+        {dataTrip?.tickets?.length > 0 ? (
           <TableContainer component={Paper} className="table">
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead
@@ -306,43 +429,49 @@ export default function TripDetail() {
                     className="tableCell"
                     sx={{ color: "#443A3E", fontWeight: "bold" }}
                   >
-                    ID Đặt Chuyến
+                    ID vé
                   </TableCell>
                   <TableCell
                     className="tableCell"
                     sx={{ color: "#443A3E", fontWeight: "bold" }}
                   >
-                    Khách Hàng
+                    Khách hàng
                   </TableCell>
                   <TableCell
                     className="tableCell"
                     sx={{ color: "#443A3E", fontWeight: "bold" }}
                   >
-                    Số Vé
+                    Số điện thoại
                   </TableCell>
                   <TableCell
                     className="tableCell"
                     sx={{ color: "#443A3E", fontWeight: "bold" }}
                   >
-                    Tổng Giá
+                    Chỗ ngồi
                   </TableCell>
                   <TableCell
                     className="tableCell"
                     sx={{ color: "#443A3E", fontWeight: "bold" }}
                   >
-                    Điểm Đón
+                    Tổng giá
                   </TableCell>
                   <TableCell
                     className="tableCell"
                     sx={{ color: "#443A3E", fontWeight: "bold" }}
                   >
-                    Điểm Trả
+                    Điểm đón
                   </TableCell>
                   <TableCell
                     className="tableCell"
                     sx={{ color: "#443A3E", fontWeight: "bold" }}
                   >
-                    Trạng Thái
+                    Điểm trả
+                  </TableCell>
+                  <TableCell
+                    className="tableCell"
+                    sx={{ color: "#443A3E", fontWeight: "bold" }}
+                  >
+                    Trạng thái
                   </TableCell>
                   <TableCell
                     className="tableCell"
@@ -353,32 +482,29 @@ export default function TripDetail() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {dataTrip?.listBooking?.map((row) => (
-                  <TableRow key={row.idBooking}>
-                    <TableCell className="tableCell">{row.idBooking}</TableCell>
+                {dataTrip?.tickets?.map((row) => (
+                  <TableRow key={row.idTicket}>
+                    <TableCell className="tableCell">{row.idTicket}</TableCell>
+                    <TableCell className="tableCell">{row?.fullName}</TableCell>
+                    <TableCell className="tableCell">{row?.phone}</TableCell>
+                    <TableCell className="tableCell">{row?.seatName}</TableCell>
                     <TableCell className="tableCell">
-                      {row.userSystemDTO.fullName}
+                      {formatMoney(row?.price)}
                     </TableCell>
                     <TableCell className="tableCell">
-                      {row.numberOfTickets}
+                      {row?.onStation?.name}
                     </TableCell>
                     <TableCell className="tableCell">
-                      {row.totalPrice}
+                      {row?.offStation?.name}
                     </TableCell>
                     <TableCell className="tableCell">
-                      {row.pickUpPoint}
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      {row.dropOffPoint}
-                    </TableCell>
-                    <TableCell className="tableCell">
-                      <span className={`status ${row.bookingStatus}`}>
-                        {row.bookingStatus}
+                      <span className={`status ${row.status}`}>
+                        {row.status}
                       </span>
                     </TableCell>
                     <TableCell className="tableCell">
                       <Rating
-                        name={`rating-${row.idBooking}`}
+                        name={`rating-${row.idTicket}`}
                         value={row?.star || null}
                         precision={0.2}
                         readOnly
@@ -404,43 +530,49 @@ export default function TripDetail() {
                       className="tableCell"
                       sx={{ color: "#443A3E", fontWeight: "bold" }}
                     >
-                      ID Đặt Chuyến
+                      ID vé
                     </TableCell>
                     <TableCell
                       className="tableCell"
                       sx={{ color: "#443A3E", fontWeight: "bold" }}
                     >
-                      Khách Hàng
+                      Khách hàng
                     </TableCell>
                     <TableCell
                       className="tableCell"
                       sx={{ color: "#443A3E", fontWeight: "bold" }}
                     >
-                      Số Vé
+                      Số điện thoại
                     </TableCell>
                     <TableCell
                       className="tableCell"
                       sx={{ color: "#443A3E", fontWeight: "bold" }}
                     >
-                      Tổng Giá
+                      Chỗ ngồi
                     </TableCell>
                     <TableCell
                       className="tableCell"
                       sx={{ color: "#443A3E", fontWeight: "bold" }}
                     >
-                      Điểm Đón
+                      Tổng giá
                     </TableCell>
                     <TableCell
                       className="tableCell"
                       sx={{ color: "#443A3E", fontWeight: "bold" }}
                     >
-                      Điểm Trả
+                      Điểm đón
                     </TableCell>
                     <TableCell
                       className="tableCell"
                       sx={{ color: "#443A3E", fontWeight: "bold" }}
                     >
-                      Trạng Thái
+                      Điểm trả
+                    </TableCell>
+                    <TableCell
+                      className="tableCell"
+                      sx={{ color: "#443A3E", fontWeight: "bold" }}
+                    >
+                      Trạng thái
                     </TableCell>
                     <TableCell
                       className="tableCell"
