@@ -227,27 +227,34 @@ const ModalTripApprovedPopup = ({
               }}
             />
           </Grid>
-
-          {listSchedule.map((dataListSchedule, index) => (
-            <Box key={dataListSchedule.idTrip} sx={{ width: "100%" }}>
-              <Typography>{dataListSchedule.idTrip}</Typography>
-              <Typography>
-                {moment(dataListSchedule?.departureDateLT * 1000)
-                  .subtract(7, "hours")
-                  .format("hh:mm A")}
-              </Typography>
-              <Button
-                type="button"
+          <Grid item xs={12} md={12}>
+            {listSchedule.map((dataListSchedule, index) => (
+              <Box
+                key={dataListSchedule.idTrip}
                 sx={{
-                  mb: "20px",
-                  color: "red",
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  mt: "20px",
                 }}
-                onClick={() => handleDelete(dataListSchedule.idTrip)}
               >
-                <HighlightOffIcon />
-              </Button>
-            </Box>
-          ))}
+                <Typography>
+                  {moment(dataListSchedule?.departureDateLT * 1000)
+                    .subtract(7, "hours")
+                    .format("DD/MM/YYYY")}
+                </Typography>
+                <Button
+                  type="button"
+                  sx={{
+                    color: "red",
+                  }}
+                  onClick={() => handleDelete(dataListSchedule.idTrip)}
+                >
+                  <HighlightOffIcon />
+                </Button>
+              </Box>
+            ))}
+          </Grid>
 
           <Grid item xs={12} md={12}>
             {tripData?.listtripStopDTO?.map((dataTrip, index) => (

@@ -12,6 +12,7 @@ import {
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import listTripApi from "../../../../utils/listTripAPI";
 
 const ModelEnterConfirmChangeTicketCode = ({
   open,
@@ -23,6 +24,7 @@ const ModelEnterConfirmChangeTicketCode = ({
 
   const handleConfirmCode = async () => {
     console.log("max: ", bookingData?.ticketCode);
+    console.log("max1: ", bookingData);
     if (!confirmCode) {
       toast.error("Vui lòng nhập mã !");
       return;
@@ -31,7 +33,19 @@ const ModelEnterConfirmChangeTicketCode = ({
       toast.error("Mã vé không trùng khớp !");
       return;
     }
-    navigate(`/change-seating/${bookingData?.idBooking}`);
+    try {
+      const response = await listTripApi.findSeatTrip({
+        idStationPickUp: bookingData?.onStation?.idStation,
+        idStationDropOff: bookingData?.offStation?.idStation,
+        idTrip: bookingData?.idTrip,
+      });
+      console.log("max2: ", response);
+      navigate(`/change-seating/${bookingData?.idTicket}`, {
+        state: response?.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

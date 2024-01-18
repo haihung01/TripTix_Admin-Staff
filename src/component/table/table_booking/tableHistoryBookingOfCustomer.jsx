@@ -317,10 +317,12 @@ export default function TableHistoryBookingOfCustomer() {
                       </TableCell>
 
                       <TableCell className="tableCell">
-                        <MenuActionChangeTicket
-                          bookingData={row}
-                          onOpen={handleOpen}
-                        />
+                        {row?.status === "PAID" && (
+                          <MenuActionChangeTicket
+                            bookingData={row}
+                            onOpen={handleOpen}
+                          />
+                        )}
                       </TableCell>
                     </TableRow>
                   ))

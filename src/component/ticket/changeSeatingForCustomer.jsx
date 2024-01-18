@@ -22,10 +22,10 @@ export default function ChangeSeatingForCustomer() {
           const responseSeat = await listTripApi.tripDetail({
             id: response.data?.idTrip,
           });
-          setListSeat(responseSeat.data?.seatNameBooking || []);
-          setFloor(response.data?.busDTO?.floor);
+          setListSeat(response.data?.seatName|| []);
+          setFloor(response.data?.trip?.vehicleDTO?.floor);
           console.log("seat: ", responseSeat.data?.seatNameBooking);
-          console.log("floor: ", responseSeat.data?.busDTO?.floor);
+          console.log("floor: ", response.data?.trip?.vehicleDTO?.floor);
         }
         console.log("databoking: ", response.data);
         setDataBooking(response.data);

@@ -55,7 +55,7 @@ const bookingApi = {
     });
   },
   changeTicketForCustomer: (payload) => {
-    const url = "/ticket/change-seat-of-ticket-by-customer";
+    const url = "/ticket/change-seat-of-ticket";
     return axiosClient.put(url, payload);
   },
 };

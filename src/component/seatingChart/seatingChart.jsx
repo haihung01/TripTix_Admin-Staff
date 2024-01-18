@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Button, Box } from "@mui/material";
 import { toast } from "react-toastify";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import bookingApi from "../../utils/bookingAPI";
 
 const SeatingChart = ({ data, floor, listTickets }) => {
@@ -9,6 +9,66 @@ const SeatingChart = ({ data, floor, listTickets }) => {
   const [listSeatSelectedAPI, setListSeatSelectedAPI] = useState([]);
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const listSeat =
+    floor === 1
+      ? [
+          "A1",
+          "A2",
+          "A3",
+          "A4",
+          "A5",
+          "A6",
+          "A7",
+          "A8",
+          "A9",
+          "A10",
+          "A11",
+          "A12",
+          "A13",
+          "A14",
+          "A15",
+          "A16",
+          "A17",
+          "A18",
+          "A19",
+          "A20",
+          "A21",
+          "A22",
+          "A23",
+          "A24",
+          "A25",
+          "A26",
+          "A27",
+          "A28",
+          "A29",
+          "A30",
+        ]
+      : [
+          "A1",
+          "A2",
+          "A3",
+          "A4",
+          "A5",
+          "A6",
+          "A7",
+          "A8",
+          "A9",
+          "A10",
+          "A11",
+          "A12",
+          "A13",
+          "A14",
+          "A15",
+          "A16",
+          "A17",
+          "A18",
+          "A19",
+          "A20",
+          "A21",
+          "A22",
+        ];
+  console.log("location: ", location.state, data);
 
   useEffect(() => {
     const listTicketSelected = listTickets?.map((t) => t?.seatName);
@@ -23,8 +83,8 @@ const SeatingChart = ({ data, floor, listTickets }) => {
     if (confirm) {
       try {
         const dataUpdate = {
-          idBooking: parseInt(id),
-          seatName: listSeatSelected,
+          idTicket: parseInt(id),
+          seatName: listSeatSelected[0],
         };
         await bookingApi.changeTicketForCustomer(dataUpdate);
         toast.success("Đổi chỗ ngồi thành công !");
@@ -37,26 +97,7 @@ const SeatingChart = ({ data, floor, listTickets }) => {
   };
   const maxTickets = listTickets?.length || 0;
   const handleSeatClick = (seatName) => {
-    const check = listSeatSelected.find((t) => t === seatName);
-
-    if (listSeatSelected?.length === maxTickets && check === undefined) {
-      toast.error("Không được chọn quá số chỗ khách đã đặt trước đó !");
-      console.log("list selected: ", listSeatSelected);
-      return;
-    }
-    if (check) {
-      const newList = listSeatSelected.filter((t) => t !== seatName);
-      setListSeatSelected(newList || []);
-      console.log("list selected: ", listSeatSelected);
-
-      return;
-    } else {
-      const newList = [...listSeatSelected, seatName];
-      setListSeatSelected(newList);
-      console.log("list selected: ", listSeatSelected, newList);
-
-      return;
-    }
+    setListSeatSelected([seatName]);
   };
 
   if (floor === 1) {
@@ -65,37 +106,27 @@ const SeatingChart = ({ data, floor, listTickets }) => {
         <Box>
           <Grid container spacing={4}>
             <Grid container item justifyContent="center" spacing={6}>
-              {data.map((seat, seatIndex) => (
-                <Grid item key={seatIndex} xs={6}>
-                  {seat.status === "AVAILABLE" && (
+              {listSeat.map((seat, seatIndex) => (
+                <Grid item key={seatIndex} xs={4}>
+                  {location.state?.findIndex((t) => t === seat) === -1 && (
                     <Button
                       variant="contained"
                       color={
-                        listSeatSelected?.find((t) => t === seat.seatName)
-                          ? "success"
-                          : "primary"
+                        listSeatSelected[0] === seat ? "warning" : "primary"
                       }
-                      onClick={() => handleSeatClick()}
+                      onClick={() => handleSeatClick(seat)}
                     >
-                      {seat.seatName}
+                      {seat}
                     </Button>
                   )}
-                  {seat.status === "UNAVAILABLE" && (
+
+                  {location.state?.findIndex((t) => t === seat) !== -1 && (
                     <Button
                       variant="contained"
-                      color={
-                        listSeatSelected?.find((t) => t === seat.seatName) &&
-                        "success"
-                      }
-                      onClick={() => handleSeatClick(seat.seatName)}
-                      disabled={
-                        listSeatSelected?.find((t) => t === seat.seatName) ||
-                        listSeatSelectedAPI?.find((t) => t === seat.seatName)
-                          ? false
-                          : true
-                      }
+                      color={data === seat ? "success" : "info"}
+                      disabled={data === seat ? false : true}
                     >
-                      {seat.seatName}
+                      {seat}
                     </Button>
                   )}
                 </Grid>
@@ -107,10 +138,21 @@ const SeatingChart = ({ data, floor, listTickets }) => {
           sx={{
             display: "flex",
             justifyContent: "center",
-            m: "20px",
+            alignItems: "center",
+            p: "100px",
           }}
         >
-          <Button onClick={handleSubmitChage}>Xác nhận</Button>
+          <Button
+            sx={{
+              backgroundColor: "#6D6DFF",
+              color: "white",
+              width: "160px",
+              ":hover": { bgcolor: "#6868AE" },
+            }}
+            onClick={handleSubmitChage}
+          >
+            Xác nhận
+          </Button>
         </Box>
       </Box>
     );
@@ -136,39 +178,28 @@ const SeatingChart = ({ data, floor, listTickets }) => {
               xs={6}
               md={6}
             >
-              {data
-                .slice(0, Math.round(data?.length / 2))
+              {listSeat
+                .slice(0, Math.round(listSeat?.length / 2))
                 .map((seat, seatIndex) => (
                   <Grid item key={seatIndex} xs={6}>
-                    {seat.status === "AVAILABLE" && (
+                    {location.state?.findIndex((t) => t === seat) === -1 && (
                       <Button
                         variant="contained"
                         color={
-                          listSeatSelected?.find((t) => t === seat.seatName)
-                            ? "success"
-                            : "primary"
+                          listSeatSelected[0] === seat ? "warning" : "primary"
                         }
-                        onClick={() => handleSeatClick(seat.seatName)}
+                        onClick={() => handleSeatClick(seat)}
                       >
-                        {seat.seatName}
+                        {seat}
                       </Button>
                     )}
-                    {seat.status === "UNAVAILABLE" && (
+                    {location.state?.findIndex((t) => t === seat) !== -1 && (
                       <Button
                         variant="contained"
-                        color={
-                          listSeatSelected?.find((t) => t === seat.seatName) &&
-                          "success"
-                        }
-                        onClick={() => handleSeatClick(seat.seatName)}
-                        disabled={
-                          listSeatSelected?.find((t) => t === seat.seatName) ||
-                          listSeatSelectedAPI?.find((t) => t === seat.seatName)
-                            ? false
-                            : true
-                        }
+                        color={data === seat ? "success" : "info"}
+                        disabled={data === seat ? false : true}
                       >
-                        {seat.seatName}
+                        {seat}
                       </Button>
                     )}
                   </Grid>
@@ -182,39 +213,28 @@ const SeatingChart = ({ data, floor, listTickets }) => {
               xs={6}
               md={6}
             >
-              {data
-                .slice(Math.round(data?.length / 2), data?.length)
+              {listSeat
+                .slice(Math.round(listSeat?.length / 2), listSeat?.length)
                 .map((seat, seatIndex) => (
                   <Grid item key={seatIndex} xs={6}>
-                    {seat.status === "AVAILABLE" && (
+                    {location.state?.findIndex((t) => t === seat) === -1 && (
                       <Button
                         variant="contained"
                         color={
-                          listSeatSelected?.find((t) => t === seat.seatName)
-                            ? "success"
-                            : "primary"
+                          listSeatSelected[0] === seat ? "warning" : "primary"
                         }
-                        onClick={() => handleSeatClick(seat.seatName)}
+                        onClick={() => handleSeatClick(seat)}
                       >
-                        {seat.seatName}
+                        {seat}
                       </Button>
                     )}
-                    {seat.status === "UNAVAILABLE" && (
+                    {location.state?.findIndex((t) => t === seat) !== -1 && (
                       <Button
                         variant="contained"
-                        color={
-                          listSeatSelected?.find((t) => t === seat.seatName) &&
-                          "success"
-                        }
-                        onClick={() => handleSeatClick(seat.seatName)}
-                        disabled={
-                          listSeatSelected?.find((t) => t === seat.seatName) ||
-                          listSeatSelectedAPI?.find((t) => t === seat.seatName)
-                            ? false
-                            : true
-                        }
+                        color={data === seat ? "success" : "info"}
+                        disabled={data === seat ? false : true}
                       >
-                        {seat.seatName}
+                        {seat}
                       </Button>
                     )}
                   </Grid>

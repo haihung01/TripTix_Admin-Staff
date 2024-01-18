@@ -49,7 +49,7 @@ const listTripApi = {
   },
 
   getTripPendingByAdmin: (params) => {
-    const url = `/trips?adminCheck=${"PENDING"}`;
+    const url = `/trips/trip-admin-check`;
     return axiosClient.get(url, {
       params,
       paramsSerializer: {
@@ -125,6 +125,10 @@ const listTripApi = {
   saveTemplateTrip: (payload) => {
     const url = "/form-create";
     return axiosClient.post(url, payload);
+  },
+  findSeatTrip: (payload) => {
+    const url = "/trips/find-seat";
+    return axiosClient.put(url, payload);
   },
 };
 export default listTripApi;
