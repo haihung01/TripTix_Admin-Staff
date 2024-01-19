@@ -51,7 +51,6 @@ const validationSchema = Yup.object().shape({
     .max(15, "Mật khẩu chỉ được tối đa 15 ký tự"),
   birthday: Yup.date().required("Ngày sinh là bắt buộc"),
   gender: Yup.string().required("Giới tính là bắt buộc"),
-  assignedRegions: Yup.string().required("Vùng được giao là bắt buộc"),
 });
 
 const AddUserModal = ({ open, handleClose, fetchUserData }) => {
@@ -82,7 +81,6 @@ const AddUserModal = ({ open, handleClose, fetchUserData }) => {
             password: "123456",
             birthday: "",
             gender: "",
-            assignedRegions: "",
             role: "STAFF",
           }}
           validationSchema={validationSchema}
@@ -216,7 +214,7 @@ const AddUserModal = ({ open, handleClose, fetchUserData }) => {
                   </Field>
                 </Grid>
 
-                <Grid item xs={4} md={4}>
+                <Grid item xs={6} md={6}>
                   <Field name="birthday">
                     {({ field, meta }) => (
                       <TextField
@@ -247,7 +245,7 @@ const AddUserModal = ({ open, handleClose, fetchUserData }) => {
                   </Field>
                 </Grid>
 
-                <Grid item xs={4} md={4}>
+                <Grid item xs={6} md={6}>
                   <Field name="gender">
                     {({ field, form, meta }) => (
                       <FormControl fullWidth>
@@ -260,33 +258,6 @@ const AddUserModal = ({ open, handleClose, fetchUserData }) => {
                         >
                           <MenuItem value="MALE">Nam</MenuItem>
                           <MenuItem value="FEMALE">Nữ</MenuItem>
-                        </Select>
-                        <Typography
-                          color="#D80032"
-                          sx={{ fontSize: "12px", p: 0.5 }}
-                        >
-                          {meta.touched && meta.error ? meta.error : ""}
-                        </Typography>
-                      </FormControl>
-                    )}
-                  </Field>
-                </Grid>
-
-                <Grid item xs={4} md={4}>
-                  <Field name="assignedRegions">
-                    {({ field, form, meta }) => (
-                      <FormControl fullWidth>
-                        <InputLabel htmlFor="area-select">Khu vực</InputLabel>
-                        <Select
-                          {...field}
-                          label="Khu vực"
-                          fullWidth
-                          error={meta.touched && !!meta.error}
-                        >
-                          <MenuItem value="Hỗn hợp">Liên Vùng</MenuItem>
-                          <MenuItem value="Bắc">Bắc</MenuItem>
-                          <MenuItem value="Trung">Trung</MenuItem>
-                          <MenuItem value="Nam">Nam</MenuItem>
                         </Select>
                         <Typography
                           color="#D80032"

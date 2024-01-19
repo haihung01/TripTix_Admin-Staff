@@ -39,11 +39,11 @@ const Featured = () => {
     <div className="featured">
       <div className="top">
         <h1 className="title" style={{ textDecoration: "underline" }}>
-          Lợi Nhuận Ngày
+          TỔNG SỐ VÉ BÁN RA TRONG NGÀY
         </h1>
       </div>
       <div className="bottom">
-        <p className="title">Tổng Lợi Nhuận Trong Ngày Hôm Nay</p>
+        <p className="title">TỔNG TIỀN VÉ BÁN RA TRONG NGÀY HÔM NAY</p>
         <p className="amount">
           {formatMoney(dataRevenue.totalAmountPriceToday)}
         </p>

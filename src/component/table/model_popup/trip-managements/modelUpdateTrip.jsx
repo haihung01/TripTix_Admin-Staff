@@ -1,6 +1,4 @@
-import AddIcon from "@mui/icons-material/Add";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import {
   Autocomplete,
   Button,
@@ -11,11 +9,9 @@ import {
   Divider,
   Grid,
   InputAdornment,
-  TextField,
-  Typography,
+  TextField
 } from "@mui/material";
-import { Field, FieldArray, Form, Formik } from "formik";
-import moment from "moment";
+import { Field, Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -31,10 +27,6 @@ import "./modelUpdateTrip.scss";
 const TripSchema = Yup.object({
   idDriver: Yup.string().required("Required"),
   idBus: Yup.string().required("Required"),
-  // fare: Yup.number()
-  //   .min(0, "Fare can not less than 0 !")
-  //   .required("Required"),
-  // listTripStop: Yup.string().required("Required"),
   startTime: Yup.date()
     .min(new Date(), "Must choose starting tomorrow!")
     .required("This field must be selected !"),
@@ -49,9 +41,6 @@ const TripSchema = Yup.object({
       }
     )
     .required("This field must be selected !"),
-  // fare: Yup.number()
-  //   .positive("Fare must be a positive number")
-  //   .required("Fare is required"),
 });
 
 const UpdateTrip = ({ open, handleClose, tripData, fetchListTrip }) => {
@@ -122,20 +111,10 @@ const UpdateTrip = ({ open, handleClose, tripData, fetchListTrip }) => {
     fetchListStation();
   }, []);
 
-  const formatStartTime = new Date(tripData.startTimee * 1000);
+  const formatStartTime = new Date(tripData.departureDateLT * 1000);
   formatStartTime.setHours(formatStartTime.getHours() - 7);
-  const formatEndTime = new Date(tripData.endTimee * 1000);
+  const formatEndTime = new Date(tripData.endDateLT * 1000);
   formatEndTime.setHours(formatEndTime.getHours() - 7);
-
-  const listTripStopFormat = tripData?.listtripStopDTO?.map((p) => {
-    let timeComess = new Date(p.timeComess * 1000);
-    timeComess.setHours(timeComess.getHours() - 7);
-    return {
-      ...p,
-      timeComess: timeComess,
-    };
-  });
-  console.log("lisstTripStop: ", listTripStopFormat);
 
   return (
     <Dialog
@@ -143,7 +122,7 @@ const UpdateTrip = ({ open, handleClose, tripData, fetchListTrip }) => {
       onClose={handleClose}
       sx={{
         "& .MuiPaper-root": {
-          minWidth: "70vw",
+          minWidth: "45%",
         },
       }}
     >
@@ -163,40 +142,24 @@ const UpdateTrip = ({ open, handleClose, tripData, fetchListTrip }) => {
       <DialogContent>
         <Formik
           initialValues={{
-            idTrip: tripData.idTrip,
-            idDriver: tripData.idDriver,
-            idBus: tripData.idBus,
-            status: tripData.status,
-            fare: tripData.fare,
+            idTrip: tripData?.idTrip,
+            idDriver: tripData?.driver?.idUserSystem,
+            idBus: tripData?.vehicle?.idBus,
+            status: tripData?.status,
+            fare: tripData?.fare,
             startTime: formatStartTime,
             endTime: formatEndTime,
-            adminCheck: tripData.adminCheck,
-            listTripStop: listTripStopFormat,
+            adminCheck: tripData?.adminCheck,
           }}
           validationSchema={TripSchema}
           onSubmit={async (values) => {
-            console.log("valuh", values);
-            const TripStopFormatData = values.listTripStop.map((p) => {
-              return {
-                idStation: p.idStation,
-                type: p.type,
-                costsIncurred: p.costsIncurred,
-                timeComes: moment(p.timeComess).format("DD-MM-yyyy HH:mm:ss"),
-              };
-            });
-            console.log("dataAS: ", TripStopFormatData);
             try {
               const tripPost = {
-                ...values,
-                listTripStop: TripStopFormatData,
-                startTime: moment(values.startTime)
-                  // .subtract(7, "hours")
-                  .format("DD-MM-yyyy HH:mm:ss"),
-                endTime: moment(values.endTime)
-                  // .subtract(7, "hours")
-                  .format("DD-MM-yyyy HH:mm:ss"),
+                idTrip: values.idTrip,
+                idDriver: values.idDriver,
+                idBus: values.idBus,
               };
-              console.log("startTimeeee: ", tripPost.startTime);
+
               const response = await listTripApi.updateTrip(tripPost);
               console.log("testdata", response);
               handleClose();
@@ -226,20 +189,6 @@ const UpdateTrip = ({ open, handleClose, tripData, fetchListTrip }) => {
                     )}
                   </Field>
                 </Grid>
-                {/* <Grid item xs={12} md={12}>
-                  <Field name="fare">
-                    {({ field }) => (
-                      <TextField
-                        {...field}
-                        required
-                        margin="dense"
-                        label="Giá Vé"
-                        type="number"
-                        fullWidth
-                      />
-                    )}
-                  </Field>
-                </Grid> */}
                 <Grid item xs={12} md={12}>
                   <Field name="idDriver">
                     {({ field, form, meta }) => (
@@ -387,194 +336,7 @@ const UpdateTrip = ({ open, handleClose, tripData, fetchListTrip }) => {
                     )}
                   </Field>
                 </Grid>
-                <Grid item xs={12} md={12}>
-                  <FieldArray name="listTripStop">
-                    {({ push, remove }) => (
-                      <div>
-                        {values.listTripStop.map((st, index) => (
-                          <div key={index}>
-                            <Typography sx={{ mb: 1 }}>
-                              Trạm {index + 1}
-                            </Typography>
-
-                            <Grid container spacing={2}>
-                              <Grid item xs={12} md={4}>
-                                <Field name={`listTripStop.${index}.idStation`}>
-                                  {({ field, form, meta }) => (
-                                    <Autocomplete
-                                      {...field}
-                                      options={dataStation}
-                                      getOptionLabel={(option) => option.name}
-                                      value={
-                                        dataStation.find(
-                                          (option) =>
-                                            option.idStation === field.value
-                                        ) || null
-                                      }
-                                      onChange={(event, newValue) => {
-                                        form.setFieldValue(
-                                          `listTripStop.${index}.idStation`,
-                                          newValue ? newValue.idStation : ""
-                                        );
-                                      }}
-                                      onBlur={form.handleBlur}
-                                      renderInput={(params) => (
-                                        <TextField
-                                          {...params}
-                                          margin="dense"
-                                          label="Trạm"
-                                          error={meta.touched && !!meta.error}
-                                          helperText={
-                                            meta.touched && meta.error
-                                              ? meta.error
-                                              : ""
-                                          }
-                                        />
-                                      )}
-                                    />
-                                  )}
-                                </Field>
-                              </Grid>
-
-                              {/* <Grid item xs={12} md={2}>
-                                <Field name={`listTripStop.${index}.type`}>
-                                  {({ field, meta }) => (
-                                    <FormControl fullWidth margin="dense">
-                                      <InputLabel>Loại</InputLabel>
-                                      <Select
-                                        {...field}
-                                        label="Loại"
-                                        error={meta.touched && !!meta.error}
-                                      >
-                                        <MenuItem value="PICKUP">
-                                          Pickup
-                                        </MenuItem>
-                                        <MenuItem value="DROPOFF">
-                                          Dropoff
-                                        </MenuItem>
-                                      </Select>
-                                      {meta.touched && meta.error && (
-                                        <div style={{ color: "red" }}>
-                                          {meta.error}
-                                        </div>
-                                      )}
-                                    </FormControl>
-                                  )}
-                                </Field>
-                              </Grid> */}
-                              <Grid item xs={12} md={3}>
-                                <Field
-                                  name={`listTripStop.${index}.costsIncurred`}
-                                >
-                                  {({ field, meta }) => (
-                                    <TextField
-                                      {...field}
-                                      required
-                                      margin="dense"
-                                      label="Giá Trạm"
-                                      type="number"
-                                      fullWidth
-                                      error={meta.touched && !!meta.error}
-                                      helperText={
-                                        meta.touched && meta.error
-                                          ? meta.error
-                                          : ""
-                                      }
-                                    />
-                                  )}
-                                </Field>
-                              </Grid>
-
-                              <Grid item xs={12} md={4}>
-                                <Field
-                                  name={`listTripStop.${index}.timeComess`}
-                                >
-                                  {({ field, form, meta }) => (
-                                    <ReactDatePicker
-                                      {...field}
-                                      showTimeSelect
-                                      customInput={
-                                        <TextField
-                                          {...field}
-                                          margin="dense"
-                                          fullWidth
-                                          label="Thời Gian Kết Thúc ( Dự Kiến )"
-                                          sx={{
-                                            "& .MuiInputBase-root": {
-                                              borderRadius: 2,
-                                            },
-                                          }}
-                                          InputProps={{
-                                            startAdornment: (
-                                              <InputAdornment position="start">
-                                                <CalendarTodayIcon />
-                                              </InputAdornment>
-                                            ),
-                                          }}
-                                          error={meta.touched && !!meta.error}
-                                          helperText={
-                                            meta.touched && meta.error
-                                              ? meta.error
-                                              : ""
-                                          }
-                                        />
-                                      }
-                                      selectsRange={false}
-                                      selected={
-                                        values.listTripStop[index].timeComess ||
-                                        null
-                                      }
-                                      onChange={(val) => {
-                                        form.setFieldValue(
-                                          `listTripStop.${index}.timeComess`,
-                                          val
-                                        );
-                                      }}
-                                      placeholderText="Pick Time"
-                                      dateFormat="dd/MM/yyyy hh:mm a"
-                                    />
-                                  )}
-                                </Field>
-                              </Grid>
-
-                              <Grid item xs={12} md={1}>
-                                <Button
-                                  type="button"
-                                  sx={{
-                                    mb: "20px",
-                                    color: "red",
-                                  }}
-                                  onClick={() => remove(index)}
-                                >
-                                  <HighlightOffIcon />
-                                </Button>
-                              </Grid>
-                            </Grid>
-                          </div>
-                        ))}
-                        <Button
-                          type="button"
-                          variant="contained"
-                          sx={{
-                            backgroundColor: "#2196F3 ",
-                            width: "105px",
-                            color: "white",
-                            mt: "20px",
-                          }}
-                          onClick={() =>
-                            push({
-                              idStation: 0,
-                              type: "",
-                              timeComes: "",
-                            })
-                          }
-                        >
-                          <AddIcon />
-                        </Button>
-                      </div>
-                    )}
-                  </FieldArray>
-                </Grid>
+                
               </Grid>
               <DialogActions
                 sx={{

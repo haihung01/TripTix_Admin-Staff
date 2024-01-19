@@ -33,17 +33,13 @@ const Dashboard = () => {
                 <Featured />
               </Grid>
               <Grid item xs={12} md={8}>
-                <Chart title="Biểu Đồ Lợi Nhuận" aspect={3.16 / 1} />
+                <Chart title="Biểu Đồ Theo Tháng" aspect={3.16 / 1} />
               </Grid>
               <Grid item xs={12} md={12}>
                 <ChartQuarter title="Biểu Đồ Theo Quý" aspect={3 / 1} />
               </Grid>
             </Grid>
           </div>
-          {/* <div className="listContainer">
-            <div className="listTitle">Latest Transactions</div>
-            <Table />
-          </div> */}
         </div>
       )}
       {auth?.user?.role === "ROLE_STAFF" && (

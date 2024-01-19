@@ -41,7 +41,6 @@ const UserSchema = yup.object().shape({
   gender: yup.string().required("Giới tính là bắt buộc"),
   email: yup.string().email("Email không hợp lệ").required("Email là bắt buộc"),
   citizenIdentityCard: yup.string().required("Chứng minh nhân dân là bắt buộc"),
-  assignedRegions: yup.string().required("Vùng được giao là bắt buộc"),
 });
 
 const ChangeProfileModal = ({
@@ -50,7 +49,7 @@ const ChangeProfileModal = ({
   userData,
   fetchUserProfile,
 }) => {
-  const formatBirthday = new Date(userData.birthday * 1000);
+  const formatBirthday = new Date(userData.birthdayLong * 1000);
 
   return (
     <Dialog open={open} onClose={handleClose}>
@@ -78,7 +77,6 @@ const ChangeProfileModal = ({
             gender: userData?.gender,
             email: userData?.email,
             citizenIdentityCard: userData?.citizenIdentityCard,
-            assignedRegions: userData?.assignedRegions,
           }}
           validationSchema={UserSchema}
           onSubmit={async (values) => {
@@ -188,8 +186,8 @@ const ChangeProfileModal = ({
                           label="Giới Tính"
                           error={meta.touched && !!meta.error}
                         >
-                          <MenuItem value="MALE">Male</MenuItem>
-                          <MenuItem value="FEMALE">Female</MenuItem>
+                          <MenuItem value="MALE">Nam</MenuItem>
+                          <MenuItem value="FEMALE">Nữ</MenuItem>
                         </Select>
                         <Typography
                           color="#D80032"

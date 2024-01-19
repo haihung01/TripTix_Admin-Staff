@@ -46,7 +46,7 @@ const ModalTripApprovedPopup = ({
   });
 
   useEffect(() => {
-    setListSchedule(listScheduleData);
+    setListSchedule(listScheduleData || []);
   }, [listScheduleData]);
 
   const handleUpdate = async () => {
@@ -100,7 +100,7 @@ const ModalTripApprovedPopup = ({
   };
 
   const handleDelete = (schedule) => {
-    const updateSchedule = listSchedule.filter((s) => s.idTrip !== schedule);
+    const updateSchedule = listSchedule?.filter((s) => s.idTrip !== schedule);
     setListSchedule(updateSchedule);
   };
 
@@ -242,11 +242,11 @@ const ModalTripApprovedPopup = ({
               }}
             />
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid item xs={6} md={6}>
             <Typography variant="h5" sx={{ color: "grey" }}>
               Những ngày lặp lại chuyến:{" "}
             </Typography>
-            {listSchedule.map((dataListSchedule, index) => (
+            {listSchedule?.map((dataListSchedule, index) => (
               <List
                 key={dataListSchedule.idTrip}
                 sx={{
@@ -283,6 +283,34 @@ const ModalTripApprovedPopup = ({
             ))}
           </Grid>
 
+          <Grid item xs={6} md={6}>
+            <Typography variant="h5" sx={{ color: "grey" }}>
+              Danh sách loại vé:{" "}
+            </Typography>
+            {tripData?.route?.listTicketType
+              ?.filter((t) => t.priceInTrip !== -1)
+              .map((ticketInTrip, index) => (
+                <List
+                  key={ticketInTrip.idTicketType}
+                  sx={{
+                    width: "100%",
+                    maxWidth: 360,
+                    display: "flex",
+                    alignItems: "center",
+                    mt: "20px",
+                  }}
+                >
+                  <ListItem>
+                    <ListItemText
+                      primary={`${index + 1}. ${
+                        ticketInTrip?.name
+                      } - ${formatMoney(ticketInTrip?.defaultPrice)}`}
+                    />
+                  </ListItem>
+                </List>
+              ))}
+          </Grid>
+
           <Grid item xs={12} md={12}>
             <Typography variant="h5" sx={{ color: "grey", mb: "10px" }}>
               Danh sách trạm dừng chân:{" "}
@@ -312,7 +340,7 @@ const ModalTripApprovedPopup = ({
                       sx={{ color: "text.secondary" }}
                       textAlign="center"
                     >
-                      {dataTrip?.type}
+                      {dataTrip?.distance} Km
                     </Typography>
                   </AccordionSummary>
                   <Divider />

@@ -24,7 +24,7 @@ const UserProfile = () => {
     phone: "",
     address: "",
     email: "",
-    birthday: "",
+    birthdayLong: "",
     gender: "",
   });
 
@@ -73,17 +73,6 @@ const UserProfile = () => {
     "https://icon-library.com/images/admin-icon-png/admin-icon-png-16.jpg"
   );
 
-  // const handleImageUpload = (event) => {
-  //   const file = event.target.files[0];
-  //   const reader = new FileReader();
-
-  //   reader.onload = (e) => {
-  //     setAvatarImage(e.target.result);
-  //   };
-
-  //   reader.readAsDataURL(file);
-  // };
-
   return (
     <div>
       <Box
@@ -124,36 +113,7 @@ const UserProfile = () => {
               </span>{" "}
               {userData.citizenIdentityCard}
             </Typography>
-            <Typography
-              textAlign="center"
-              sx={{ pt: "5px", fontSize: "18px", color: "grey" }}
-            >
-              <span style={{ fontWeight: 600, color: "black" }}>Khu Vực:</span>{" "}
-              {userData.assignedRegions === "Hỗn hợp"
-                ? "Liên vùng"
-                : userData.assignedRegions}
-            </Typography>
           </div>
-          {/* <Divider />
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              paddingTop: "2rem",
-            }}
-          >
-            <Box sx={{ display: "flex" }}>
-              <Button
-                onChange={handleImageUpload}
-                variant="contained"
-                component="label"
-                startIcon={<DriveFolderUploadIcon />}
-              >
-                Upload Avatar
-                <input type="file" hidden />
-              </Button>
-            </Box>
-          </div> */}
         </Paper>
         <Paper sx={{ height: "450px", width: "850px", borderRadius: "30px" }}>
           <div>
@@ -204,7 +164,9 @@ const UserProfile = () => {
                   label="Ngày Sinh"
                   fullWidth
                   variant="outlined"
-                  value={moment(userData.birthday * 1000).format("DD/MM/YYYY")}
+                  value={moment(userData?.birthdayLong * 1000).format(
+                    "DD/MM/YYYY"
+                  )}
                   inputProps={{ readOnly: true }}
                 />
               </Grid>
@@ -213,7 +175,13 @@ const UserProfile = () => {
                   label="Giới Tính"
                   fullWidth
                   variant="outlined"
-                  value={userData.gender}
+                  value={
+                    userData?.gender === "FEMALE"
+                      ? "Nữ"
+                      : userData?.gender === "MALE"
+                      ? "Nam"
+                      : ""
+                  }
                   inputProps={{ readOnly: true }}
                 />
               </Grid>

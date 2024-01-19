@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import moment from "moment";
 import React from "react";
-import Carousel from "react-material-ui-carousel";
 
 const ModelDetailNews = ({ open, handleClose, newsData }) => {
   return (
@@ -35,7 +34,7 @@ const ModelDetailNews = ({ open, handleClose, newsData }) => {
       </DialogTitle>
       <Divider />
       <DialogContent>
-        <Carousel sx={{ margin: "auto", border: "none" }}>
+        {/* <Carousel sx={{ margin: "auto", border: "none" }}>
           {newsData.listImg &&
             newsData.listImg.map((i, index) => (
               <CardMedia
@@ -47,7 +46,15 @@ const ModelDetailNews = ({ open, handleClose, newsData }) => {
                 sx={{ objectFit: "cover" }}
               />
             ))}
-        </Carousel>
+        </Carousel> */}
+
+        <CardMedia
+          component="img"
+          height="345"
+          image={newsData?.imgLink}
+          alt="img"
+          sx={{ objectFit: "cover" }}
+        />
 
         <Box>
           <Grid container spacing={4}>

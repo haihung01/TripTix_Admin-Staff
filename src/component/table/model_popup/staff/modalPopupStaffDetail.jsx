@@ -81,7 +81,7 @@ const ModalDriverPopup = ({ open, handleClose, userData }) => {
                   <TextField
                     fullWidth
                     label="Ngày sinh"
-                    value={moment.unix(userData.birthday).format("DD/MM/YYYY")}
+                    value={moment.unix(userData.birthdayLong).format("DD/MM/YYYY")}
                     InputProps={{
                       readOnly: true,
                     }}

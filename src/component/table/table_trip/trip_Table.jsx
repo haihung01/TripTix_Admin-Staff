@@ -104,7 +104,7 @@ const List = () => {
   console.log("datatripppppp", dataTrip);
   const sortedData = dataTrip.slice().sort((a, b) => {
     const orderMultiplier = order === "asc" ? 1 : -1;
-    const statusOrder = ["RUN", "READY", "FINISH", "CANCEL"]; // Định nghĩa thứ tự sắp xếp
+    const statusOrder = ["RUNNING", "READY", "FINISHED", "CANCELED"]; // Định nghĩa thứ tự sắp xếp
 
     if (statusOrder.indexOf(a.status) < statusOrder.indexOf(b.status)) {
       return -1 * orderMultiplier;

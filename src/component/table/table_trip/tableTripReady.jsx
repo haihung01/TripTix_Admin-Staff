@@ -252,7 +252,7 @@ const TripReadyList = () => {
                 className="tableTitle"
                 sx={{ color: "#443A3E", textAlign: "center" }}
               >
-                Số Lương Hành Khách
+                Số Lượng Hành Khách
               </TableCell>
               {/* <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
                 Đánh Giá

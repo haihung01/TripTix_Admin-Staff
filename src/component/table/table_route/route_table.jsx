@@ -311,9 +311,6 @@ const List = () => {
                     <TableCell align="center">
                       <Skeleton variant="rectangular" />
                     </TableCell>
-                    <TableCell align="center">
-                      <Skeleton variant="rectangular" />
-                    </TableCell>
                   </TableRow>
                 ))}
           </TableBody>

@@ -209,10 +209,6 @@ const List = () => {
               <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
                 Giới Tính
               </TableCell>
-              <TableCell className="tableTitle" sx={{ color: "#443A3E" }}>
-                Khu Vực
-              </TableCell>
-
               <TableCell
                 className="tableTitle"
                 sx={{ color: "#443A3E" }}
@@ -251,17 +247,11 @@ const List = () => {
                       </TableCell>
                       <TableCell className="tableCell">
                         {row.gender === "MALE"
-                          ? "NAM"
+                          ? "Nam"
                           : row.gender === "FEMALE"
-                          ? "NỮ"
+                          ? "Nữ"
                           : row.gender}
                       </TableCell>
-                      <TableCell className="tableCell">
-                        {row.assignedRegions === "Hỗn hợp"
-                          ? "Liên vùng"
-                          : row.assignedRegions}
-                      </TableCell>
-
                       <TableCell>
                         <MenuActionStaffTable
                           onOpenUpdate={handleUpdateModalOpen}
@@ -285,9 +275,6 @@ const List = () => {
                       <Skeleton variant="rectangular" />
                     </TableCell>
                     <TableCell align="left">
-                      <Skeleton variant="rectangular" />
-                    </TableCell>
-                    <TableCell align="center">
                       <Skeleton variant="rectangular" />
                     </TableCell>
                     <TableCell align="center">

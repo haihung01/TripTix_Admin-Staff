@@ -77,7 +77,7 @@ export default function RouteDetail() {
                 <span
                   style={{ fontWeight: "bold", fontSize: 20, color: "black" }}
                 >
-                  Tên trạm:{" "}
+                  Tuyến Đường:{" "}
                 </span>
                 {routeData?.name}
               </Typography>
