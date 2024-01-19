@@ -60,7 +60,7 @@ const ModelUpdateNews = ({ open, handleClose, newsData, fetchListNews }) => {
               const response = await listNewsApi.updateNews(newsPut);
               console.log("mmal", response);
               fetchListNews();
-              toast.success("Update News Success !");
+              toast.success(response?.message);
               handleClose();
             } catch (error) {
               console.log("errr", error.response.data.message);

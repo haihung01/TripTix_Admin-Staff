@@ -91,7 +91,7 @@ const AddRoutePopup = ({ open, handleClose, fetchListRoute }) => {
               const response = await listRouteApi.createNewRoute(routePost);
               console.log("mmal", response);
               fetchListRoute();
-              toast.success("Tạo Tuyến Đường Thành Công !");
+              toast.success(response?.message);
               handleClose();
             } catch (error) {
               console.log("errr", error.response.data.message);

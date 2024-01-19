@@ -36,7 +36,7 @@ const TripRequestAccept = () => {
       try {
         setLoading(true);
         const response = await listTripApi.getAll({
-          adminCheck: "accept",
+          adminCheck: "ACCEPTED",
           status: "READY",
         });
         console.log("dataTBL", response);

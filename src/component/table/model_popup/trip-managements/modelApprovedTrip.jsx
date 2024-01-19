@@ -9,6 +9,10 @@ import {
   DialogTitle,
   Divider,
   Grid,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
   TextField,
   Typography,
 } from "@mui/material";
@@ -25,14 +29,13 @@ const ModalTripApprovedPopup = ({
   handleClose,
   tripData,
   fetchListTrip,
+  listScheduleData,
 }) => {
   const [expanded, setExpanded] = React.useState(false);
 
   console.log("test6tripData", tripData);
 
-  const [listSchedule, setListSchedule] = useState(
-    tripData?.listSchedules || []
-  );
+  const [listSchedule, setListSchedule] = useState(listScheduleData || []);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -41,6 +44,10 @@ const ModalTripApprovedPopup = ({
     idTrip: 0,
     adminCheck: "",
   });
+
+  useEffect(() => {
+    setListSchedule(listScheduleData);
+  }, [listScheduleData]);
 
   const handleUpdate = async () => {
     try {
@@ -75,7 +82,7 @@ const ModalTripApprovedPopup = ({
       adminCheck: "ACCEPTED",
       listIdTripSchedule: listSchedule.map((s) => s.idTrip) || [],
     }));
-    toast.success("Accepted successfully !");
+    toast.success("Chấp nhận thành công!");
   };
 
   const handleReject = () => {
@@ -89,7 +96,7 @@ const ModalTripApprovedPopup = ({
         adminCheck: "CANCELED",
       }));
     }
-    toast.success("Cancel successfully !");
+    toast.success("Từ chối thành công!");
   };
 
   const handleDelete = (schedule) => {
@@ -98,7 +105,15 @@ const ModalTripApprovedPopup = ({
   };
 
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      sx={{
+        "& .MuiPaper-root": {
+          minWidth: "45%",
+        },
+      }}
+    >
       <DialogTitle
         textAlign="center"
         variant="h5"
@@ -228,36 +243,51 @@ const ModalTripApprovedPopup = ({
             />
           </Grid>
           <Grid item xs={12} md={12}>
+            <Typography variant="h5" sx={{ color: "grey" }}>
+              Những ngày lặp lại chuyến:{" "}
+            </Typography>
             {listSchedule.map((dataListSchedule, index) => (
-              <Box
+              <List
                 key={dataListSchedule.idTrip}
                 sx={{
                   width: "100%",
+                  maxWidth: 360,
                   display: "flex",
                   alignItems: "center",
                   mt: "20px",
                 }}
               >
-                <Typography>
-                  {moment(dataListSchedule?.departureDateLT * 1000)
-                    .subtract(7, "hours")
-                    .format("DD/MM/YYYY")}
-                </Typography>
-                <Button
-                  type="button"
-                  sx={{
-                    color: "red",
-                  }}
-                  onClick={() => handleDelete(dataListSchedule.idTrip)}
+                <ListItem
+                  secondaryAction={
+                    <IconButton
+                      aria-label="cancel"
+                      onClick={() => handleDelete(dataListSchedule.idTrip)}
+                    >
+                      <HighlightOffIcon
+                        sx={{
+                          color: "red",
+                        }}
+                      />
+                    </IconButton>
+                  }
                 >
-                  <HighlightOffIcon />
-                </Button>
-              </Box>
+                  <ListItemText
+                    primary={`Ngày lặp: ${moment(
+                      dataListSchedule?.departureDateLT * 1000
+                    )
+                      .subtract(7, "hours")
+                      .format("DD/MM/YYYY")}`}
+                  />
+                </ListItem>
+              </List>
             ))}
           </Grid>
 
           <Grid item xs={12} md={12}>
-            {tripData?.listtripStopDTO?.map((dataTrip, index) => (
+            <Typography variant="h5" sx={{ color: "grey", mb: "10px" }}>
+              Danh sách trạm dừng chân:{" "}
+            </Typography>
+            {tripData?.route?.listStationInRoute?.map((dataTrip, index) => (
               <Box key={index}>
                 <Accordion
                   expanded={expanded === `panel${index + 1}`}
@@ -276,7 +306,7 @@ const ModalTripApprovedPopup = ({
                         flexShrink: 0,
                       }}
                     >
-                      {dataTrip?.stationDTO?.name}
+                      {dataTrip?.station?.name}
                     </Typography>
                     <Typography
                       sx={{ color: "text.secondary" }}
@@ -289,23 +319,21 @@ const ModalTripApprovedPopup = ({
                   <AccordionDetails sx={{ bgcolor: "whitesmoke" }}>
                     <Typography sx={{ mb: 2 }}>
                       <span style={{ fontWeight: 600 }}>Địa chỉ: </span>
-                      {dataTrip?.stationDTO?.address}
+                      {dataTrip?.station?.address}
                     </Typography>
                     <Typography sx={{ mb: 2 }}>
                       <span style={{ fontWeight: 600 }}>Tỉnh/Thành: </span>
-                      {dataTrip?.stationDTO?.province}
+                      {dataTrip?.station?.province}
                     </Typography>
-                    <Typography sx={{ mb: 2 }}>
+                    {/* <Typography sx={{ mb: 2 }}>
                       <span style={{ fontWeight: 600 }}>Giá Trạm: </span>
                       {formatMoney(dataTrip?.costsIncurred)}
-                    </Typography>
+                    </Typography> */}
                     <Typography sx={{ mb: 2 }}>
                       <span style={{ fontWeight: 600 }}>
                         Thời Gian Đến ( Dự Kiến):{" "}
                       </span>
-                      {moment(dataTrip?.timeComess * 1000)
-                        .subtract(7, "hours")
-                        .format("hh:mm A")}
+                      {dataTrip?.timeCome}
                     </Typography>
                   </AccordionDetails>
                 </Accordion>

@@ -284,12 +284,12 @@ const DashboardStaff = () => {
                   <TableRow key={row.idTrip}>
                     <TableCell className="tableCell">{row.idTrip}</TableCell>
                     <TableCell className="tableCell">
-                      {moment(row.startTimee * 1000).format(
+                      {moment(row.departureDateLT * 1000).format(
                         "DD/MM/YYYY - hh:mm A"
                       )}
                     </TableCell>
                     <TableCell className="tableCell">
-                      {moment(row.endTimee * 1000).format(
+                      {moment(row.endDateLT * 1000).format(
                         "DD/MM/YYYY - hh:mm A"
                       )}
                     </TableCell>

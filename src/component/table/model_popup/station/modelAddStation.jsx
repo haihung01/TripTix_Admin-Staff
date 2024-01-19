@@ -82,7 +82,7 @@ const AddStationPopup = ({ open, handleClose, fetchListStation }) => {
               );
               console.log("mmal", response);
               fetchListStation();
-              toast.success("Tạo Trạm Xe Thành Công !");
+              toast.success(response?.message);
               handleClose();
             } catch (error) {
               console.log("errr", error.response.data.message);

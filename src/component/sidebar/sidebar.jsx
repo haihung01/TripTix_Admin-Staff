@@ -35,7 +35,6 @@ const Sidebar = () => {
     localStorage.clear();
     setAuth({});
     navigate("/login-page");
-    toast.success("Logout successfully !");
   };
 
   return (

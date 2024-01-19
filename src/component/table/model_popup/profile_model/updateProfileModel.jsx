@@ -93,7 +93,7 @@ const ChangeProfileModal = ({
               );
               console.log("mmal", response);
               fetchUserProfile();
-              toast.success("Update profile Success !");
+              toast.success(response?.message);
               handleClose();
             } catch (error) {
               console.log("errr", error.response.data.message);

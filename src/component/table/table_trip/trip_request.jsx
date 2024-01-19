@@ -322,6 +322,7 @@ const TripRequestPending = () => {
               handleClose={handleClose}
               tripData={selectedTripData}
               fetchListTrip={fetchListTrip}
+              listScheduleData={selectedTripData?.listSchedules}
             />
           )}
         </Table>

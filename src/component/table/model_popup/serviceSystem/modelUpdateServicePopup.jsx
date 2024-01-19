@@ -60,7 +60,7 @@ const ModelUpdateService = ({
               const response = await configSystemApi.updateService(servicePut);
               console.log("mmal", response);
               fetchListServices();
-              toast.success("Update Service Success !");
+              toast.success(response?.message);
               handleClose();
             } catch (error) {
               console.log("errr", error.response.data.message);

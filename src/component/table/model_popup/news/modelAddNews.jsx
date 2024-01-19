@@ -68,7 +68,7 @@ const AddNewsPopup = ({ open, handleClose, fetchListNews }) => {
               const response = await listNewsApi.createNews(formData);
               console.log("Buse", response);
               fetchListNews();
-              toast.success("Create News Success !");
+              toast.success(response?.message);
               handleClose();
             } catch (error) {
               console.log("errr", error.response.data.error);

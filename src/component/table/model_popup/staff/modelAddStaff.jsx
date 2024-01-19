@@ -99,7 +99,7 @@ const AddUserModal = ({ open, handleClose, fetchUserData }) => {
               console.log("mmal", response);
               fetchUserData();
               handleClose();
-              toast.success("Create User Success !");
+              toast.success(response?.message);
             } catch (error) {
               console.log("errr", error.response.data.data);
               toast.error(error.response.data.data);

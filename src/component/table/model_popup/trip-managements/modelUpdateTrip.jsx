@@ -200,7 +200,7 @@ const UpdateTrip = ({ open, handleClose, tripData, fetchListTrip }) => {
               const response = await listTripApi.updateTrip(tripPost);
               console.log("testdata", response);
               handleClose();
-              toast.success("Update Trip Success !");
+              toast.success(response?.message);
               // fetchListTrip();
             } catch (error) {
               console.log("errr", error.response.data.message);

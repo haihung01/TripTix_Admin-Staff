@@ -71,10 +71,10 @@ const ChangePasswordModal = ({ open, handleClose, id }) => {
 
               const response = await listUserApi.changePassword(changePassword);
               console.log("mmal", response);
-              toast.success("Update Password Success !");
+              toast.success(response?.message);
               handleClose();
               const isConfirm = window.confirm(
-                "Update Success! Do you want Log out ?"
+                "Đổi mật khẩu thành công, bạn có muốn đăng xuất tài khoản khỏi thiết bị này?"
               );
               if (isConfirm) {
                 localStorage.clear();

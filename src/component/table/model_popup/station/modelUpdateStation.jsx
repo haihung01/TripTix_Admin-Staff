@@ -95,7 +95,7 @@ const ModelUpdateStation = ({
               const response = await listStationApi.updateStaion(stationPut);
               console.log("mmal", response);
               fetchListStation();
-              toast.success("Update Station Success !");
+              toast.success(response?.message);
               handleClose();
             } catch (error) {
               console.log("errr", error.response.data.message);

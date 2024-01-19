@@ -60,7 +60,7 @@ const AddServicePopup = ({ open, handleClose, fetchListServices }) => {
               const response = await configSystemApi.createService(servicePost);
               console.log("mmal", response);
               fetchListServices();
-              toast.success("Create Service Success !");
+              toast.success(response?.message);
               handleClose();
             } catch (error) {
               console.log("errr", error.response.data.message);

@@ -234,7 +234,7 @@ export default function CreateTrip() {
           console.log("departureDateeee: ", tripPost.departureDate);
           const response = await listTripApi.createTripByStaff(tripPost);
           console.log("testdata", response);
-          toast.success("Create Trip Success !");
+          toast.success(response?.message);
         } catch (error) {
           console.log("errr", error.response.data.message);
           toast.error(error.response.data.message);
